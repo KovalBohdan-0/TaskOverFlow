@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TaskOverFlowApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <envs>
+      <env name="DATASOURCE" value="jdbc:postgresql://localhost:5432/task_over_flow" />
+      <env name="GOOGLE_CLIENT_ID" value="927808968371-qvags8jjtktfrg5g46q69f1svo6m4id1.apps.googleusercontent.com" />
+      <env name="GOOGLE_CLIENT_SECRET" value="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" />
+      <env name="PGPASSWORD" value="" />
+      <env name="PGUSERNAME" value="postgres" />
+      <env name="JWT_SECRET" value="73357638792F423F4528482B4D6251655468576D5A7133743677397A24432646" />
+    </envs>
+    <module name="TaskOverFlow" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.gft.taskoverflow.TaskOverFlowApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
