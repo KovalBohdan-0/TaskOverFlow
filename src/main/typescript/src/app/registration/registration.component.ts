@@ -3,6 +3,7 @@ import {UserInfo} from "../login/UserInfo";
 import {RegistrationInfo} from "./RegistrationInfo";
 import {AuthService} from "../auth.service";
 import {Router} from "@angular/router";
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-registration',
@@ -16,17 +17,28 @@ export class RegistrationComponent {
     confirmPassword: '',
   }
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {
+  }
 
-  register(registrationInfo: RegistrationInfo) {
-    this.authService.register(registrationInfo).subscribe(
-      (userInfo: UserInfo) => {
-        this.router.navigate(['/login']);
+  register(registrationInfo: NgForm) {
+    this.registrationInfo = registrationInfo.value;
+    const userInfo: UserInfo = {
+      email: this.registrationInfo.email,
+      password: this.registrationInfo.password,
+    }
+
+    this.authService.register(userInfo).subscribe({
+      next: (response: any) => {
+        this.authService.storeToken(response.body.jwt);
+        this.router.navigate(['/board']);
       },
-      (error) => {
-        console.log(error);
+      error: (error: any) => {
+        if (error.status == 404) {
+          //TODO add error message
+        } else {
+        }
       }
-    );
+    });
   }
 
   redirectToLogin() {

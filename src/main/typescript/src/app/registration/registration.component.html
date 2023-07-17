@@ -11,38 +11,29 @@
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
-                    <h1 class="title-text h3 text-gray-900 mb-4">Welcome Back</h1>
+                    <h1 class="title-text h3 text-gray-900 mb-4">Register your account</h1>
                   </div>
-                  <form #formUser="ngForm" method="post" (ngSubmit)="r(formUser)">
-                    <div>
-                      <input type="email" class="form-input form-control rounded-4 p-2 ps-4 m-3"
+                  <form #formUser="ngForm" method="post" (ngSubmit)="register(formUser)" class="ms-3">
+                      <input type="email" class="form-input form-control rounded-4 p-2 ps-4 mt-3 mb-3"
                              id="exampleInputEmail" aria-describedby="emailHelp"
-                             placeholder="Enter Email Address" name="email" required [(ngModel)]="userInfo.email">
-                    </div>
-                    <div class="form-group">
-                      <input type="password" class="form-input form-control rounded-4 p-2 ps-4 m-3"
-                             id="exampleInputPassword" placeholder="Password" name="password" required [(ngModel)]="userInfo.password">
-                    </div>
-                    <div class="m-3">
-                      <div class="small">
-                        <input type="checkbox" id="customCheck" name="rememberMe" [(ngModel)]="userInfo.rememberMe">
-                        <label class="ms-2" for="customCheck">Remember
-                          Me</label>
-                      </div>
-                    </div>
-                    <a href="index.html" class="log-btn btn w-100 rounded-4 btn-primary m-3 mb-2">
-                      <i class="bi bi-box-arrow-in-right"></i> Login
-                    </a>
+                             placeholder="Enter Email Address" name="email" required [(ngModel)]="registrationInfo.email">
+                      <input type="password" class="form-input form-control rounded-4 p-2 ps-4 mt-3"
+                             id="exampleInputPassword" placeholder="Password" name="password" required [(ngModel)]="registrationInfo.password">
+                      <input type="password" class="form-input form-control rounded-4 p-2 ps-4 mt-3"
+                             id="exampleInputConfirmPassword" placeholder="Confirm Password" name="confirmPassword" required [(ngModel)]="registrationInfo.confirmPassword  ">
+                    <button type="submit" class="log-btn btn w-100 rounded-4 btn-primary mt-3 mb-2">
+                      <i class="bi bi-box-arrow-in-right"></i> Register
+                    </button>
                     <hr>
-                    <a (click)="googleLogin()" class="log-btn btn w-100 bg-danger text-white rounded-4 m-3 mt-0">
+                    <a (click)="googleLogin()" class="log-btn btn w-100 bg-danger text-white rounded-4 mb-3">
                       <i class="bi bi-google"></i> Login with Google
                     </a>
                   </form>
-                  <div class="text-center ms-3">
+                  <div class="text-center">
                     <a class="small link" href="forgot-password.html">Forgot Password?</a>
                   </div>
-                  <div class="text-center ms-3">
-                    <a class="small link" (click)="redirectToLogin()">Create an Account!</a>
+                  <div class="text-center">
+                    <a class="small link" (click)="redirectToLogin()">Login</a>
                   </div>
                 </div>
               </div>

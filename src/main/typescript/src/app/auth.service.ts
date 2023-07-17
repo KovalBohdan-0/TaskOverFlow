@@ -21,6 +21,10 @@ export class AuthService {
     return this.httpClient.post(this.apiUrl + '/api/v1/login', user, { observe: 'response' });
   }
 
+  register(user: UserInfo): Observable<HttpResponse<Object>> {
+    return this.httpClient.post(this.apiUrl + '/api/v1/registration', user, { observe: 'response' });
+  }
+
   storeToken(token: string) {
     localStorage.setItem("jwt", token);
   }

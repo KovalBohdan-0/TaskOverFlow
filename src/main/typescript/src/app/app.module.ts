@@ -8,11 +8,14 @@ import {FormsModule} from "@angular/forms";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {AuthService} from "./auth.service";
 import { RegistrationComponent } from './registration/registration.component';
-import {Routes} from "@angular/router";
+import {RouterLink, RouterModule, Routes} from "@angular/router";
+import { BoardComponent } from './board/board.component';
 
 const routes: Routes = [
+  { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },
+  { path: 'board', component: BoardComponent },
 ];
 
 @NgModule({
@@ -20,14 +23,18 @@ const routes: Routes = [
     AppComponent,
     LoginComponent,
     RegistrationComponent,
+    BoardComponent,
   ],
   imports: [
     BrowserModule,
     NgbModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterLink,
+    RouterModule.forRoot(routes)
   ],
   providers: [HttpClient, AuthService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [RouterModule]
 })
 export class AppModule { }

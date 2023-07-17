@@ -13,7 +13,6 @@ export class LoginComponent {
   userInfo: UserInfo = {
     email: "",
     password: "",
-    rememberMe: false
   };
 
   constructor(private authService: AuthService, private router: Router) {
@@ -24,6 +23,7 @@ export class LoginComponent {
     this.authService.logIn(this.userInfo).subscribe({
       next: (response: any) => {
         this.authService.storeToken(response.body.jwt);
+        this.router.navigate(['/board']);
       },
       error: (error: any) => {
         if (error.status == 404) {
@@ -39,6 +39,7 @@ export class LoginComponent {
   }
 
   redirectToRegistration() {
-    this.router.navigate(['/registration']);
+    console.log("here");
+    this.router.navigate(['registration']);
   }
 }
