@@ -8,5 +8,4 @@ public class TaskOverFlowApplication {
     public static void main(String[] args) {
         SpringApplication.run(TaskOverFlowApplication.class, args);
     }
-
 }
