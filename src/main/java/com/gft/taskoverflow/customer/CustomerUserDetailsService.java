@@ -1,4 +1,4 @@
-package com.example.oauth.customer;
+package com.gft.taskoverflow.customer;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

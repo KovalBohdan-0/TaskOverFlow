@@ -1,8 +1,8 @@
-package com.example.oauth.customer;
+package com.gft.taskoverflow.customer;
 
-import com.example.oauth.exception.DuplicateResourceException;
-import com.example.oauth.exception.ResourceNotFoundException;
-import com.example.oauth.registration.RegistrationRequest;
+import com.gft.taskoverflow.exception.DuplicateResourceException;
+import com.gft.taskoverflow.exception.ResourceNotFoundException;
+import com.gft.taskoverflow.registration.RegistrationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

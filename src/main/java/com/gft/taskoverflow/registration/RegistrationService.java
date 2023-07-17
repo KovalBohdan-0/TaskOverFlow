@@ -1,8 +1,8 @@
-package com.example.oauth.registration;
+package com.gft.taskoverflow.registration;
 
-import com.example.oauth.customer.CustomerService;
-import com.example.oauth.customer.CustomerUserDetails;
-import com.example.oauth.jwt.JwtService;
+import com.gft.taskoverflow.customer.CustomerService;
+import com.gft.taskoverflow.customer.CustomerUserDetails;
+import com.gft.taskoverflow.jwt.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;

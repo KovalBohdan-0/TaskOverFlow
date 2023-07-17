@@ -1,4 +1,4 @@
-package com.example.oauth.exception;
+package com.gft.taskoverflow.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,7 @@ import java.time.ZonedDateTime;
 public class ApiExceptionHandler {
 
     @ExceptionHandler(value = DuplicateResourceException.class)
-    public ResponseEntity<Object> handleApiRequestException(DuplicateResourceException exception, HttpServletRequest request){
+    public ResponseEntity<Object> handleApiRequestException(DuplicateResourceException exception){
 
         ApiException apiException = new ApiException(
                 exception.getMessage(),
@@ -25,7 +25,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(value = ResourceNotFoundException.class)
-    public ResponseEntity<Object> handleApiRequestException(ResourceNotFoundException exception, HttpServletRequest request){
+    public ResponseEntity<Object> handleApiRequestException(ResourceNotFoundException exception){
 
         ApiException apiException = new ApiException(
                 exception.getMessage(),
@@ -37,7 +37,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(value = RequestValidationException.class)
-    public ResponseEntity<Object> handleApiRequestException(RequestValidationException exception, HttpServletRequest request){
+    public ResponseEntity<Object> handleApiRequestException(RequestValidationException exception){
 
         ApiException apiException = new ApiException(
                 exception.getMessage(),

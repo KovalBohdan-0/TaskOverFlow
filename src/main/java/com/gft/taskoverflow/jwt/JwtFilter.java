@@ -1,6 +1,6 @@
-package com.example.oauth.jwt;
+package com.gft.taskoverflow.jwt;
 
-import com.example.oauth.customer.CustomerUserDetailsService;
+import com.gft.taskoverflow.customer.CustomerUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

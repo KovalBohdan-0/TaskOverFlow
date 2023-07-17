@@ -1,7 +1,7 @@
-package com.example.oauth.login;
+package com.gft.taskoverflow.login;
 
-import com.example.oauth.customer.CustomerUserDetails;
-import com.example.oauth.jwt.JwtService;
+import com.gft.taskoverflow.customer.CustomerUserDetails;
+import com.gft.taskoverflow.jwt.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,7 +1,7 @@
-package com.example.oauth.config;
+package com.gft.taskoverflow.config;
 
-import com.example.oauth.customer.CustomerUserDetailsService;
-import com.example.oauth.jwt.JwtFilter;
+import com.gft.taskoverflow.customer.CustomerUserDetailsService;
+import com.gft.taskoverflow.jwt.JwtFilter;
 import lombok.Data;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.example.oauth.customer;
+package com.gft.taskoverflow.customer;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.example.oauth.customer;
+package com.gft.taskoverflow.customer;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

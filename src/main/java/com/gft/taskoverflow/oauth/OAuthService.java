@@ -1,11 +1,11 @@
-package com.example.oauth.oauth;
+package com.gft.taskoverflow.oauth;
 
-import com.example.oauth.customer.CustomerService;
-import com.example.oauth.customer.CustomerUserDetails;
-import com.example.oauth.jwt.JwtService;
-import com.example.oauth.registration.RegistrationRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gft.taskoverflow.customer.CustomerService;
+import com.gft.taskoverflow.customer.CustomerUserDetails;
+import com.gft.taskoverflow.jwt.JwtService;
+import com.gft.taskoverflow.registration.RegistrationRequest;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
@@ -46,10 +46,9 @@ public class OAuthService {
     public String getAuthUrl() {
         String oauthEndpoint = "https://accounts.google.com/o/oauth2/auth";
         String scope = "email profile";
-        String redirectUrl = REDIRECT_URI;
 
         return String.format("%s?client_id=%s&redirect_uri=%s&scope=%s&response_type=code",
-                oauthEndpoint, CLIENT_ID, redirectUrl, scope);
+                oauthEndpoint, CLIENT_ID, REDIRECT_URI, scope);
     }
 
 

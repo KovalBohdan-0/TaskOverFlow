@@ -1,4 +1,4 @@
-package com.example.oauth.oauth;
+package com.gft.taskoverflow.oauth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletResponse;

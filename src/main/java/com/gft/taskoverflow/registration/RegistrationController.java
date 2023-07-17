@@ -1,6 +1,6 @@
-package com.example.oauth.registration;
+package com.gft.taskoverflow.registration;
 
-import com.example.oauth.login.AuthenticationResponse;
+import com.gft.taskoverflow.login.AuthenticationResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

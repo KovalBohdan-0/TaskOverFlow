@@ -1,4 +1,4 @@
-package com.example.oauth.login;
+package com.gft.taskoverflow.login;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
