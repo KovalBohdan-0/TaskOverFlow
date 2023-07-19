@@ -10,6 +10,8 @@ import {AuthService} from "./service/auth.service";
 import { RegistrationComponent } from './registration/registration.component';
 import {RouterLink, RouterModule, Routes} from "@angular/router";
 import { BoardComponent } from './board/board.component';
+import { TaskListComponent } from './board/task-list/task-list.component';
+import { TaskComponent } from './board/task-list/task/task.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -24,6 +26,8 @@ const routes: Routes = [
     LoginComponent,
     RegistrationComponent,
     BoardComponent,
+    TaskListComponent,
+    TaskComponent,
   ],
   imports: [
     BrowserModule,

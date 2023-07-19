@@ -1,0 +1,13 @@
+<div class="card card-title">
+  <div class="card-body task">
+    <label class="fancy-checkbox">
+      <input type="checkbox"  [checked]="task.done" />
+      <span class="checkmark"></span>
+    </label>
+
+    <div class="ms-5">
+      <div class="mb-2">{{task.title}}</div>
+      <div class="priority" *ngIf="task.priority != 'LOW'" [style.color]="color">{{task.priority | titlecase}}</div>
+    </div>
+  </div>
+</div>
