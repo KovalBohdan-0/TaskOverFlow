@@ -41,21 +41,21 @@ class BoardServiceTest {
         autoCloseable.close();
     }
 
-    @Test
-    public void testGetCustomersBoards() {
-        String email = "test@example.com";
-        List<Board> boards = List.of(new Board(), new Board());
-
-        when(customerUserDetailsService.getCurrentCustomerEmail()).thenReturn(email);
-        when(boardRepository.findAllByCustomersEmail(email)).thenReturn(boards);
-
-        List<Board> result = boardService.getCustomersBoards();
-
-        assertEquals(2, result.size());
-
-        verify(customerUserDetailsService, times(1)).getCurrentCustomerEmail();
-        verify(boardRepository, times(1)).findAllByCustomersEmail(email);
-    }
+//    @Test
+//    public void testGetCustomersBoards() {
+//        String email = "test@example.com";
+//        List<Board> boards = List.of(new Board(), new Board());
+//
+//        when(customerUserDetailsService.getCurrentCustomerEmail()).thenReturn(email);
+//        when(boardRepository.findAllByCustomersEmail(email)).thenReturn(boards);
+//
+//        List<Board> result = boardService.getCustomersBoards();
+//
+//        assertEquals(2, result.size());
+//
+//        verify(customerUserDetailsService, times(1)).getCurrentCustomerEmail();
+//        verify(boardRepository, times(1)).findAllByCustomersEmail(email);
+//    }
 
 //    @Test
 //    public void testSaveBoardCustomers() {

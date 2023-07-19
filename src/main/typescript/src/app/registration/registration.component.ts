@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {UserInfo} from "../login/UserInfo";
 import {RegistrationInfo} from "./RegistrationInfo";
-import {AuthService} from "../auth.service";
+import {AuthService} from "../service/auth.service";
 import {Router} from "@angular/router";
 import {NgForm} from "@angular/forms";
 

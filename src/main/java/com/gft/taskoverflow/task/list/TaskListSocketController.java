@@ -3,11 +3,23 @@ package com.gft.taskoverflow.task.list;
 import lombok.Data;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Data
 @RequestMapping("/api/v1/task-lists")
 public class TaskListSocketController {
     private final TaskListService taskListService;
+
+    @GetMapping("/{taskListId}")
+    public TaskList getTaskListById(@PathVariable Long taskListId) {
+        return taskListService.getTaskListById(taskListId);
+    }
+
+    @GetMapping
+    public List<TaskList> getBoardTaskLists(@RequestParam Long boardId) {
+        return taskListService.getBoardTaskLists(boardId);
+    }
 
     @PostMapping
     public void addTaskList(@RequestBody TaskListDto taskListDto) {

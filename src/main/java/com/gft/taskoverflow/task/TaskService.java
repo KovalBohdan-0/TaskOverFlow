@@ -3,6 +3,7 @@ package com.gft.taskoverflow.task;
 import com.gft.taskoverflow.exception.TaskNotFoundException;
 import com.gft.taskoverflow.task.list.TaskListService;
 import lombok.Data;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 public class TaskService {
     private final TaskRepository taskRepository;
     private final TaskListService taskListService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     public void addTask(TaskDto taskDto) {
         Task task = new Task();
@@ -20,7 +22,6 @@ public class TaskService {
         task.setTaskList(taskListService.getTaskListById(taskDto.taskListId()));
         task.setPriority(taskDto.priority());
         task.setDeadline(taskDto.deadline());
-
         taskRepository.save(task);
     }
 

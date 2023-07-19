@@ -15,9 +15,13 @@ import java.util.Set;
 public class BoardService {
     private final BoardRepository boardRepository;
     private final CustomerUserDetailsService customerUserDetailsService;
+    private final BoardMapper boardMapper;
 
-    public List<Board> getCustomersBoards() {
-        return boardRepository.findAllByCustomersEmail(customerUserDetailsService.getCurrentCustomerEmail());
+    public List<BoardResponseDto> getCustomersBoards() {
+        return boardRepository.findAllByCustomersEmail(customerUserDetailsService.getCurrentCustomerEmail())
+                .stream()
+                .map(boardMapper::mapToResponseDto)
+                .toList();
     }
 
     public void saveBoardCustomers(Long boardId, String email) {
@@ -28,8 +32,7 @@ public class BoardService {
     }
 
     public void saveBoard(BoardDto boardDto) {
-        Board board = new Board();
-        board.setTitle(boardDto.title());
+        Board board = boardMapper.mapToEntity(boardDto);
         board.setCustomers(Set.of(customerUserDetailsService.getCurrentCustomer()));
         boardRepository.save(board);
     }

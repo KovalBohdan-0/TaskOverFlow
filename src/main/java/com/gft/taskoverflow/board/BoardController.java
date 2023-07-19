@@ -22,7 +22,7 @@ public class BoardController {
     }
 
     @GetMapping
-    public List<Board> getBoards() {
+    public List<BoardResponseDto> getBoards() {
         return boardService.getCustomersBoards();
     }
 }

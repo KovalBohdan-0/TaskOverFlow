@@ -1,1 +1,26 @@
-<p>board works!</p>
+<nav class="navbar p-4 navbar-expand-lg shadow-lg">
+  <div class="navbar">
+    <div>Logo</div>
+    <div ngbDropdown class="dropdown">
+      <button ngbDropdownToggle class="btn btn-secondary" type="button" id="dropdownMenuButton1" aria-expanded="false">
+        Boards
+      </button>
+      <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton1">
+          <li><a class="dropdown-item" *ngFor="let option of boards">{{ option.title }}</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="ms-auto navbar">
+    <div>
+      <input [(ngModel)]="newBoardTitle"/>
+      <button (click)="addBoard()">Create board</button>
+    </div>
+    <div>{{email}}</div>
+    <div class="profile-image ms-2">{{email.charAt(0).toUpperCase()}}</div>
+  </div>
+
+</nav>
+<div class="board-main">
+</div>
