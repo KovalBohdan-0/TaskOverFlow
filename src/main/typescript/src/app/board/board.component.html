@@ -16,28 +16,23 @@
         </g>
       </svg>
     </div>
-
   </div>
   <select [(ngModel)]="selectedBoard" (ngModelChange)="openSelectedBoard()">
     <option [value]="option.id" *ngFor="let option of boards"><a class="dropdown-item">{{ option.title }}</a></option>
   </select>
-
-
   <div class="ms-5 divider"></div>
   <div class="ms-5">
       <input placeholder="Enter board title" class="form-input" [(ngModel)]="newBoardTitle"/>
       <button class="btn btn-light ms-2" (click)="addBoard()">Create board</button>
     </div>
-
   <div class="ms-auto navbar">
     <div class="divider d-none d-sm-block"></div>
     <div>{{email}}</div>
     <div class="profile-image ms-2">{{email.charAt(0).toUpperCase()}}</div>
   </div>
-
 </nav>
 <div class="board-main p-5 container">
-  <div class="row" cdkDropList (cdkDropListDropped)="drop($event)">
+  <div cdkDropListGroup [cdkDropListData]="lists" class="row" cdkDropList (cdkDropListDropped)="drop($event)">
     <app-task-list cdkDrag *ngFor="let taskList of lists" [taskList]="taskList" class="col-md-2"></app-task-list>
     <div class="col-md-2">
       <div class="card border-left-blue">

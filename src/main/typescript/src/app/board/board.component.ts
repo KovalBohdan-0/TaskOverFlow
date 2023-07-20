@@ -35,7 +35,7 @@ export class BoardComponent implements OnInit {
     },
 
     {
-      id: 0,
+      id: 1,
       boardId: 1,
       title: 'Done',
       task: [
@@ -52,7 +52,7 @@ export class BoardComponent implements OnInit {
       ]
     },
     {
-      id: 0,
+      id: 2,
       boardId: 1,
       title: 'To do',
       task: [
@@ -162,7 +162,7 @@ export class BoardComponent implements OnInit {
     this.lists.push(taskList);
   }
 
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.lists, event.previousIndex, event.currentIndex);
+  drop(event: CdkDragDrop<TaskList[]>) {
+    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
   }
 }

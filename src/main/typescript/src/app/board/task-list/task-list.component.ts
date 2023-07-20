@@ -2,7 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {TaskList} from "./TaskList";
 import {TaskFull} from "./task/TaskFull";
 import {Priority} from "./task/Priority";
-import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
+import {Task} from "./task/Task";
 
 @Component({
   selector: 'app-task-list',
@@ -23,6 +24,7 @@ export class TaskListComponent implements OnInit {
   };
 
   constructor() {
+
   }
 
   ngOnInit(): void {
@@ -58,7 +60,16 @@ export class TaskListComponent implements OnInit {
 
   protected readonly Priority = Priority;
 
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.taskList.task, event.previousIndex, event.currentIndex);
+  drop(event: CdkDragDrop<Task[], any>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
   }
 }

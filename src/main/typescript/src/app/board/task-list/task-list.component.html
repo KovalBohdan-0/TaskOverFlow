@@ -5,8 +5,8 @@
         <div class="text-xs font-weight-bold text-primary text-uppercase mb-3">
           {{taskList.title}}
         </div>
-        <div cdkDropList (cdkDropListDropped)="drop($event)">
-          <app-task cdkDrag *ngFor="let task of taskList.task" [task]="task"></app-task>
+        <div [cdkDropListData]="taskList.task" cdkDropList (cdkDropListDropped)="drop($event)">
+          <app-task cdkDrag  *ngFor="let task of taskList.task" [task]="task"></app-task>
           <div class="col-md-2 w-100">
             <div class="card border-left-blue">
               <div class="card-body">
@@ -16,9 +16,7 @@
                   <option [value]="Priority.MEDIUM" >Medium</option>
                   <option [value]="Priority.HIGH" >High</option>
                 </select>
-
                 <button class="btn btn-light mt-2">Add task</button>
-
               </div>
             </div>
           </div>

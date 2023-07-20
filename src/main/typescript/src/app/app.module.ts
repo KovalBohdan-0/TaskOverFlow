@@ -17,7 +17,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
-import {CdkDrag, CdkDragPlaceholder, CdkDropList} from "@angular/cdk/drag-drop";
+import {CdkDrag, CdkDragPlaceholder, CdkDropList, CdkDropListGroup} from "@angular/cdk/drag-drop";
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -35,22 +35,23 @@ const routes: Routes = [
     TaskListComponent,
     TaskComponent,
   ],
-  imports: [
-    BrowserModule,
-    NgbModule,
-    FormsModule,
-    HttpClientModule,
-    RouterLink,
-    RouterModule.forRoot(routes),
-    BrowserAnimationsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatInputModule,
-    MatButtonModule,
-    CdkDropList,
-    CdkDrag,
-    CdkDragPlaceholder
-  ],
+    imports: [
+        BrowserModule,
+        NgbModule,
+        FormsModule,
+        HttpClientModule,
+        RouterLink,
+        RouterModule.forRoot(routes),
+        BrowserAnimationsModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatInputModule,
+        MatButtonModule,
+        CdkDropList,
+        CdkDrag,
+        CdkDragPlaceholder,
+        CdkDropListGroup
+    ],
   providers: [
     HttpClient,
     AuthService,
