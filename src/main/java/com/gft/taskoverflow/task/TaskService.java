@@ -7,21 +7,22 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Data
 public class TaskService {
     private final TaskRepository taskRepository;
-    private final TaskListService taskListService;
     private final SimpMessagingTemplate messagingTemplate;
+    private final TaskMapper taskMapper;
+    private final TaskListService taskListService;
+
+    public List<TaskShortDto> getTasksByTaskListId(Long taskListId) {
+        return taskRepository.findAllByTaskListId(taskListId).stream().map(taskMapper::toShortDto).toList();
+    }
 
     public void addTask(TaskDto taskDto) {
-        Task task = new Task();
-        task.setTitle(taskDto.title());
-        task.setDescription(taskDto.description());
-        task.setTaskList(taskListService.getTaskListById(taskDto.taskListId()));
-        task.setPriority(taskDto.priority());
-        task.setDeadline(taskDto.deadline());
+        Task task = taskMapper.toEntity(taskDto);
         taskRepository.save(task);
     }
 

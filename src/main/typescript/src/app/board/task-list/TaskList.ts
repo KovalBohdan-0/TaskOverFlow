@@ -4,4 +4,5 @@ export interface TaskList {
     id: number;
     title: string;
     task: Task[];
+    boardId: number;
 }

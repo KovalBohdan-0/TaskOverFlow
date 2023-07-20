@@ -3,6 +3,9 @@ import {CustomerService} from "../service/customer.service";
 import {BoardService} from "../service/board.service";
 import {Priority} from "./task-list/task/Priority";
 import {TaskList} from "./task-list/TaskList";
+import {Subscription} from "rxjs";
+import {TaskListService} from "../service/task-list.service";
+import {WebSocketService} from "../service/web-socket.service";
 
 @Component({
   selector: 'app-board',
@@ -10,14 +13,19 @@ import {TaskList} from "./task-list/TaskList";
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
+  private subscriptions: Subscription[] = [];
+  currentBoardId: number = 0;
+  selectedBoard: any = {id: 0, title: 'Select board'};
   email: string = "";
   newBoardTitle: string = "";
+  newTaskListTitle: string = "";
   boards: any[] = [
     {id: 0, title: 'Not found'},
   ];
   lists: TaskList[] = [
     {
       id: 0,
+      boardId: 1,
       title: 'Not found 1',
       task: [
         {title: 'Not found 1', done: false, id: 0, priority: Priority.LOW},
@@ -27,7 +35,25 @@ export class BoardComponent implements OnInit {
 
     {
       id: 0,
-      title: 'Not found 2',
+      boardId: 1,
+      title: 'Done',
+      task: [
+        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM},
+        {title: 'Not found', done: true, id: 0, priority: Priority.LOW},
+        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM},
+        {title: 'Not found', done: true, id: 0, priority: Priority.LOW},
+        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM},
+        {title: 'Not found', done: true, id: 0, priority: Priority.LOW},
+        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM},
+        {title: 'Not found', done: true, id: 0, priority: Priority.LOW},
+        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM},
+        {title: 'Not found', done: true, id: 0, priority: Priority.LOW}
+      ]
+    },
+    {
+      id: 0,
+      boardId: 1,
+      title: 'To do',
       task: [
         {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM},
         {title: 'Not found', done: true, id: 0, priority: Priority.LOW}
@@ -36,12 +62,38 @@ export class BoardComponent implements OnInit {
   ];
 
 
-  constructor(private customerService: CustomerService, private boardService: BoardService) {
+  constructor(private customerService: CustomerService,
+              private boardService: BoardService,
+              private taskListService: TaskListService,
+              private webSocketService: WebSocketService) {
   }
 
   ngOnInit(): void {
     this.setEmail();
     this.getBoards();
+    this.makeSubscriptions();
+  }
+
+  makeSubscriptions() {
+    this.webSocketService.connect();
+    this.webSocketService.getTaskListAdditions().subscribe(message =>{
+      console.log(message);
+      this.pushTaskList(message);
+    });
+  }
+
+  addTaskList() {
+    this.taskListService.addTaskList({title: this.newTaskListTitle, boardId: this.currentBoardId}).subscribe({
+      next: (response: any) => {
+        // this.pushTaskList(response.body);
+      },
+      error: (error: any) => {
+        if (error.status == 404) {
+          //TODO add error message
+        } else {
+        }
+      }
+    });
   }
 
   setEmail() {
@@ -84,5 +136,13 @@ export class BoardComponent implements OnInit {
         }
       }
     });
+  }
+
+  setCurrentBoardId() {
+    this.currentBoardId = this.selectedBoard;
+  }
+
+  pushTaskList(taskList: TaskList) {
+    this.lists.push(taskList);
   }
 }

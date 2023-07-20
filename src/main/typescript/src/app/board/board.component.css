@@ -30,3 +30,8 @@
   height: 2rem;
   margin-right: 1.5rem;
 }
+
+.border-left-blue {
+  border-left: #007bff 4px solid;
+}
+

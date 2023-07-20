@@ -1,7 +1,7 @@
 package com.gft.taskoverflow.task.list;
 
-import com.gft.taskoverflow.board.BoardService;
 import com.gft.taskoverflow.exception.TaskListNotFoundException;
+import com.gft.taskoverflow.task.TaskService;
 import lombok.Data;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -12,11 +12,15 @@ import java.util.List;
 @Data
 public class TaskListService {
     private final TaskListRepository taskListRepository;
-    private final BoardService boardService;
     private final SimpMessagingTemplate messagingTemplate;
+    private final TaskListMapper taskListMapper;
 
     public List<TaskList> getBoardTaskLists(Long boardId) {
         return taskListRepository.findAllByBoardId(boardId);
+    }
+
+    public List<TaskListResponseDto> getBoardTaskListsResponse(Long boardId) {
+        return taskListRepository.findAllByBoardId(boardId).stream().map(taskListMapper::toResponseDto).toList();
     }
 
     public TaskList getTaskListById(Long taskListId) {
@@ -24,12 +28,10 @@ public class TaskListService {
     }
 
     public void addTaskList(TaskListDto taskListDto) {
-        TaskList taskList = new TaskList();
-        taskList.setTitle(taskListDto.title());
-        taskList.setBoard(boardService.getBoardById(taskListDto.boardId()));
+        TaskList taskList = taskListMapper.toEntity(taskListDto);
         taskListRepository.save(taskList);
 
-        messagingTemplate.convertAndSend("/topic/task-list-added", taskList);
+        messagingTemplate.convertAndSend("/topic/task-list-added", taskListMapper.toResponseDto(taskList));
     }
 
     public void deleteTaskList(Long taskListId) {

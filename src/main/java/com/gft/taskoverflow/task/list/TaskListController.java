@@ -8,7 +8,7 @@ import java.util.List;
 @RestController
 @Data
 @RequestMapping("/api/v1/task-lists")
-public class TaskListSocketController {
+public class TaskListController {
     private final TaskListService taskListService;
 
     @GetMapping("/{taskListId}")
@@ -16,9 +16,9 @@ public class TaskListSocketController {
         return taskListService.getTaskListById(taskListId);
     }
 
-    @GetMapping
-    public List<TaskList> getBoardTaskLists(@RequestParam Long boardId) {
-        return taskListService.getBoardTaskLists(boardId);
+    @GetMapping("/board/{boardId}")
+    public List<TaskListResponseDto> getBoardTaskLists(@PathVariable Long boardId) {
+        return taskListService.getBoardTaskListsResponse(boardId);
     }
 
     @PostMapping

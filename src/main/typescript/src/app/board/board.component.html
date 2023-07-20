@@ -16,19 +16,18 @@
         </g>
       </svg>
     </div>
-    <div ngbDropdown class="dropdown">
-      <button ngbDropdownToggle class="btn btn-light" type="button" id="dropdownMenuButton1" aria-expanded="false">
-        Boards
-      </button>
-      <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton1">
-        <li><a class="dropdown-item" *ngFor="let option of boards">{{ option.title }}</a></li>
-      </ul>
-    </div>
-    <div class="ms-5">
-      <input placeholder="Enter board title" [(ngModel)]="newBoardTitle"/>
+
+  </div>
+  <select [(ngModel)]="selectedBoard" (ngModelChange)="setCurrentBoardId()">
+    <option [value]="option.id" *ngFor="let option of boards"><a class="dropdown-item">{{ option.title }}</a></option>
+  </select>
+
+
+  <div class="ms-5 divider"></div>
+  <div class="ms-5">
+      <input placeholder="Enter board title" class="form-input" [(ngModel)]="newBoardTitle"/>
       <button class="btn btn-light ms-2" (click)="addBoard()">Create board</button>
     </div>
-  </div>
 
   <div class="ms-auto navbar">
     <div class="divider d-none d-sm-block"></div>
@@ -40,5 +39,13 @@
 <div class="board-main p-5 container">
   <div class="row">
     <app-task-list *ngFor="let taskList of lists" [taskList]="taskList" class="col-md-2"></app-task-list>
+    <div class="col-md-2">
+      <div class="card border-left-blue">
+        <div class="card-body">
+          <input placeholder="Enter list title" class="form-input w-100" [(ngModel)]="newTaskListTitle"/>
+          <button class="btn btn-light mt-2" (click)="addTaskList()">Create list</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
