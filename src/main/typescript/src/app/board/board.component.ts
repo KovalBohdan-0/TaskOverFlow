@@ -6,6 +6,7 @@ import {TaskList} from "./task-list/TaskList";
 import {Subscription} from "rxjs";
 import {TaskListService} from "../service/task-list.service";
 import {WebSocketService} from "../service/web-socket.service";
+import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-board',
@@ -28,8 +29,8 @@ export class BoardComponent implements OnInit {
       boardId: 1,
       title: 'Not found 1',
       task: [
-        {title: 'Not found 1', done: false, id: 0, priority: Priority.LOW},
-        {title: 'Not found', done: false, id: 0, priority: Priority.HIGH}
+        {title: 'Not found 1', done: false, id: 0, priority: Priority.LOW, taskListId: 0},
+        {title: 'Not found', done: false, id: 0, priority: Priority.HIGH, taskListId: 0}
       ]
     },
 
@@ -38,16 +39,16 @@ export class BoardComponent implements OnInit {
       boardId: 1,
       title: 'Done',
       task: [
-        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM},
-        {title: 'Not found', done: true, id: 0, priority: Priority.LOW},
-        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM},
-        {title: 'Not found', done: true, id: 0, priority: Priority.LOW},
-        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM},
-        {title: 'Not found', done: true, id: 0, priority: Priority.LOW},
-        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM},
-        {title: 'Not found', done: true, id: 0, priority: Priority.LOW},
-        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM},
-        {title: 'Not found', done: true, id: 0, priority: Priority.LOW}
+        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM, taskListId: 0},
+        {title: 'Not found', done: true, id: 0, priority: Priority.LOW, taskListId: 0},
+        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM, taskListId: 0},
+        {title: 'Not found', done: true, id: 0, priority: Priority.LOW, taskListId: 0},
+        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM, taskListId: 0},
+        {title: 'Not found', done: true, id: 0, priority: Priority.LOW, taskListId: 0},
+        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM, taskListId: 0},
+        {title: 'Not found', done: true, id: 0, priority: Priority.LOW, taskListId: 0},
+        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM, taskListId: 0},
+        {title: 'Not found', done: true, id: 0, priority: Priority.LOW, taskListId: 0}
       ]
     },
     {
@@ -55,8 +56,8 @@ export class BoardComponent implements OnInit {
       boardId: 1,
       title: 'To do',
       task: [
-        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM},
-        {title: 'Not found', done: true, id: 0, priority: Priority.LOW}
+        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM, taskListId: 0},
+        {title: 'Not found', done: true, id: 0, priority: Priority.LOW, taskListId: 0}
       ]
     }
   ];
@@ -86,6 +87,20 @@ export class BoardComponent implements OnInit {
     this.taskListService.addTaskList({title: this.newTaskListTitle, boardId: this.currentBoardId}).subscribe({
       next: (response: any) => {
         // this.pushTaskList(response.body);
+      },
+      error: (error: any) => {
+        if (error.status == 404) {
+          //TODO add error message
+        } else {
+        }
+      }
+    });
+  }
+
+  getTaskListsByBoardId(boardId: number) {
+    this.taskListService.getTaskListsByBoardId(boardId).subscribe({
+      next: (response: any) => {
+        this.lists = response.body;
       },
       error: (error: any) => {
         if (error.status == 404) {
@@ -138,11 +153,16 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  setCurrentBoardId() {
+  openSelectedBoard() {
     this.currentBoardId = this.selectedBoard;
+    this.getTaskListsByBoardId(this.currentBoardId);
   }
 
   pushTaskList(taskList: TaskList) {
     this.lists.push(taskList);
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.lists, event.previousIndex, event.currentIndex);
   }
 }

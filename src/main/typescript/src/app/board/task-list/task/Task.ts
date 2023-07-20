@@ -3,5 +3,5 @@ export interface Task {
     title: string;
     done: boolean;
     priority: any;
-
+    taskListId: number;
 }

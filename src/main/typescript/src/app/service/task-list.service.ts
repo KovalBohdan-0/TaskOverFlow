@@ -14,7 +14,7 @@ export class TaskListService {
 
   constructor(private httpClient: HttpClient, private authService: AuthService) { }
 
-  getTaskListsByBoardId(boardId: string) {
+  getTaskListsByBoardId(boardId: number) {
     return this.httpClient.get(this.apiUrl + '/api/v1/task-lists/board/' + boardId, {headers: this.headers, observe: 'response'});
   }
 

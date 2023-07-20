@@ -1,19 +1,13 @@
 import { Injectable } from '@angular/core';
 import {Subject} from "rxjs";
-import {Client, Stomp, StompHeaders} from "@stomp/stompjs";
-import SockJS from 'sockjs-client';
-import {webSocket} from "rxjs/webSocket";
+import {Client} from "@stomp/stompjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebSocketService {
-  // private stompClient: Client;
-  private taskListUpdatesSubject: Subject<any> = new Subject<any>();
   private taskListAdditionsSubject: Subject<any> = new Subject<any>();
-  private taskListDeletionsSubject: Subject<any> = new Subject<any>();
-  private taskUpdatesSubject: Subject<any> = new Subject<any>();
-  private taskDeletionsSubject: Subject<any> = new Subject<any>();
+  private taskAdditionsSubject: Subject<any> = new Subject<any>();
 
   constructor() { }
 
@@ -24,20 +18,10 @@ export class WebSocketService {
         console.log('WebSocket connected');
         client.subscribe('/topic/task-list-added', (message) => {
           this.taskListAdditionsSubject.next(JSON.parse(message.body));
-          // console.log(message.body);
         });
-        // this.stompClient.subscribe('/topic/task-list-updated', (message) => {
-        //   this.taskListUpdatesSubject.next(JSON.parse(message.body));
-        // });
-        // this.stompClient.subscribe('/topic/task-list-deleted', (message) => {
-        //   this.taskListDeletionsSubject.next(JSON.parse(message.body));
-        // });
-        // this.stompClient.subscribe('/topic/task-updated', (message) => {
-        //   this.taskUpdatesSubject.next(JSON.parse(message.body));
-        // });
-        // this.stompClient.subscribe('/topic/task-deleted', (message) => {
-        //   this.taskDeletionsSubject.next(JSON.parse(message.body));
-        // });
+        client.subscribe('/topic/task-added', (message) => {
+          this.taskAdditionsSubject.next(JSON.parse(message.body));
+        });
       },
     });
 
@@ -53,5 +37,9 @@ export class WebSocketService {
 
   getTaskListAdditions(): Subject<any> {
     return this.taskListAdditionsSubject;
+  }
+
+  getTaskAdditions(): Subject<any> {
+    return this.taskAdditionsSubject;
   }
 }

@@ -1,5 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TaskList} from "./TaskList";
+import {TaskFull} from "./task/TaskFull";
+import {Priority} from "./task/Priority";
+import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-task-list',
@@ -9,6 +12,15 @@ import {TaskList} from "./TaskList";
 export class TaskListComponent implements OnInit {
   @Input() taskList: TaskList;
   borderColor: string = "rgb(0, 0, 0)";
+  newTask: TaskFull = {
+    id: 0,
+    title: "",
+    done: false,
+    priority: Priority.LOW,
+    description: "",
+    deadlineDate: new Date(),
+    taskListId: 0
+  };
 
   constructor() {
   }
@@ -30,5 +42,23 @@ export class TaskListComponent implements OnInit {
     const b = (hash >> 16) % 255;
 
     return `rgb(${r}, ${g}, ${b})`;
+  }
+
+  addTask() {
+    const task: TaskFull = {
+      id: 0,
+      title: "New Task",
+      done: false,
+      priority: Priority.LOW,
+      description: "",
+      taskListId: this.taskList.id,
+      deadlineDate: new Date()
+    }
+  }
+
+  protected readonly Priority = Priority;
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.taskList.task, event.previousIndex, event.currentIndex);
   }
 }

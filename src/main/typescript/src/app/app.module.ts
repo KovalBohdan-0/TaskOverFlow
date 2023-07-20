@@ -12,6 +12,12 @@ import {RouterLink, RouterModule, Routes} from "@angular/router";
 import { BoardComponent } from './board/board.component';
 import { TaskListComponent } from './board/task-list/task-list.component';
 import { TaskComponent } from './board/task-list/task/task.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
+import {MatInputModule} from "@angular/material/input";
+import {MatButtonModule} from "@angular/material/button";
+import {CdkDrag, CdkDragPlaceholder, CdkDropList} from "@angular/cdk/drag-drop";
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -35,9 +41,20 @@ const routes: Routes = [
     FormsModule,
     HttpClientModule,
     RouterLink,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule,
+    MatButtonModule,
+    CdkDropList,
+    CdkDrag,
+    CdkDragPlaceholder
   ],
-  providers: [HttpClient, AuthService],
+  providers: [
+    HttpClient,
+    AuthService,
+  ],
   bootstrap: [AppComponent],
   exports: [RouterModule]
 })
