@@ -1,9 +1,5 @@
-export interface TaskFull {
-  id: number;
+export interface TaskCreation {
   title: string;
-  done: boolean;
   priority: any;
-  description: string;
-  deadlineDate: Date;
   taskListId: number;
 }

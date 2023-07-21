@@ -8,32 +8,35 @@ import {Client} from "@stomp/stompjs";
 export class WebSocketService {
   private taskListAdditionsSubject: Subject<any> = new Subject<any>();
   private taskAdditionsSubject: Subject<any> = new Subject<any>();
+  private client: Client;
 
   constructor() { }
 
   connect(): void {
-    const client = new Client({
+    this.client = new Client({
       brokerURL: 'ws://localhost:8080/ws',
       onConnect: () => {
         console.log('WebSocket connected');
-        client.subscribe('/topic/task-list-added', (message) => {
+        this.client.subscribe('/topic/task-list-added', (message) => {
           this.taskListAdditionsSubject.next(JSON.parse(message.body));
         });
-        client.subscribe('/topic/task-added', (message) => {
+        this.client.subscribe('/topic/task-added', (message) => {
           this.taskAdditionsSubject.next(JSON.parse(message.body));
         });
       },
     });
 
-    client.activate();
+    this.client.activate();
   }
 
   // sendTaskListAddedMessage(taskList: any): void {
-  //   this.stompClient.publish({
+  //   this.client.publish({
   //     destination: '/app/task-list-added',
   //     body: JSON.stringify(taskList)
   //   });
   // }
+
+
 
   getTaskListAdditions(): Subject<any> {
     return this.taskListAdditionsSubject;
@@ -41,5 +44,9 @@ export class WebSocketService {
 
   getTaskAdditions(): Subject<any> {
     return this.taskAdditionsSubject;
+  }
+
+  getClient(): Client {
+    return this.client;
   }
 }

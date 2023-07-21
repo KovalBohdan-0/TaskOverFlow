@@ -2,7 +2,7 @@ package com.gft.taskoverflow.task.list;
 
 import com.gft.taskoverflow.board.BoardService;
 import com.gft.taskoverflow.exception.TaskListNotFoundException;
-import lombok.Data;
+import lombok.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
