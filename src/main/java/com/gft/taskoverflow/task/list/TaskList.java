@@ -23,4 +23,12 @@ public class TaskList {
     private Board board;
     @OneToMany(mappedBy = "taskList")
     private Set<Customer> assignedCustomers;
+
+    public TaskList () {
+    }
+
+    public TaskList (String title, Long boardId) {
+        this.title = title;
+        this.board = new Board(boardId);
+    }
 }

@@ -14,7 +14,6 @@ import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
-  private subscriptions: Subscription[] = [];
   currentBoardId: number = 0;
   selectedBoard: any = {id: 0, title: 'Select board'};
   email: string = "";
@@ -84,7 +83,7 @@ export class BoardComponent implements OnInit {
   }
 
   addTaskList() {
-    this.taskListService.addTaskList({title: this.newTaskListTitle, boardId: this.currentBoardId}).subscribe({
+    this.taskListService.addTaskList({title: this.newTaskListTitle}, this.currentBoardId).subscribe({
       next: (response: any) => {
         // this.pushTaskList(response.body);
       },

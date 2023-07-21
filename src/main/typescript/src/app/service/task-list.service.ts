@@ -18,7 +18,7 @@ export class TaskListService {
     return this.httpClient.get(this.apiUrl + '/api/v1/task-lists/board/' + boardId, {headers: this.headers, observe: 'response'});
   }
 
-  addTaskList(taskList: any) {
-    return this.httpClient.post(this.apiUrl + '/api/v1/task-lists', taskList, {headers: this.headers, observe: 'response'});
+  addTaskList(taskList: any, boardId: number) {
+    return this.httpClient.post(this.apiUrl + '/api/v1/task-lists/board/' + boardId, taskList, {headers: this.headers, observe: 'response'});
   }
 }

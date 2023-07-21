@@ -16,11 +16,19 @@ public class Task {
     @Column(nullable = false, length = 100)
     private String title;
     @Column(length = 1000)
-    private String description;
+    private String description = "";
     private boolean done;
     private Priority priority = Priority.LOW;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime deadline;
     @ManyToOne(fetch = FetchType.LAZY)
     private TaskList taskList;
+
+    public Task () {
+    }
+
+    public Task (String title, Priority priority) {
+        this.title = title;
+        this.priority = priority;
+    }
 }

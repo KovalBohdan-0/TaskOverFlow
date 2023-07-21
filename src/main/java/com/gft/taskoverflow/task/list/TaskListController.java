@@ -21,9 +21,9 @@ public class TaskListController {
         return taskListService.getBoardTaskListsResponse(boardId);
     }
 
-    @PostMapping
-    public void addTaskList(@RequestBody TaskListDto taskListDto) {
-        taskListService.addTaskList(taskListDto);
+    @PostMapping("/board/{boardId}")
+    public void addTaskList(@RequestBody TaskList taskList, @PathVariable Long boardId) {
+        taskListService.addTaskList(taskList, boardId);
     }
 
     @DeleteMapping("/{taskListId}")

@@ -20,4 +20,15 @@ public class Board {
     private Set<TaskList> taskLists;
     @ManyToMany
     private Set<Customer> customers;
+
+    public Board () {
+    }
+
+    public Board (String title) {
+        this.title = title;
+    }
+
+    public Board (Long id) {
+        this.id = id;
+    }
 }

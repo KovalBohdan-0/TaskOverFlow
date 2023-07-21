@@ -47,15 +47,7 @@ export class TaskListComponent implements OnInit {
   }
 
   addTask() {
-    const task: TaskFull = {
-      id: 0,
-      title: "New Task",
-      done: false,
-      priority: Priority.LOW,
-      description: "",
-      taskListId: this.taskList.id,
-      deadlineDate: new Date()
-    }
+    console.log(this.newTask);
   }
 
   protected readonly Priority = Priority;
