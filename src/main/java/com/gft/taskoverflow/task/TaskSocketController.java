@@ -13,9 +13,9 @@ import org.springframework.stereotype.Controller;
 public class TaskSocketController {
     private final TaskService taskService;
 
-    @MessageMapping("/task-added")
+    @MessageMapping("/task-add")
     @SendTo("/topic/task-added")
-    public TaskPreviewDto task(@Payload TaskCreationDto task) throws Exception {
+    public TaskPreviewDto addTask(@Payload TaskCreationDto task) {
         return taskService.addTask(task, task.taskListId());
     }
 }

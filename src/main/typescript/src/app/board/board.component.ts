@@ -48,16 +48,7 @@ export class BoardComponent implements OnInit {
   }
 
   addTaskList() {
-    this.taskListService.addTaskList({title: this.newTaskListTitle}, this.currentBoardId).subscribe({
-      next: () => {
-      },
-      error: (error: any) => {
-        if (error.status == 404) {
-          //TODO add error message
-        } else {
-        }
-      }
-    });
+    this.taskListService.addTaskList({title: this.newTaskListTitle, boardId: this.currentBoardId});
   }
 
   getTaskListsByBoardId(boardId: number) {

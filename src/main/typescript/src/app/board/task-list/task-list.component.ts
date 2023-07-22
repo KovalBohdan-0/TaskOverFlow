@@ -56,11 +56,7 @@ export class TaskListComponent implements OnInit {
 
   addTask() {
     this.newTask.taskListId = this.taskList.id;
-    this.sendNewTask()
-  }
-
-  sendNewTask() {
-    this.taskService.sendTaskAddedMessage(this.newTask);
+    this.taskService.addTask(this.newTask);
   }
 
   protected readonly Priority = Priority;

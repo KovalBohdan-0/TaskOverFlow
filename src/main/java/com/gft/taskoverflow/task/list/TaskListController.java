@@ -1,5 +1,6 @@
 package com.gft.taskoverflow.task.list;
 
+import com.gft.taskoverflow.task.list.dto.TaskListResponseDto;
 import lombok.Data;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,20 +20,5 @@ public class TaskListController {
     @GetMapping("/board/{boardId}")
     public List<TaskListResponseDto> getBoardTaskLists(@PathVariable Long boardId) {
         return taskListService.getBoardTaskListsResponse(boardId);
-    }
-
-    @PostMapping("/board/{boardId}")
-    public void addTaskList(@RequestBody TaskList taskList, @PathVariable Long boardId) {
-        taskListService.addTaskList(taskList, boardId);
-    }
-
-    @DeleteMapping("/{taskListId}")
-    public void deleteTaskList(@PathVariable Long taskListId) {
-        taskListService.deleteTaskList(taskListId);
-    }
-
-    @PutMapping("/{taskListId}")
-    public void renameTaskList(@PathVariable Long taskListId, @RequestBody String title) {
-        taskListService.renameTaskList(taskListId, title);
     }
 }

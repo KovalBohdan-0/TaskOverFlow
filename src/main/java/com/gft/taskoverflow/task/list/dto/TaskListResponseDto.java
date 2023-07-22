@@ -1,4 +1,4 @@
-package com.gft.taskoverflow.task.list;
+package com.gft.taskoverflow.task.list.dto;
 
 import com.gft.taskoverflow.customer.Customer;
 import com.gft.taskoverflow.task.dto.TaskPreviewDto;

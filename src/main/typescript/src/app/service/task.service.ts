@@ -12,18 +12,9 @@ export class TaskService {
   headers = new HttpHeaders({
     'Authorization': 'Bearer ' + this.authService.getToken(),
   });
-  client = this.webSocketService.getClient();
 
   constructor(private httpClient: HttpClient, private authService: AuthService, private webSocketService: WebSocketService) { }
-
-  // addTask(task: any) {
-  //   return this.httpClient.post(this.apiUrl + '/api/v1/task', task, {headers: this.headers});
-  // }
-
-  sendTaskAddedMessage(taskList: any): void {
-    this.client.publish({
-      destination: '/app/task-added',
-      body: JSON.stringify(taskList)
-    });
+  addTask(taskList: any): void {
+    this.webSocketService.sendMessage('/app/task-add', JSON.stringify(taskList));
   }
 }

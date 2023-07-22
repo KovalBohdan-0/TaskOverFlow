@@ -29,14 +29,12 @@ export class WebSocketService {
     this.client.activate();
   }
 
-  // sendTaskListAddedMessage(taskList: any): void {
-  //   this.client.publish({
-  //     destination: '/app/task-list-added',
-  //     body: JSON.stringify(taskList)
-  //   });
-  // }
-
-
+  sendMessage(destination: string, body: string): void {
+    this.client.publish({
+      destination: destination,
+      body: body
+    });
+  }
 
   getTaskListAdditions(): Subject<any> {
     return this.taskListAdditionsSubject;
