@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gft.taskoverflow.customer.CustomerService;
 import com.gft.taskoverflow.customer.CustomerUserDetails;
 import com.gft.taskoverflow.jwt.JwtService;
+import com.gft.taskoverflow.login.AuthenticationResponse;
 import com.gft.taskoverflow.registration.RegistrationRequest;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,6 +26,7 @@ public class OAuthService {
     private static final String USER_INFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
     private final CustomerService customerService;
     private final JwtService jwtService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String CLIENT_ID;
@@ -40,7 +43,7 @@ public class OAuthService {
         }
 
         String jwt = jwtService.generateJwt(new CustomerUserDetails(email, accessToken));
-        response.addCookie(new Cookie("JWT", jwt));
+        simpMessagingTemplate.convertAndSend("/topic/oauth2-google-callback", new AuthenticationResponse(jwt));
     }
 
     public String getAuthUrl() {

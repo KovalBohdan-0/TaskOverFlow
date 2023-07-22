@@ -8,9 +8,11 @@ import {Client} from "@stomp/stompjs";
 export class WebSocketService {
   private taskListAdditionsSubject: Subject<any> = new Subject<any>();
   private taskAdditionsSubject: Subject<any> = new Subject<any>();
+  private auth2Subject: Subject<any> = new Subject<any>();
   private client: Client;
 
-  constructor() { }
+  constructor() {
+  }
 
   connect(): void {
     this.client = new Client({
@@ -22,6 +24,9 @@ export class WebSocketService {
         });
         this.client.subscribe('/topic/task-added', (message) => {
           this.taskAdditionsSubject.next(JSON.parse(message.body));
+        });
+        this.client.subscribe('/topic/oauth2-google-callback', (message) => {
+          this.auth2Subject.next(JSON.parse(message.body));
         });
       },
     });
@@ -36,6 +41,10 @@ export class WebSocketService {
     });
   }
 
+  addSubscription(destination: string, callback: (message: any) => void) {
+    return this.client.subscribe(destination, callback);
+  }
+
   getTaskListAdditions(): Subject<any> {
     return this.taskListAdditionsSubject;
   }
@@ -44,7 +53,11 @@ export class WebSocketService {
     return this.taskAdditionsSubject;
   }
 
-  getClient(): Client {
-    return this.client;
+  getAuth2(): Subject<any> {
+    return this.auth2Subject;
+  }
+
+  disconnect(): void {
+    this.client.deactivate();
   }
 }
