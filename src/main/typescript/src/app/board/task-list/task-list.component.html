@@ -5,18 +5,18 @@
         <div class="text-xs font-weight-bold text-primary text-uppercase mb-3">
           {{taskList.title}}
         </div>
-        <div [cdkDropListData]="taskList.task" cdkDropList (cdkDropListDropped)="drop($event)">
-          <app-task cdkDrag  *ngFor="let task of taskList.task" [task]="task"></app-task>
+        <div [cdkDropListData]="taskList.tasks" cdkDropList (cdkDropListDropped)="drop($event)">
+          <app-task cdkDrag  *ngFor="let task of taskList.tasks" [task]="task"></app-task>
           <div class="col-md-2 w-100">
             <div class="card border-left-blue">
               <div class="card-body">
                 <input placeholder="Enter task title" class="form-input w-100" [(ngModel)]="newTask.title"/>
-                <select class="form-select mt-2 w-75">
+                <select [(ngModel)]="newTask.priority" class="form-select mt-2 w-75">
                   <option [value]="Priority.LOW" >Low</option>
                   <option [value]="Priority.MEDIUM" >Medium</option>
                   <option [value]="Priority.HIGH" >High</option>
                 </select>
-                <button class="btn btn-light mt-2">Add task</button>
+                <button (click)="addTask()" class="btn btn-light mt-2">Add task</button>
               </div>
             </div>
           </div>

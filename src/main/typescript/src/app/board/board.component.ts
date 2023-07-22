@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {CustomerService} from "../service/customer.service";
 import {BoardService} from "../service/board.service";
-import {Priority} from "./task-list/task/Priority";
 import {TaskList} from "./task-list/TaskList";
-import {Subscription} from "rxjs";
 import {TaskListService} from "../service/task-list.service";
 import {WebSocketService} from "../service/web-socket.service";
 import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-board',
@@ -14,7 +13,6 @@ import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
-  private subscriptions: Subscription[] = [];
   currentBoardId: number = 0;
   selectedBoard: any = {id: 0, title: 'Select board'};
   email: string = "";
@@ -23,78 +21,34 @@ export class BoardComponent implements OnInit {
   boards: any[] = [
     {id: 0, title: 'Not found'},
   ];
-  lists: TaskList[] = [
-    {
-      id: 0,
-      boardId: 1,
-      title: 'Not found 1',
-      task: [
-        {title: 'Not found 1', done: false, id: 0, priority: Priority.LOW, taskListId: 0},
-        {title: 'Not found', done: false, id: 0, priority: Priority.HIGH, taskListId: 0}
-      ]
-    },
-
-    {
-      id: 1,
-      boardId: 1,
-      title: 'Done',
-      task: [
-        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM, taskListId: 0},
-        {title: 'Not found', done: true, id: 0, priority: Priority.LOW, taskListId: 0},
-        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM, taskListId: 0},
-        {title: 'Not found', done: true, id: 0, priority: Priority.LOW, taskListId: 0},
-        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM, taskListId: 0},
-        {title: 'Not found', done: true, id: 0, priority: Priority.LOW, taskListId: 0},
-        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM, taskListId: 0},
-        {title: 'Not found', done: true, id: 0, priority: Priority.LOW, taskListId: 0},
-        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM, taskListId: 0},
-        {title: 'Not found', done: true, id: 0, priority: Priority.LOW, taskListId: 0}
-      ]
-    },
-    {
-      id: 2,
-      boardId: 1,
-      title: 'To do',
-      task: [
-        {title: 'Not found 1', done: false, id: 0, priority: Priority.MEDIUM, taskListId: 0},
-        {title: 'Not found', done: true, id: 0, priority: Priority.LOW, taskListId: 0}
-      ]
-    }
-  ];
-
+  lists: TaskList[] = [];
 
   constructor(private customerService: CustomerService,
               private boardService: BoardService,
               private taskListService: TaskListService,
-              private webSocketService: WebSocketService) {
+              private webSocketService: WebSocketService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
     this.setEmail();
     this.getBoards();
     this.makeSubscriptions();
+    this.setSelectedBoard();
   }
 
   makeSubscriptions() {
     this.webSocketService.connect();
     this.webSocketService.getTaskListAdditions().subscribe(message =>{
-      console.log(message);
-      this.pushTaskList(message);
+      if (message.boardId == this.currentBoardId) {
+        message.tasks = [];
+        this.lists.push(message);
+      }
     });
   }
 
   addTaskList() {
-    this.taskListService.addTaskList({title: this.newTaskListTitle, boardId: this.currentBoardId}).subscribe({
-      next: (response: any) => {
-        // this.pushTaskList(response.body);
-      },
-      error: (error: any) => {
-        if (error.status == 404) {
-          //TODO add error message
-        } else {
-        }
-      }
-    });
+    this.taskListService.addTaskList({title: this.newTaskListTitle, boardId: this.currentBoardId});
   }
 
   getTaskListsByBoardId(boardId: number) {
@@ -127,9 +81,7 @@ export class BoardComponent implements OnInit {
 
   addBoard() {
     this.boardService.addBoard({title: this.newBoardTitle}).subscribe({
-      next: (response: any) => {
-        console.log(response);
-      },
+      next: () => {},
       error: (error: any) => {
         if (error.status == 404) {
           //TODO add error message
@@ -153,13 +105,13 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  openSelectedBoard() {
-    this.currentBoardId = this.selectedBoard;
-    this.getTaskListsByBoardId(this.currentBoardId);
-  }
-
-  pushTaskList(taskList: TaskList) {
-    this.lists.push(taskList);
+  setSelectedBoard() {
+    this.route.params
+      .subscribe(params => {
+          this.currentBoardId = params['id'];
+          this.getTaskListsByBoardId(this.currentBoardId);
+        }
+      );
   }
 
   drop(event: CdkDragDrop<TaskList[]>) {

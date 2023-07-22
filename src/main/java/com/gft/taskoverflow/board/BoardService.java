@@ -3,7 +3,6 @@ package com.gft.taskoverflow.board;
 import com.gft.taskoverflow.customer.Customer;
 import com.gft.taskoverflow.customer.CustomerUserDetailsService;
 import com.gft.taskoverflow.exception.BoardNotFoundException;
-import com.gft.taskoverflow.exception.ResourceNotFoundException;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +30,7 @@ public class BoardService {
         boardRepository.save(board);
     }
 
-    public void saveBoard(BoardDto boardDto) {
-        Board board = boardMapper.mapToEntity(boardDto);
+    public void saveBoard(Board board) {
         board.setCustomers(Set.of(customerUserDetailsService.getCurrentCustomer()));
         boardRepository.save(board);
     }

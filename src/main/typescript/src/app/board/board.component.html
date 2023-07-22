@@ -17,8 +17,10 @@
       </svg>
     </div>
   </div>
-  <select [(ngModel)]="selectedBoard" (ngModelChange)="openSelectedBoard()">
-    <option [value]="option.id" *ngFor="let option of boards"><a class="dropdown-item">{{ option.title }}</a></option>
+  <select [(ngModel)]="selectedBoard">
+    <option routerLink="/board/{{option.id}}" routerLinkActive="active" [value]="option.id" *ngFor="let option of boards">
+      <a class="dropdown-item">{{ option.title }}</a>
+    </option>
   </select>
   <div class="ms-5 divider"></div>
   <div class="ms-5">

@@ -1,6 +1,8 @@
 package com.gft.taskoverflow.task;
 
 import com.gft.taskoverflow.exception.TaskNotFoundException;
+import com.gft.taskoverflow.task.dto.TaskCreationDto;
+import com.gft.taskoverflow.task.dto.TaskPreviewDto;
 import com.gft.taskoverflow.task.list.TaskListService;
 import lombok.Data;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -17,13 +19,15 @@ public class TaskService {
     private final TaskMapper taskMapper;
     private final TaskListService taskListService;
 
-    public List<TaskShortDto> getTasksByTaskListId(Long taskListId) {
-        return taskRepository.findAllByTaskListId(taskListId).stream().map(taskMapper::toShortDto).toList();
+    public List<TaskPreviewDto> getTasksByTaskListId(Long taskListId) {
+        return taskRepository.findAllByTaskListId(taskListId).stream().map(taskMapper::mapToShortDto).toList();
     }
 
-    public void addTask(TaskDto taskDto) {
-        Task task = taskMapper.toEntity(taskDto);
-        taskRepository.save(task);
+    public TaskPreviewDto addTask(TaskCreationDto task, Long taskListId) {
+        Task newTask = taskMapper.mapToTask(task);
+        newTask.setTaskList(taskListService.getTaskListById(taskListId));
+        taskRepository.save(newTask);
+        return taskMapper.mapToShortDto(newTask);
     }
 
     public void deleteTask(Long taskId) {

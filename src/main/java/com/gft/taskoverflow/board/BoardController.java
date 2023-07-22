@@ -12,8 +12,8 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public void addBoard(@RequestBody BoardDto boardDto) {
-        boardService.saveBoard(boardDto);
+    public void addBoard(@RequestBody Board board) {
+        boardService.saveBoard(board);
     }
 
     @PostMapping("/addCustomer")

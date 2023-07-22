@@ -1,9 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TaskList} from "./TaskList";
-import {TaskFull} from "./task/TaskFull";
+import {TaskCreation} from "./task/TaskFull";
 import {Priority} from "./task/Priority";
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 import {Task} from "./task/Task";
+import {TaskService} from "../../service/task.service";
+import {WebSocketService} from "../../service/web-socket.service";
 
 @Component({
   selector: 'app-task-list',
@@ -13,22 +15,20 @@ import {Task} from "./task/Task";
 export class TaskListComponent implements OnInit {
   @Input() taskList: TaskList;
   borderColor: string = "rgb(0, 0, 0)";
-  newTask: TaskFull = {
-    id: 0,
+  newTask: TaskCreation = {
     title: "",
-    done: false,
     priority: Priority.LOW,
-    description: "",
-    deadlineDate: new Date(),
     taskListId: 0
   };
 
-  constructor() {
+  constructor(private taskService: TaskService,
+              private webSocketService: WebSocketService) {
 
   }
 
   ngOnInit(): void {
     this.borderColor = this.stringToColor(this.taskList.title);
+    this.makeSubscriptions()
   }
 
   stringToColor(str) {
@@ -46,16 +46,17 @@ export class TaskListComponent implements OnInit {
     return `rgb(${r}, ${g}, ${b})`;
   }
 
+  makeSubscriptions() {
+    this.webSocketService.getTaskAdditions().subscribe(message => {
+      if (message.taskListId == this.taskList.id) {
+        this.taskList.tasks.push(message);
+      }
+    });
+  }
+
   addTask() {
-    const task: TaskFull = {
-      id: 0,
-      title: "New Task",
-      done: false,
-      priority: Priority.LOW,
-      description: "",
-      taskListId: this.taskList.id,
-      deadlineDate: new Date()
-    }
+    this.newTask.taskListId = this.taskList.id;
+    this.taskService.addTask(this.newTask);
   }
 
   protected readonly Priority = Priority;

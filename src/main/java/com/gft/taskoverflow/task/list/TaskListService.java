@@ -1,8 +1,11 @@
 package com.gft.taskoverflow.task.list;
 
+import com.gft.taskoverflow.board.BoardService;
 import com.gft.taskoverflow.exception.TaskListNotFoundException;
-import com.gft.taskoverflow.task.TaskService;
-import lombok.Data;
+import com.gft.taskoverflow.task.list.dto.TaskListCreationDto;
+import com.gft.taskoverflow.task.list.dto.TaskListRenameDto;
+import com.gft.taskoverflow.task.list.dto.TaskListResponseDto;
+import lombok.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -14,37 +17,32 @@ public class TaskListService {
     private final TaskListRepository taskListRepository;
     private final SimpMessagingTemplate messagingTemplate;
     private final TaskListMapper taskListMapper;
-
-    public List<TaskList> getBoardTaskLists(Long boardId) {
-        return taskListRepository.findAllByBoardId(boardId);
-    }
+    private final BoardService boardService;
 
     public List<TaskListResponseDto> getBoardTaskListsResponse(Long boardId) {
-        return taskListRepository.findAllByBoardId(boardId).stream().map(taskListMapper::toResponseDto).toList();
+        return taskListRepository.findAllByBoardId(boardId).stream().map(taskListMapper::mapToResponseDto).toList();
     }
 
     public TaskList getTaskListById(Long taskListId) {
         return taskListRepository.findById(taskListId).orElseThrow(() -> new TaskListNotFoundException(taskListId));
     }
 
-    public void addTaskList(TaskListDto taskListDto) {
-        TaskList taskList = taskListMapper.toEntity(taskListDto);
-        taskListRepository.save(taskList);
-
-        messagingTemplate.convertAndSend("/topic/task-list-added", taskListMapper.toResponseDto(taskList));
+    public TaskListResponseDto addTaskList(TaskListCreationDto taskList) {
+        TaskList newTaskList = taskListMapper.mapToTaskList(taskList);
+        newTaskList.setBoard(boardService.getBoardById(taskList.boardId()));
+        taskListRepository.save(newTaskList);
+        return taskListMapper.mapToResponseDto(newTaskList);
     }
 
-    public void deleteTaskList(Long taskListId) {
+    public Long deleteTaskList(Long taskListId) {
         taskListRepository.deleteById(taskListId);
-
-        messagingTemplate.convertAndSend("/topic/task-list-removed", taskListId);
+        return taskListId;
     }
 
-    public void renameTaskList(Long taskListId, String title) {
-        TaskList taskList = taskListRepository.findById(taskListId).orElseThrow(() -> new TaskListNotFoundException(taskListId));
-        taskList.setTitle(title);
+    public TaskListRenameDto renameTaskList(TaskListRenameDto renamedTaskList) {
+        TaskList taskList = taskListRepository.findById(renamedTaskList.taskListId()).orElseThrow(() -> new TaskListNotFoundException(renamedTaskList.taskListId()));
+        taskList.setTitle(renamedTaskList.title());
         taskListRepository.save(taskList);
-
-        messagingTemplate.convertAndSend("/topic/task-list-renamed", title);
+        return renamedTaskList;
     }
 }

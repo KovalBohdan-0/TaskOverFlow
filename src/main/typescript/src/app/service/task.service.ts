@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {AuthService} from "./auth.service";
 import {environment} from "../../environments/environment";
+import {WebSocketService} from "./web-socket.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,8 @@ export class TaskService {
     'Authorization': 'Bearer ' + this.authService.getToken(),
   });
 
-  constructor(private httpClient: HttpClient, private authService: AuthService) { }
-
-  addTask(task: any) {
-    return this.httpClient.post(this.apiUrl + '/api/v1/task', task, {headers: this.headers});
+  constructor(private httpClient: HttpClient, private authService: AuthService, private webSocketService: WebSocketService) { }
+  addTask(taskList: any): void {
+    this.webSocketService.sendMessage('/app/task-add', JSON.stringify(taskList));
   }
 }
