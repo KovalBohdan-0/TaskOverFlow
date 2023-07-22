@@ -5,6 +5,7 @@ import {TaskList} from "./task-list/TaskList";
 import {TaskListService} from "../service/task-list.service";
 import {WebSocketService} from "../service/web-socket.service";
 import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-board',
@@ -25,19 +26,22 @@ export class BoardComponent implements OnInit {
   constructor(private customerService: CustomerService,
               private boardService: BoardService,
               private taskListService: TaskListService,
-              private webSocketService: WebSocketService) {
+              private webSocketService: WebSocketService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
     this.setEmail();
     this.getBoards();
     this.makeSubscriptions();
+    this.setSelectedBoard();
   }
 
   makeSubscriptions() {
     this.webSocketService.connect();
     this.webSocketService.getTaskListAdditions().subscribe(message =>{
       if (message.boardId == this.currentBoardId) {
+        message.tasks = [];
         this.lists.push(message);
       }
     });
@@ -110,9 +114,13 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  openSelectedBoard() {
-    this.currentBoardId = this.selectedBoard;
-    this.getTaskListsByBoardId(this.currentBoardId);
+  setSelectedBoard() {
+    this.route.params
+      .subscribe(params => {
+          this.currentBoardId = params['id'];
+          this.getTaskListsByBoardId(this.currentBoardId);
+        }
+      );
   }
 
   drop(event: CdkDragDrop<TaskList[]>) {
