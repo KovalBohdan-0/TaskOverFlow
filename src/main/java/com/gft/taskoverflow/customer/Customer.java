@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -38,8 +39,8 @@ public class Customer {
     private String password;
     @ManyToMany(mappedBy = "customers")
     private Set<Board> boards;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private TaskList taskList;
+    @ManyToMany
+    private List<TaskList> taskLists;
 
     @Override
     public boolean equals(Object o) {

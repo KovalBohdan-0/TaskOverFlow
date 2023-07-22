@@ -23,7 +23,7 @@ public class TaskList {
     private Set<Task> tasks;
     @ManyToOne(fetch = FetchType.LAZY)
     private Board board;
-    @OneToMany(mappedBy = "taskList")
+    @ManyToMany(mappedBy = "taskLists")
     private Set<Customer> assignedCustomers;
 
     public TaskList () {
