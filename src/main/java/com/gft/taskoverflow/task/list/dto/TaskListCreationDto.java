@@ -1,4 +1,8 @@
 package com.gft.taskoverflow.task.list.dto;
 
-public record TaskListCreationDto (String title, Long boardId) {
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+public record TaskListCreationDto (@NotEmpty @Size(max = 100) String title, @NotNull Long boardId) {
 }

@@ -3,6 +3,8 @@ package com.gft.taskoverflow.customer;
 import com.gft.taskoverflow.board.Board;
 import com.gft.taskoverflow.task.list.TaskList;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.Set;
@@ -18,8 +20,12 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
+    @NotEmpty
+    @Size(max = 100)
     @Column(nullable = false)
     private String email;
+    @NotEmpty
+    @Size(max = 100)
     @Column(nullable = false)
     private String password;
     @ManyToMany(mappedBy = "customers")

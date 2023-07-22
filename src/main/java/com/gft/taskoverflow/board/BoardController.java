@@ -1,5 +1,6 @@
 package com.gft.taskoverflow.board;
 
+import jakarta.validation.Valid;
 import lombok.Data;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,12 +13,12 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public void addBoard(@RequestBody Board board) {
+    public void addBoard(@Valid @RequestBody Board board) {
         boardService.saveBoard(board);
     }
 
     @PostMapping("/addCustomer")
-    public void addCustomer(@RequestParam Long boardId, @RequestParam String email) {
+    public void addCustomer(@Valid @RequestParam Long boardId, @RequestParam String email) {
         boardService.saveBoardCustomers(boardId, email);
     }
 

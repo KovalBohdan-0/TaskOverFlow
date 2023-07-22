@@ -3,6 +3,8 @@ package com.gft.taskoverflow.board;
 import com.gft.taskoverflow.customer.Customer;
 import com.gft.taskoverflow.task.list.TaskList;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +20,8 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
+    @NotEmpty
+    @Size(max = 100)
     @Column(nullable = false, length = 100)
     private String title;
     @OneToMany(mappedBy = "board")

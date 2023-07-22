@@ -2,6 +2,7 @@ package com.gft.taskoverflow.task;
 
 import com.gft.taskoverflow.task.dto.TaskCreationDto;
 import com.gft.taskoverflow.task.dto.TaskPreviewDto;
+import jakarta.validation.Valid;
 import lombok.Data;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -15,7 +16,7 @@ public class TaskSocketController {
 
     @MessageMapping("/task-add")
     @SendTo("/topic/task-added")
-    public TaskPreviewDto addTask(@Payload TaskCreationDto task) {
+    public TaskPreviewDto addTask(@Valid @Payload TaskCreationDto task) {
         return taskService.addTask(task, task.taskListId());
     }
 }

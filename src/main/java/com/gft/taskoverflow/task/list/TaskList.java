@@ -17,7 +17,7 @@ public class TaskList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false,length = 100)
     private String title;
     @OneToMany(mappedBy = "taskList", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Task> tasks;

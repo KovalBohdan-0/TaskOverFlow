@@ -1,3 +1,6 @@
 package com.gft.taskoverflow.customer;
 
-public record CustomerDto(String email) { }
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
+public record CustomerDto(@NotEmpty @Size(max = 100) String email) { }
