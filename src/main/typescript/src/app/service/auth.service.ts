@@ -3,7 +3,6 @@ import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
 import {UserInfo} from "../login/UserInfo";
 import {HttpClient, HttpResponse} from "@angular/common/http";
-import {WebSocketService} from "./web-socket.service";
 import {Router} from "@angular/router";
 
 @Injectable({
@@ -13,7 +12,7 @@ export class AuthService {
   apiUrl = environment.apiUrl;
 
 
-  constructor(private httpClient: HttpClient, private webSocketService: WebSocketService, private router: Router) { }
+  constructor(private httpClient: HttpClient, private router: Router) { }
 
   googleLogin() {
     window.open(this.apiUrl + "/oauth2/google", "_blank");

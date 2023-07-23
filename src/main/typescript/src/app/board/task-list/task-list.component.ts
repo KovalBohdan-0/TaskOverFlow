@@ -5,7 +5,8 @@ import {Priority} from "./task/Priority";
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 import {Task} from "./task/Task";
 import {TaskService} from "../../service/task.service";
-import {WebSocketService} from "../../service/web-socket.service";
+import {RxStompService} from "../../service/rx-stomp.service";
+import {Message} from "@stomp/stompjs";
 
 @Component({
   selector: 'app-task-list',
@@ -21,8 +22,7 @@ export class TaskListComponent implements OnInit {
     taskListId: 0
   };
 
-  constructor(private taskService: TaskService,
-              private webSocketService: WebSocketService) {
+  constructor(private taskService: TaskService, private rxStompService: RxStompService) {
 
   }
 
@@ -47,7 +47,9 @@ export class TaskListComponent implements OnInit {
   }
 
   makeSubscriptions() {
-    this.webSocketService.getTaskAdditions().subscribe(message => {
+    this.rxStompService.watch('/topic/task-added/' + this.taskList.boardId).subscribe((receivedMessage: Message) => {
+      const message = JSON.parse(receivedMessage.body);
+
       if (message.taskListId == this.taskList.id) {
         this.taskList.tasks.push(message);
       }
@@ -56,12 +58,16 @@ export class TaskListComponent implements OnInit {
 
   addTask() {
     this.newTask.taskListId = this.taskList.id;
-    this.taskService.addTask(this.newTask);
+    this.taskService.addTask(this.newTask, this.taskList.boardId);
   }
 
-  protected readonly Priority = Priority;
+  protected readonly
+  Priority = Priority;
 
-  drop(event: CdkDragDrop<Task[], any>) {
+  drop(event
+         :
+         CdkDragDrop<Task[], any>
+  ) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {

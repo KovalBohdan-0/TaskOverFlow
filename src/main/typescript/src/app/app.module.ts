@@ -18,6 +18,8 @@ import {MatNativeDateModule} from "@angular/material/core";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {CdkDrag, CdkDragPlaceholder, CdkDropList, CdkDropListGroup} from "@angular/cdk/drag-drop";
+import {RxStompService} from "./service/rx-stomp.service";
+import {rxStompServiceFactory} from "./service/rx-stomp-service-factory";
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -56,6 +58,10 @@ const routes: Routes = [
   providers: [
     HttpClient,
     AuthService,
+    {
+      provide: RxStompService,
+      useFactory: rxStompServiceFactory,
+    },
   ],
   bootstrap: [AppComponent],
   exports: [RouterModule]

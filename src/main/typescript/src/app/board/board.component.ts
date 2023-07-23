@@ -3,9 +3,10 @@ import {CustomerService} from "../service/customer.service";
 import {BoardService} from "../service/board.service";
 import {TaskList} from "./task-list/TaskList";
 import {TaskListService} from "../service/task-list.service";
-import {WebSocketService} from "../service/web-socket.service";
 import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 import {ActivatedRoute} from "@angular/router";
+import {RxStompService} from "../service/rx-stomp.service";
+import {Message} from "@stomp/stompjs";
 
 @Component({
   selector: 'app-board',
@@ -26,29 +27,39 @@ export class BoardComponent implements OnInit {
   constructor(private customerService: CustomerService,
               private boardService: BoardService,
               private taskListService: TaskListService,
-              private webSocketService: WebSocketService,
+              private rxStompService: RxStompService,
               private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
     this.setEmail();
     this.getBoards();
-    this.makeSubscriptions();
     this.setSelectedBoard();
+    this.makeSubscriptions();
+
+    console.log("here");
   }
 
   makeSubscriptions() {
-    this.webSocketService.connect();
-    this.webSocketService.getTaskListAdditions().subscribe(message =>{
+    // this.webSocketService.connect();
+    // this.webSocketService.getTaskListAdditions().subscribe(message =>{
+    //   if (message.boardId == this.currentBoardId) {
+    //     message.tasks = [];
+    //     this.lists.push(message);
+    //   }
+    // });
+    this.rxStompService.watch('/topic/task-list-added/' + this.currentBoardId).subscribe((receivedMessage: Message) => {
+      const message = JSON.parse(receivedMessage.body);
+
       if (message.boardId == this.currentBoardId) {
-        message.tasks = [];
-        this.lists.push(message);
-      }
+            message.tasks = [];
+            this.lists.push(message);
+          }
     });
   }
 
   addTaskList() {
-    this.taskListService.addTaskList({title: this.newTaskListTitle, boardId: this.currentBoardId});
+    this.taskListService.addTaskList({title: this.newTaskListTitle, boardId: this.currentBoardId}, this.currentBoardId);
   }
 
   getTaskListsByBoardId(boardId: number) {
