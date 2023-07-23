@@ -31,6 +31,5 @@ public class CustomerController {
     public CustomerDto getCurrentCustomer() {
         return customerService.getCurrentCustomer();
     }
-
 }
 

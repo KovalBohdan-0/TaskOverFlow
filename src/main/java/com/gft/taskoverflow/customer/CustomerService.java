@@ -37,7 +37,7 @@ public class CustomerService {
 
     @Transactional
     public void signUpCustomer(RegistrationRequest request) {
-        if (customerRepository.existsByEmail(request.email())){
+        if (customerRepository.existsByEmail(request.email())) {
             throw new DuplicateResourceException(
                     "email \"%s\" has been already taken".formatted(request.email())
             );
@@ -57,5 +57,15 @@ public class CustomerService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Customer customer = getCustomerByEmail(authentication.getName());
         return new CustomerDto(customer.getEmail());
+    }
+
+    public Customer getCurrentCustomerEntity() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return getCustomerByEmail(authentication.getName());
+    }
+
+    public boolean currentCustomerContainsBoard(Long boardId) {
+        Customer customer = getCurrentCustomerEntity();
+        return customerRepository.containsBoardByIdAndCustomerId(boardId, customer.getId());
     }
 }
