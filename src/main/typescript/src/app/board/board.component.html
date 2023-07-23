@@ -17,11 +17,16 @@
       </svg>
     </div>
   </div>
-  <select [(ngModel)]="selectedBoard">
-    <option routerLink="/board/{{option.id}}" routerLinkActive="active" [value]="option.id" *ngFor="let option of boards">
-      <a class="dropdown-item">{{ option.title }}</a>
-    </option>
-  </select>
+  <div ngbDropdown class="d-inline-block">
+    <button type="button" class="btn btn-light" id="dropdownBasic1" ngbDropdownToggle>
+      Boards
+    </button>
+    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+      <div routerLink="/board/{{option.id}}" routerLinkActive="active" *ngFor="let option of boards">
+        <a class="dropdown-item">{{ option.title }}</a>
+      </div>
+    </div>
+  </div>
   <div class="ms-5 divider"></div>
   <div class="ms-5">
       <input placeholder="Enter board title" class="form-input" [(ngModel)]="newBoardTitle"/>

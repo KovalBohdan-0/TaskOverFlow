@@ -5,8 +5,6 @@ import {Priority} from "./task/Priority";
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 import {Task} from "./task/Task";
 import {TaskService} from "../../service/task.service";
-import {RxStompService} from "../../service/rx-stomp.service";
-import {Message} from "@stomp/stompjs";
 
 @Component({
   selector: 'app-task-list',
@@ -22,13 +20,12 @@ export class TaskListComponent implements OnInit {
     taskListId: 0
   };
 
-  constructor(private taskService: TaskService, private rxStompService: RxStompService) {
+  constructor(private taskService: TaskService) {
 
   }
 
   ngOnInit(): void {
     this.borderColor = this.stringToColor(this.taskList.title);
-    this.makeSubscriptions()
   }
 
   stringToColor(str) {
@@ -46,23 +43,12 @@ export class TaskListComponent implements OnInit {
     return `rgb(${r}, ${g}, ${b})`;
   }
 
-  makeSubscriptions() {
-    this.rxStompService.watch('/topic/task-added/' + this.taskList.boardId).subscribe((receivedMessage: Message) => {
-      const message = JSON.parse(receivedMessage.body);
-
-      if (message.taskListId == this.taskList.id) {
-        this.taskList.tasks.push(message);
-      }
-    });
-  }
-
   addTask() {
     this.newTask.taskListId = this.taskList.id;
     this.taskService.addTask(this.newTask, this.taskList.boardId);
   }
 
-  protected readonly
-  Priority = Priority;
+  protected readonly Priority = Priority;
 
   drop(event
          :

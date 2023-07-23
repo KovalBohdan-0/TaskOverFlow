@@ -14,7 +14,6 @@ import {Message} from "@stomp/stompjs";
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
-  currentBoardId: number = 0;
   selectedBoard: any = {id: 0, title: 'Select board'};
   email: string = "";
   newBoardTitle: string = "";
@@ -23,6 +22,7 @@ export class BoardComponent implements OnInit {
     {id: 0, title: 'Not found'},
   ];
   lists: TaskList[] = [];
+  taskListSubscription: any;
 
   constructor(private customerService: CustomerService,
               private boardService: BoardService,
@@ -33,45 +33,36 @@ export class BoardComponent implements OnInit {
 
   ngOnInit(): void {
     this.setEmail();
-    this.getBoards();
-    this.setSelectedBoard();
-    this.makeSubscriptions();
-
-    console.log("here");
+    this.setLoadedBoards();
   }
 
   makeSubscriptions() {
-    // this.webSocketService.connect();
-    // this.webSocketService.getTaskListAdditions().subscribe(message =>{
-    //   if (message.boardId == this.currentBoardId) {
-    //     message.tasks = [];
-    //     this.lists.push(message);
-    //   }
-    // });
-    this.rxStompService.watch('/topic/task-list-added/' + this.currentBoardId).subscribe((receivedMessage: Message) => {
+    this.taskListSubscription = this.rxStompService.watch('/topic/task-list-added/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
       const message = JSON.parse(receivedMessage.body);
 
-      if (message.boardId == this.currentBoardId) {
-            message.tasks = [];
-            this.lists.push(message);
-          }
+      if (message.boardId == this.selectedBoard.id) {
+        message.tasks = [];
+        this.lists.push(message);
+      }
+    });
+    this.rxStompService.watch('/topic/task-added/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
+      const message = JSON.parse(receivedMessage.body);
+
+      this.lists.find((list: TaskList) => list.id == message.taskListId).tasks.push(message);
     });
   }
 
   addTaskList() {
-    this.taskListService.addTaskList({title: this.newTaskListTitle, boardId: this.currentBoardId}, this.currentBoardId);
+    this.taskListService.addTaskList({
+      title: this.newTaskListTitle,
+      boardId: this.selectedBoard.id
+    }, this.selectedBoard.id);
   }
 
   getTaskListsByBoardId(boardId: number) {
     this.taskListService.getTaskListsByBoardId(boardId).subscribe({
       next: (response: any) => {
         this.lists = response.body;
-      },
-      error: (error: any) => {
-        if (error.status == 404) {
-          //TODO add error message
-        } else {
-        }
       }
     });
   }
@@ -80,19 +71,14 @@ export class BoardComponent implements OnInit {
     this.customerService.getCurrentCustomer().subscribe({
       next: (response: any) => {
         this.email = response.body.email;
-      },
-      error: (error: any) => {
-        if (error.status == 404) {
-          //TODO add error message
-        } else {
-        }
       }
     });
   }
 
   addBoard() {
     this.boardService.addBoard({title: this.newBoardTitle}).subscribe({
-      next: () => {},
+      next: () => {
+      },
       error: (error: any) => {
         if (error.status == 404) {
           //TODO add error message
@@ -102,16 +88,11 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  getBoards() {
+  setLoadedBoards() {
     this.boardService.getAllBoards().subscribe({
       next: (response: any) => {
         this.boards = response.body;
-      },
-      error: (error: any) => {
-        if (error.status == 404) {
-          //TODO add error message
-        } else {
-        }
+        this.setSelectedBoard();
       }
     });
   }
@@ -119,10 +100,20 @@ export class BoardComponent implements OnInit {
   setSelectedBoard() {
     this.route.params
       .subscribe(params => {
-          this.currentBoardId = params['id'];
-          this.getTaskListsByBoardId(this.currentBoardId);
+          this.selectedBoard = this.boards.find(board => board.id == params['id']);
+          this.getTaskListsByBoardId(this.selectedBoard.id);
+          this.updateTaskListSubscriptions();
         }
       );
+
+  }
+
+  updateTaskListSubscriptions() {
+    if (this.taskListSubscription != undefined) {
+      this.taskListSubscription.unsubscribe();
+    }
+
+    this.makeSubscriptions();
   }
 
   drop(event: CdkDragDrop<TaskList[]>) {

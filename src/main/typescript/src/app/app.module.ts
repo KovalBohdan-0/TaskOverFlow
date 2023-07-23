@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdown, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from "@angular/forms";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {AuthService} from "./service/auth.service";
@@ -62,6 +62,7 @@ const routes: Routes = [
       provide: RxStompService,
       useFactory: rxStompServiceFactory,
     },
+    NgbDropdown,
   ],
   bootstrap: [AppComponent],
   exports: [RouterModule]
