@@ -5,6 +5,7 @@ import {Priority} from "./task/Priority";
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 import {Task} from "./task/Task";
 import {TaskService} from "../../service/task.service";
+import {TaskListService} from "../../service/task-list.service";
 
 @Component({
   selector: 'app-task-list',
@@ -14,13 +15,15 @@ import {TaskService} from "../../service/task.service";
 export class TaskListComponent implements OnInit {
   @Input() taskList: TaskList;
   borderColor: string = "rgb(0, 0, 0)";
+  newTitle: string = "";
+  changeTitle: boolean = false;
   newTask: TaskCreation = {
     title: "",
     priority: Priority.LOW,
     taskListId: 0
   };
 
-  constructor(private taskService: TaskService) {
+  constructor(private taskService: TaskService, private taskListService: TaskListService) {
 
   }
 
@@ -50,10 +53,23 @@ export class TaskListComponent implements OnInit {
 
   protected readonly Priority = Priority;
 
-  drop(event
-         :
-         CdkDragDrop<Task[], any>
-  ) {
+  deleteTaskList() {
+    this.taskListService.deleteTaskList(this.taskList);
+  }
+
+  replaceWithInput() {
+    this.changeTitle = true;
+    this.newTitle = this.taskList.title;
+  }
+
+  replaceWithText() {
+    this.changeTitle = false;
+    this.taskList.title = this.newTitle;
+    this.taskListService.renameTaskList(this.taskList);
+    this.borderColor = this.stringToColor(this.taskList.title);
+  }
+
+  drop(event: CdkDragDrop<Task[], any>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {

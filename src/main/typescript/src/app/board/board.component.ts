@@ -22,7 +22,7 @@ export class BoardComponent implements OnInit {
     {id: 0, title: 'Not found'},
   ];
   lists: TaskList[] = [];
-  taskListSubscription: any;
+  subscriptions = [];
 
   constructor(private customerService: CustomerService,
               private boardService: BoardService,
@@ -34,22 +34,6 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
     this.setEmail();
     this.setLoadedBoards();
-  }
-
-  makeSubscriptions() {
-    this.taskListSubscription = this.rxStompService.watch('/topic/task-list-added/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
-      const message = JSON.parse(receivedMessage.body);
-
-      if (message.boardId == this.selectedBoard.id) {
-        message.tasks = [];
-        this.lists.push(message);
-      }
-    });
-    this.rxStompService.watch('/topic/task-added/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
-      const message = JSON.parse(receivedMessage.body);
-
-      this.lists.find((list: TaskList) => list.id == message.taskListId).tasks.push(message);
-    });
   }
 
   addTaskList() {
@@ -109,8 +93,8 @@ export class BoardComponent implements OnInit {
   }
 
   updateTaskListSubscriptions() {
-    if (this.taskListSubscription != undefined) {
-      this.taskListSubscription.unsubscribe();
+    if (this.subscriptions.length > 0) {
+      this.subscriptions.forEach(sub => sub.unsubscribe());
     }
 
     this.makeSubscriptions();
@@ -118,5 +102,29 @@ export class BoardComponent implements OnInit {
 
   drop(event: CdkDragDrop<TaskList[]>) {
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  }
+
+  makeSubscriptions() {
+    const taskListAddSub = this.rxStompService.watch('/topic/task-list-added/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
+      const message = JSON.parse(receivedMessage.body);
+
+      if (message.boardId == this.selectedBoard.id) {
+        message.tasks = [];
+        this.lists.push(message);
+      }
+    });
+    const taskAddSub = this.rxStompService.watch('/topic/task-added/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
+      const message = JSON.parse(receivedMessage.body);
+
+      this.lists.find((list: TaskList) => list.id == message.taskListId).tasks.push(message);
+    });
+
+    const taskListDeleteSub = this.rxStompService.watch('/topic/task-list-deleted/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
+      const message = JSON.parse(receivedMessage.body);
+
+      this.lists = this.lists.filter((list: TaskList) => list.id != message);
+    });
+
+    this.subscriptions.push(taskListAddSub, taskAddSub, taskListDeleteSub);
   }
 }

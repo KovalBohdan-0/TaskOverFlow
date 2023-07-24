@@ -2,19 +2,31 @@
   <div class="card-body">
     <div class="row no-gutters align-items-center">
       <div class="col mr-2">
-        <div class="text-xs font-weight-bold text-primary text-uppercase mb-3">
-          {{taskList.title}}
+        <div class="d-flex mb-3 me-1">
+          <div class="text-xs font-weight-bold text-primary text-uppercase ">
+            <div *ngIf="!changeTitle" (click)="replaceWithInput()">{{taskList.title}}</div>
+            <input (keydown.enter)="replaceWithText()" class="w-100" *ngIf="changeTitle" [(ngModel)]="newTitle" />
+          </div>
+          <div ngbDropdown class="d-inline-block ms-auto">
+            <button type="button" class="btn btn-light" id="dropdownBasic1" ngbDropdownToggle>
+              <i class="bi bi-three-dots-vertical"></i>
+            </button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <a (click)="deleteTaskList()" class="dropdown-item">Delete</a>
+              <a (click)="replaceWithInput()" class="dropdown-item">Rename</a>
+            </div>
+          </div>
         </div>
         <div [cdkDropListData]="taskList.tasks" cdkDropList (cdkDropListDropped)="drop($event)">
-          <app-task cdkDrag  *ngFor="let task of taskList.tasks" [task]="task"></app-task>
+          <app-task cdkDrag *ngFor="let task of taskList.tasks" [task]="task"></app-task>
           <div class="col-md-2 w-100">
             <div class="card border-left-blue">
               <div class="card-body">
                 <input placeholder="Enter task title" class="form-input w-100" [(ngModel)]="newTask.title"/>
                 <select [(ngModel)]="newTask.priority" class="form-select mt-2 w-75">
-                  <option [value]="Priority.LOW" >Low</option>
-                  <option [value]="Priority.MEDIUM" >Medium</option>
-                  <option [value]="Priority.HIGH" >High</option>
+                  <option [value]="Priority.LOW">Low</option>
+                  <option [value]="Priority.MEDIUM">Medium</option>
+                  <option [value]="Priority.HIGH">High</option>
                 </select>
                 <button (click)="addTask()" class="btn btn-light mt-2">Add task</button>
               </div>

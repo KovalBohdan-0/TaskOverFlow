@@ -14,7 +14,7 @@ export class TaskService {
   });
 
   constructor(private httpClient: HttpClient, private authService: AuthService, private rxStompService: RxStompService) { }
-  addTask(taskList: any, boardId): void {
+  addTask(taskList: any, boardId: number): void {
     this.rxStompService.publish({destination: '/app/task-add/' + boardId , body: JSON.stringify(taskList)});
   }
 }

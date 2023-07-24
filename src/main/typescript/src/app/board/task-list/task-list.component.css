@@ -1,3 +1,7 @@
 .border-left-primary {
   border-left: 4px solid;
 }
+
+.dropdown-toggle::after{
+  content:initial
+}
