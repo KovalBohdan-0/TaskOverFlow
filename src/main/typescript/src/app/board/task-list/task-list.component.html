@@ -22,7 +22,7 @@
           <div class="col-md-2 w-100">
             <div class="card border-left-blue">
               <div class="card-body">
-                <input placeholder="Enter task title" class="form-input w-100" [(ngModel)]="newTask.title"/>
+                <input (keydown.enter)="addTask()" placeholder="Enter task title" class="form-input w-100" [(ngModel)]="newTask.title"/>
                 <select [(ngModel)]="newTask.priority" class="form-select mt-2 w-75">
                   <option [value]="Priority.LOW">Low</option>
                   <option [value]="Priority.MEDIUM">Medium</option>

@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Task} from "./Task";
+import {MatDialog} from "@angular/material/dialog";
+import {TaskUpdateComponent} from "./task-update/task-update.component";
 
 @Component({
   selector: 'app-task',
@@ -9,6 +11,10 @@ import {Task} from "./Task";
 export class TaskComponent implements OnInit {
   @Input() task: Task;
   color: string = "black";
+
+  constructor(public dialog: MatDialog) {
+  }
+
 
   ngOnInit(): void {
     this.color = this.getColor();
@@ -22,5 +28,15 @@ export class TaskComponent implements OnInit {
     } else {
       return "green";
     }
+  }
+
+  openTaskModal() {
+    const dialogRef = this.dialog.open(TaskUpdateComponent, {
+      data: this.task,
+    });
+
+    dialogRef.afterClosed().subscribe( () => {
+      console.log('The dialog was closed');
+    });
   }
 }

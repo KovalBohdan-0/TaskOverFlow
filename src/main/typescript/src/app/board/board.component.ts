@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CustomerService} from "../service/customer.service";
 import {BoardService} from "../service/board.service";
 import {TaskList} from "./task-list/TaskList";
@@ -13,7 +13,7 @@ import {Message} from "@stomp/stompjs";
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.css']
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, OnDestroy {
   selectedBoard: any = {id: 0, title: 'Select board'};
   email: string = "";
   newBoardTitle: string = "";
@@ -132,5 +132,9 @@ export class BoardComponent implements OnInit {
     });
 
     this.subscriptions.push(taskListAddSub, taskAddSub, taskListDeleteSub, taskListRenameSub);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }
