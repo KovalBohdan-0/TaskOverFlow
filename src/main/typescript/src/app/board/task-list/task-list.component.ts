@@ -3,7 +3,7 @@ import {TaskList} from "./TaskList";
 import {TaskCreation} from "./task/TaskFull";
 import {Priority} from "./task/Priority";
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
-import {Task} from "./task/Task";
+import {ShortTask} from "./task/ShortTask";
 import {TaskService} from "../../service/task.service";
 import {TaskListService} from "../../service/task-list.service";
 
@@ -69,7 +69,7 @@ export class TaskListComponent implements OnInit {
     this.borderColor = this.stringToColor(this.taskList.title);
   }
 
-  drop(event: CdkDragDrop<Task[], any>) {
+  drop(event: CdkDragDrop<ShortTask[], any>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {

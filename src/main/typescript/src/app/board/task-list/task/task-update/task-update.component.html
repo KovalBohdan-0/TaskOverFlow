@@ -1,33 +1,39 @@
-<div class="task-update p-5">
+<div class="task-update p-5" (submit)="updateTask()">
   <form class="d-flex flex-column ">
     <div class="d-flex">
-      <mat-checkbox color="primary"></mat-checkbox>
+      <div class="d-flex flex-column">
+        <mat-checkbox color="primary"></mat-checkbox>
+        <div class="mt-auto">
+          <button class="btn btn-light mb-2"><i class="bi bi-clipboard"></i></button>
+          <button (click)="deleteTask()" class="btn btn-light"><i class="bi bi-trash3"></i></button>
+        </div>
+      </div>
       <div class="d-flex ms-4 flex-column w-100">
         <mat-form-field class="">
           <mat-label>Title</mat-label>
-          <input matInput placeholder="Your task title"/>
+          <input [(ngModel)]="task.title" name="title" matInput placeholder="Your task title"/>
         </mat-form-field>
         <mat-form-field class="">
           <mat-label>Description</mat-label>
-          <textarea matInput placeholder="Your task description"></textarea>
+          <textarea [(ngModel)]="task.description" name="description" matInput placeholder="Your task description"></textarea>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Deadline</mat-label>
-          <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date">
+          <input [(ngModel)]="task.deadline" name="Deadline" matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date">
           <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
           <ngx-mat-datetime-picker #picker>
           </ngx-mat-datetime-picker>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Priority</mat-label>
-          <mat-select>
+          <mat-select [(ngModel)]="task.priority" name="priority">
             <mat-option [value]="Priority.LOW">Low</mat-option>
             <mat-option [value]="Priority.MEDIUM">Medium</mat-option>
             <mat-option [value]="Priority.HIGH" >High</mat-option>
           </mat-select>
         </mat-form-field>
-        <p>Creation Date</p>
-        <button mat-raised-button color="primary">Save</button>
+        <p>Creation Date: {{task.createdAt | date: 'dd/MM/yyyy hh:mm'}}</p>
+        <button type="submit" mat-raised-button color="primary">Save</button>
       </div>
     </div>
   </form>

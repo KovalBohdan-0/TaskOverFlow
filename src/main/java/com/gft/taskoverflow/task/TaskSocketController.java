@@ -1,7 +1,7 @@
 package com.gft.taskoverflow.task;
 
 import com.gft.taskoverflow.task.dto.TaskCreationDto;
-import com.gft.taskoverflow.task.dto.TaskMoveDto;
+import com.gft.taskoverflow.task.dto.TaskDto;
 import com.gft.taskoverflow.task.dto.TaskPreviewDto;
 import jakarta.validation.Valid;
 import lombok.Data;
@@ -29,8 +29,9 @@ public class TaskSocketController {
         return taskId;
     }
 
-    @MessageMapping("/task-move/{boardId}")
-    public void moveTask(@DestinationVariable Long boardId, @Payload TaskMoveDto taskMoveDto) {
-        taskService.moveTaskToAnotherList(taskMoveDto);
+    @MessageMapping("/task-update/{boardId}")
+    @SendTo("/topic/task-updated/{boardId}")
+    public TaskDto updateTask(@DestinationVariable Long boardId, @Valid @Payload TaskDto taskDto) {
+        return taskService.updateTask(taskDto);
     }
 }

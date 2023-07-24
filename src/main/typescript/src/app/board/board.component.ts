@@ -7,6 +7,7 @@ import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 import {ActivatedRoute} from "@angular/router";
 import {RxStompService} from "../service/rx-stomp.service";
 import {Message} from "@stomp/stompjs";
+import {SharedService} from "../service/shared.service";
 
 @Component({
   selector: 'app-board',
@@ -28,12 +29,14 @@ export class BoardComponent implements OnInit, OnDestroy {
               private boardService: BoardService,
               private taskListService: TaskListService,
               private rxStompService: RxStompService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private sharedService: SharedService) {
   }
 
   ngOnInit(): void {
     this.setEmail();
     this.setLoadedBoards();
+    this.sharedService.boardId = this.selectedBoard.id;
   }
 
   addTaskList() {
@@ -85,6 +88,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.route.params
       .subscribe(params => {
           this.selectedBoard = this.boards.find(board => board.id == params['id']);
+          this.sharedService.boardId = this.selectedBoard.id;
           this.getTaskListsByBoardId(this.selectedBoard.id);
           this.updateTaskListSubscriptions();
         }
@@ -115,23 +119,31 @@ export class BoardComponent implements OnInit, OnDestroy {
     });
     const taskAddSub = this.rxStompService.watch('/topic/task-added/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
       const message = JSON.parse(receivedMessage.body);
-
       this.lists.find((list: TaskList) => list.id == message.taskListId).tasks.push(message);
+    });
+
+    const taskUpdateSub = this.rxStompService.watch('/topic/task-updated/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
+      const message = JSON.parse(receivedMessage.body);
+      const index = this.lists.find((list) => list.id == message.taskListId).tasks.findIndex((task) => task.id == message.id);
+      this.lists.find((list) => list.id == message.taskListId).tasks[index] = message;
+    });
+
+    const taskDeleteSub = this.rxStompService.watch('/topic/task-deleted/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
+      const message = JSON.parse(receivedMessage.body);
+      this.lists.find((list: TaskList) => list.id == message.taskListId).tasks = this.lists.find((list: TaskList) => list.id == message.taskListId).tasks.filter((task: any) => task.id != message.id);
     });
 
     const taskListRenameSub = this.rxStompService.watch('/topic/task-list-renamed/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
       const message = JSON.parse(receivedMessage.body);
-
       this.lists.find((list: TaskList) => list.id == message.taskListId).title = message.title;
     });
 
     const taskListDeleteSub = this.rxStompService.watch('/topic/task-list-deleted/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
       const message = JSON.parse(receivedMessage.body);
-
       this.lists = this.lists.filter((list: TaskList) => list.id != message);
     });
 
-    this.subscriptions.push(taskListAddSub, taskAddSub, taskListDeleteSub, taskListRenameSub);
+    this.subscriptions.push(taskListAddSub, taskAddSub, taskListDeleteSub, taskListRenameSub, taskUpdateSub, taskDeleteSub);
   }
 
   ngOnDestroy(): void {

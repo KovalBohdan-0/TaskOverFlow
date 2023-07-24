@@ -13,7 +13,6 @@ import java.util.Optional;
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
     boolean existsByEmail(String email);
     Optional<Customer> findByEmail(String email);
-
     @Query("SELECT CASE WHEN EXISTS (SELECT 1 FROM Customer c JOIN c.boards b WHERE b.id = :boardId AND c.id = :customerId) THEN true ELSE false END AS result FROM Customer c")
     Boolean containsBoardByIdAndCustomerId(@Param("boardId") Long boardId, @Param("customerId") Long customerId);
 }
