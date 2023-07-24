@@ -119,12 +119,18 @@ export class BoardComponent implements OnInit {
       this.lists.find((list: TaskList) => list.id == message.taskListId).tasks.push(message);
     });
 
+    const taskListRenameSub = this.rxStompService.watch('/topic/task-list-renamed/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
+      const message = JSON.parse(receivedMessage.body);
+
+      this.lists.find((list: TaskList) => list.id == message.taskListId).title = message.title;
+    });
+
     const taskListDeleteSub = this.rxStompService.watch('/topic/task-list-deleted/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
       const message = JSON.parse(receivedMessage.body);
 
       this.lists = this.lists.filter((list: TaskList) => list.id != message);
     });
 
-    this.subscriptions.push(taskListAddSub, taskAddSub, taskListDeleteSub);
+    this.subscriptions.push(taskListAddSub, taskAddSub, taskListDeleteSub, taskListRenameSub);
   }
 }
