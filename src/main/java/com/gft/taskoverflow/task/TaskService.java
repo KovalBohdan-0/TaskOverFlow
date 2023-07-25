@@ -25,11 +25,12 @@ public class TaskService {
         return taskMapper.mapToDto(taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId)));
     }
 
-    public TaskPreviewDto addTask(TaskCreationDto task, Long taskListId, Long boardId) {
+    public TaskPreviewDto addTask(TaskCreationDto task, Long taskListId) {
         Task newTask = taskMapper.mapToTask(task);
         newTask.setTaskList(taskListService.getTaskListById(taskListId));
+        newTask.setPosition(taskRepository.findMaxPositionByTaskListId(taskListId).orElse(0.0f) + 1);
         taskRepository.save(newTask);
-        return taskMapper.mapToShortDto(newTask);
+        return taskMapper.mapToPreviewDto(newTask);
     }
 
     public TaskDto updateTask(TaskDto taskDto) {
@@ -48,6 +49,12 @@ public class TaskService {
         TaskDeleteDto taskDeleteDto = taskMapper.mapToDeleteDto(getTaskById(taskId));
         taskRepository.deleteById(taskId);
         return taskDeleteDto;
+    }
+
+    public TaskDto moveTask(TaskDto taskDto) {
+        Task task = getTaskById(taskDto.id());
+        task.setTaskList(taskListService.getTaskListById(taskDto.taskListId()));
+        return taskMapper.mapToDto(taskRepository.save(task));
     }
 
     private Task getTaskById(Long taskId) {

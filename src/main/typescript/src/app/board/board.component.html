@@ -42,7 +42,7 @@
   <div cdkDropListGroup cdkDropListOrientation="horizontal" [cdkDropListData]="lists" class="row" cdkDropList (cdkDropListDropped)="drop($event)">
     <app-task-list cdkDrag *ngFor="let taskList of lists" [taskList]="taskList" class="col-md-2"></app-task-list>
     <div class="col-md-2">
-      <div class="card border-left-blue">
+      <div class="card border-left-blue rounded-4">
         <div class="card-body">
           <input placeholder="Enter list title" class="form-input w-100" [(ngModel)]="newTaskListTitle"/>
           <button class="btn btn-light mt-2" (click)="addTaskList()">Create list</button>

@@ -6,7 +6,6 @@ import com.gft.taskoverflow.task.dto.TaskDto;
 import com.gft.taskoverflow.task.dto.TaskPreviewDto;
 import jakarta.validation.Valid;
 import lombok.Data;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -19,19 +18,25 @@ public class TaskSocketController {
 
     @MessageMapping("/task-add/{boardId}")
     @SendTo("/topic/task-added/{boardId}")
-    public TaskPreviewDto addTask(@DestinationVariable Long boardId, @Valid @Payload TaskCreationDto task) {
-        return taskService.addTask(task, task.taskListId(), boardId);
+    public TaskPreviewDto addTask(@Valid @Payload TaskCreationDto task) {
+        return taskService.addTask(task, task.taskListId());
     }
 
     @MessageMapping("/task-delete/{boardId}")
     @SendTo("/topic/task-deleted/{boardId}")
-    public TaskDeleteDto deleteTask(@DestinationVariable Long boardId, @Payload Long taskId) {
+    public TaskDeleteDto deleteTask(@Valid @Payload Long taskId) {
         return taskService.deleteTask(taskId);
     }
 
     @MessageMapping("/task-update/{boardId}")
     @SendTo("/topic/task-updated/{boardId}")
-    public TaskDto updateTask(@DestinationVariable Long boardId, @Valid @Payload TaskDto taskDto) {
+    public TaskDto updateTask(@Valid @Payload TaskDto taskDto) {
         return taskService.updateTask(taskDto);
+    }
+
+    @MessageMapping("/task-move/{boardId}")
+    @SendTo("/topic/task-moved/{boardId}")
+    public TaskDto moveTask(@Valid @Payload TaskDto taskDto) {
+        return taskService.moveTask(taskDto);
     }
 }

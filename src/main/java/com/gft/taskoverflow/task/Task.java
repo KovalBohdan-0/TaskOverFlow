@@ -19,6 +19,7 @@ public class Task {
     private String title;
     @Column(length = 1000)
     private String description = "";
+    private Float position;
     private boolean done;
     private Priority priority = Priority.LOW;
     private LocalDateTime createdAt = LocalDateTime.now();

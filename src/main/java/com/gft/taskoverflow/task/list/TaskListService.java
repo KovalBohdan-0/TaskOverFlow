@@ -29,19 +29,19 @@ public class TaskListService {
         return taskListRepository.findById(taskListId).orElseThrow(() -> new TaskListNotFoundException(taskListId));
     }
 
-    public TaskListResponseDto addTaskList(TaskListCreationDto taskList, Long boardId) {
+    public TaskListResponseDto addTaskList(TaskListCreationDto taskList) {
         TaskList newTaskList = taskListMapper.mapToTaskList(taskList);
         newTaskList.setBoard(boardService.getBoardById(taskList.boardId()));
         taskListRepository.save(newTaskList);
         return taskListMapper.mapToResponseDto(newTaskList);
     }
 
-    public Long deleteTaskList(Long taskListId, Long boardId) {
+    public Long deleteTaskList(Long taskListId) {
         taskListRepository.deleteById(taskListId);
         return taskListId;
     }
 
-    public TaskListRenameDto renameTaskList(TaskListRenameDto renamedTaskList, Long boardId) {
+    public TaskListRenameDto renameTaskList(TaskListRenameDto renamedTaskList) {
         TaskList taskList = taskListRepository.findById(renamedTaskList.taskListId()).orElseThrow(() -> new TaskListNotFoundException(renamedTaskList.taskListId()));
         taskList.setTitle(renamedTaskList.title());
         taskListRepository.save(taskList);
