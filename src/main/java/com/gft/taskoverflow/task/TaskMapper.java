@@ -1,6 +1,7 @@
 package com.gft.taskoverflow.task;
 
 import com.gft.taskoverflow.task.dto.TaskCreationDto;
+import com.gft.taskoverflow.task.dto.TaskDeleteDto;
 import com.gft.taskoverflow.task.dto.TaskDto;
 import com.gft.taskoverflow.task.dto.TaskPreviewDto;
 import org.mapstruct.Mapper;
@@ -13,4 +14,6 @@ public interface TaskMapper {
     Task mapToTask(TaskCreationDto taskCreationDto);
     @Mapping(target = "taskListId", source = "taskList.id")
     TaskDto mapToDto(Task task);
+    @Mapping(target = "taskListId", source = "taskList.id")
+    TaskDeleteDto mapToDeleteDto(Task task);
 }

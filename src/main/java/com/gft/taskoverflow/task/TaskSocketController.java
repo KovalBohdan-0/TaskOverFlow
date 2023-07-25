@@ -1,6 +1,7 @@
 package com.gft.taskoverflow.task;
 
 import com.gft.taskoverflow.task.dto.TaskCreationDto;
+import com.gft.taskoverflow.task.dto.TaskDeleteDto;
 import com.gft.taskoverflow.task.dto.TaskDto;
 import com.gft.taskoverflow.task.dto.TaskPreviewDto;
 import jakarta.validation.Valid;
@@ -24,9 +25,8 @@ public class TaskSocketController {
 
     @MessageMapping("/task-delete/{boardId}")
     @SendTo("/topic/task-deleted/{boardId}")
-    public Long deleteTask(@DestinationVariable Long boardId, @Payload Long taskId) {
-        taskService.deleteTask(taskId);
-        return taskId;
+    public TaskDeleteDto deleteTask(@DestinationVariable Long boardId, @Payload Long taskId) {
+        return taskService.deleteTask(taskId);
     }
 
     @MessageMapping("/task-update/{boardId}")

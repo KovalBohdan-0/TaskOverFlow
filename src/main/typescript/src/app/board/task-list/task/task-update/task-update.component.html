@@ -2,7 +2,7 @@
   <form class="d-flex flex-column ">
     <div class="d-flex">
       <div class="d-flex flex-column">
-        <mat-checkbox color="primary"></mat-checkbox>
+        <mat-checkbox [(ngModel)]="task.done" name="done" color="primary"></mat-checkbox>
         <div class="mt-auto">
           <button class="btn btn-light mb-2"><i class="bi bi-clipboard"></i></button>
           <button (click)="deleteTask()" class="btn btn-light"><i class="bi bi-trash3"></i></button>

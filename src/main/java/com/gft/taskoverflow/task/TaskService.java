@@ -3,6 +3,7 @@ package com.gft.taskoverflow.task;
 import com.gft.taskoverflow.customer.CustomerService;
 import com.gft.taskoverflow.exception.TaskNotFoundException;
 import com.gft.taskoverflow.task.dto.TaskCreationDto;
+import com.gft.taskoverflow.task.dto.TaskDeleteDto;
 import com.gft.taskoverflow.task.dto.TaskDto;
 import com.gft.taskoverflow.task.dto.TaskPreviewDto;
 import com.gft.taskoverflow.task.list.TaskListService;
@@ -43,8 +44,10 @@ public class TaskService {
     }
 
 
-    public void deleteTask(Long taskId) {
+    public TaskDeleteDto deleteTask(Long taskId) {
+        TaskDeleteDto taskDeleteDto = taskMapper.mapToDeleteDto(getTaskById(taskId));
         taskRepository.deleteById(taskId);
+        return taskDeleteDto;
     }
 
     private Task getTaskById(Long taskId) {
