@@ -17,10 +17,10 @@
             </div>
           </div>
         </div>
-        <div [cdkDropListData]="taskList.tasks" cdkDropList (cdkDropListDropped)="drop($event)">
-          <app-task cdkDrag *ngFor="let task of taskList.tasks" [task]="task"></app-task>
+        <div class="list" [cdkDropListData]="taskList.tasks" cdkDropList (cdkDropListDropped)="drop($event)">
+          <app-task class="box" cdkDrag *ngFor="let task of taskList.tasks" [task]="task"></app-task>
           <div class="col-md-2 w-100">
-            <div class="card border-left-blue">
+            <div class="border-left-blue">
               <div class="card-body">
                 <input (keydown.enter)="addTask()" placeholder="Enter task title" class="form-input w-100" [(ngModel)]="newTask.title"/>
                 <select [(ngModel)]="newTask.priority" class="form-select mt-2 w-75">
