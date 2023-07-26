@@ -1,5 +1,6 @@
 package com.gft.taskoverflow.login;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +15,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping
-    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
+    public AuthenticationResponse login(@Valid @RequestBody LoginRequest loginRequest) {
         return loginService.login(loginRequest);
     }
 

@@ -1,5 +1,7 @@
 package com.gft.taskoverflow.login;
 
-public record LoginRequest(String email,
-                           String password) {
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
+public record LoginRequest(@NotEmpty @Size(max = 100) String email, @NotEmpty @Size(max = 100) String password) {
 }

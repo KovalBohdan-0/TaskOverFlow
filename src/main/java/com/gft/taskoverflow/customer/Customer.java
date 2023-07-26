@@ -3,8 +3,11 @@ package com.gft.taskoverflow.customer;
 import com.gft.taskoverflow.board.Board;
 import com.gft.taskoverflow.task.list.TaskList;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -15,17 +18,29 @@ import java.util.Set;
 @Setter
 public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "customer_id_sequence",
+            sequenceName = "customer_id_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "customer_id_sequence"
+    )
     @Column(nullable = false)
     private Long id;
+    @NotEmpty
+    @Size(max = 100)
     @Column(nullable = false)
     private String email;
+    @NotEmpty
+    @Size(max = 100)
     @Column(nullable = false)
     private String password;
     @ManyToMany(mappedBy = "customers")
     private Set<Board> boards;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private TaskList taskList;
+    @ManyToMany
+    private List<TaskList> taskLists;
 
     @Override
     public boolean equals(Object o) {

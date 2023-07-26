@@ -1,15 +1,16 @@
 package com.gft.taskoverflow.task;
 
+import com.gft.taskoverflow.customer.CustomerService;
 import com.gft.taskoverflow.exception.TaskNotFoundException;
 import com.gft.taskoverflow.task.dto.TaskCreationDto;
+import com.gft.taskoverflow.task.dto.TaskDeleteDto;
+import com.gft.taskoverflow.task.dto.TaskDto;
 import com.gft.taskoverflow.task.dto.TaskPreviewDto;
 import com.gft.taskoverflow.task.list.TaskListService;
 import lombok.Data;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @Data
@@ -18,55 +19,45 @@ public class TaskService {
     private final SimpMessagingTemplate messagingTemplate;
     private final TaskMapper taskMapper;
     private final TaskListService taskListService;
+    private final CustomerService customerService;
 
-    public List<TaskPreviewDto> getTasksByTaskListId(Long taskListId) {
-        return taskRepository.findAllByTaskListId(taskListId).stream().map(taskMapper::mapToShortDto).toList();
+    public TaskDto getTaskDtoById(Long taskId) {
+        return taskMapper.mapToDto(taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId)));
     }
 
     public TaskPreviewDto addTask(TaskCreationDto task, Long taskListId) {
         Task newTask = taskMapper.mapToTask(task);
         newTask.setTaskList(taskListService.getTaskListById(taskListId));
+        newTask.setPosition(taskRepository.findMaxPositionByTaskListId(taskListId).orElse(0.0f) + 1);
         taskRepository.save(newTask);
-        return taskMapper.mapToShortDto(newTask);
+        return taskMapper.mapToPreviewDto(newTask);
     }
 
-    public void deleteTask(Long taskId) {
+    public TaskDto updateTask(TaskDto taskDto) {
+        Task task = getTaskById(taskDto.id());
+        task.setTaskList(taskListService.getTaskListById(taskDto.taskListId()));
+        task.setDescription(taskDto.description());
+        task.setPriority(taskDto.priority());
+        task.setDone(taskDto.done());
+        task.setDeadline(taskDto.deadline());
+        task.setTitle(taskDto.title());
+        return taskMapper.mapToDto(taskRepository.save(task));
+    }
+
+
+    public TaskDeleteDto deleteTask(Long taskId) {
+        TaskDeleteDto taskDeleteDto = taskMapper.mapToDeleteDto(getTaskById(taskId));
         taskRepository.deleteById(taskId);
+        return taskDeleteDto;
     }
 
-    public void markTaskAsDone(Long taskId) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
-        task.setDone(true);
-        taskRepository.save(task);
+    public TaskDto moveTask(TaskDto taskDto) {
+        Task task = getTaskById(taskDto.id());
+        task.setTaskList(taskListService.getTaskListById(taskDto.taskListId()));
+        return taskMapper.mapToDto(taskRepository.save(task));
     }
 
-    public void renameTask(Long taskId, String title) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
-        task.setTitle(title);
-        taskRepository.save(task);
-    }
-
-    public void changeTaskDescription(Long taskId, String description) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
-        task.setDescription(description);
-        taskRepository.save(task);
-    }
-
-    public void changeTaskPriority(Long taskId, Priority priority) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
-        task.setPriority(priority);
-        taskRepository.save(task);
-    }
-
-    public void changeTaskDeadline(Long taskId, LocalDateTime deadline) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
-        task.setDeadline(deadline);
-        taskRepository.save(task);
-    }
-
-    public void moveTaskToAnotherList(Long taskId, Long taskListId) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
-        task.setTaskList(taskListService.getTaskListById(taskListId));
-        taskRepository.save(task);
+    private Task getTaskById(Long taskId) {
+        return taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
     }
 }

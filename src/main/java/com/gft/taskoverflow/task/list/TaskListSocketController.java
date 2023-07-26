@@ -3,6 +3,7 @@ package com.gft.taskoverflow.task.list;
 import com.gft.taskoverflow.task.list.dto.TaskListCreationDto;
 import com.gft.taskoverflow.task.list.dto.TaskListRenameDto;
 import com.gft.taskoverflow.task.list.dto.TaskListResponseDto;
+import jakarta.validation.Valid;
 import lombok.Data;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -14,21 +15,21 @@ import org.springframework.stereotype.Controller;
 public class TaskListSocketController {
     private final TaskListService taskListService;
 
-    @MessageMapping("/task-list-add")
-    @SendTo("/topic/task-list-added")
-    public TaskListResponseDto addTaskList(@Payload TaskListCreationDto taskList) {
+    @MessageMapping("/task-list-add/{boardId}")
+    @SendTo("/topic/task-list-added/{boardId}")
+    public TaskListResponseDto addTaskList(@Valid @Payload TaskListCreationDto taskList) {
         return taskListService.addTaskList(taskList);
     }
 
-    @MessageMapping("/task-list-delete")
-    @SendTo("/topic/task-list-deleted")
-    public Long deleteTaskList(@Payload Long taskListId) {
+    @MessageMapping("/task-list-delete/{boardId}")
+    @SendTo("/topic/task-list-deleted/{boardId}")
+    public Long deleteTaskList(@Valid @Payload Long taskListId) {
         return taskListService.deleteTaskList(taskListId);
     }
 
-    @MessageMapping("/task-list-rename")
-    @SendTo("/topic/task-list-renamed")
-    public TaskListRenameDto renameTaskList(@Payload TaskListRenameDto taskList) {
+    @MessageMapping("/task-list-rename/{boardId}")
+    @SendTo("/topic/task-list-renamed/{boardId}")
+    public TaskListRenameDto renameTaskList(@Valid @Payload TaskListRenameDto taskList) {
         return taskListService.renameTaskList(taskList);
     }
 }

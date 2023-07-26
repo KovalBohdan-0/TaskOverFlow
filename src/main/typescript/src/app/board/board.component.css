@@ -34,3 +34,9 @@
 .border-left-blue {
   border-left: #007bff 4px solid;
 }
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+

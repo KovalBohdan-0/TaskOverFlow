@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {AuthService} from "./auth.service";
-import {WebSocketService} from "./web-socket.service";
+import {RxStompService} from "./rx-stomp.service";
+import {TaskList} from "../board/task-list/TaskList";
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +14,21 @@ export class TaskListService {
     'Authorization': 'Bearer ' + this.authService.getToken(),
   });
 
-  constructor(private httpClient: HttpClient, private authService: AuthService, private webSocketService: WebSocketService) { }
+  constructor(private httpClient: HttpClient, private authService: AuthService, private rxStompService: RxStompService) { }
 
   getTaskListsByBoardId(boardId: number) {
     return this.httpClient.get(this.apiUrl + '/api/v1/task-lists/board/' + boardId, {headers: this.headers, observe: 'response'});
   }
 
-  addTaskList(taskList: any) {
-    this.webSocketService.sendMessage("/app/task-list-add", JSON.stringify(taskList));
+  addTaskList(taskList: any, boardId: number) {
+    this.rxStompService.publish({destination: "/app/task-list-add/" + boardId, body: JSON.stringify(taskList)});
+  }
+
+  deleteTaskList(taskList: TaskList): void {
+    this.rxStompService.publish({destination: '/app/task-list-delete/' + taskList.boardId , body: JSON.stringify(taskList.id)});
+  }
+
+  renameTaskList(taskList: TaskList): void {
+    this.rxStompService.publish({destination: '/app/task-list-rename/' + taskList.boardId , body: JSON.stringify({title: taskList.title, taskListId: taskList.id})});
   }
 }

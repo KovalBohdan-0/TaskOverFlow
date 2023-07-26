@@ -1,3 +1,5 @@
 package com.gft.taskoverflow.login;
 
-public record AuthenticationResponse(String jwt) {}
+import jakarta.validation.constraints.NotEmpty;
+
+public record AuthenticationResponse(@NotEmpty String jwt) {}

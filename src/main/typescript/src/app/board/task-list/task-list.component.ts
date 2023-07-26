@@ -3,9 +3,9 @@ import {TaskList} from "./TaskList";
 import {TaskCreation} from "./task/TaskFull";
 import {Priority} from "./task/Priority";
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
-import {Task} from "./task/Task";
+import {ShortTask} from "./task/ShortTask";
 import {TaskService} from "../../service/task.service";
-import {WebSocketService} from "../../service/web-socket.service";
+import {TaskListService} from "../../service/task-list.service";
 
 @Component({
   selector: 'app-task-list',
@@ -15,20 +15,20 @@ import {WebSocketService} from "../../service/web-socket.service";
 export class TaskListComponent implements OnInit {
   @Input() taskList: TaskList;
   borderColor: string = "rgb(0, 0, 0)";
+  newTitle: string = "";
+  changeTitle: boolean = false;
   newTask: TaskCreation = {
     title: "",
     priority: Priority.LOW,
     taskListId: 0
   };
 
-  constructor(private taskService: TaskService,
-              private webSocketService: WebSocketService) {
+  constructor(private taskService: TaskService, private taskListService: TaskListService) {
 
   }
 
   ngOnInit(): void {
     this.borderColor = this.stringToColor(this.taskList.title);
-    this.makeSubscriptions()
   }
 
   stringToColor(str) {
@@ -46,22 +46,30 @@ export class TaskListComponent implements OnInit {
     return `rgb(${r}, ${g}, ${b})`;
   }
 
-  makeSubscriptions() {
-    this.webSocketService.getTaskAdditions().subscribe(message => {
-      if (message.taskListId == this.taskList.id) {
-        this.taskList.tasks.push(message);
-      }
-    });
-  }
-
   addTask() {
     this.newTask.taskListId = this.taskList.id;
-    this.taskService.addTask(this.newTask);
+    this.taskService.addTask(this.newTask, this.taskList.boardId);
   }
 
   protected readonly Priority = Priority;
 
-  drop(event: CdkDragDrop<Task[], any>) {
+  deleteTaskList() {
+    this.taskListService.deleteTaskList(this.taskList);
+  }
+
+  replaceWithInput() {
+    this.changeTitle = true;
+    this.newTitle = this.taskList.title;
+  }
+
+  replaceWithText() {
+    this.changeTitle = false;
+    this.taskList.title = this.newTitle;
+    this.taskListService.renameTaskList(this.taskList);
+    this.borderColor = this.stringToColor(this.taskList.title);
+  }
+
+  drop(event: CdkDragDrop<ShortTask[], any>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {

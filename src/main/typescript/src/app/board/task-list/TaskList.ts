@@ -1,8 +1,8 @@
-import { Task } from './task/Task';
+import { ShortTask } from './task/ShortTask';
 
 export interface TaskList {
     id: number;
     title: string;
-    tasks: Task[];
+    tasks: ShortTask[];
     boardId: number;
 }

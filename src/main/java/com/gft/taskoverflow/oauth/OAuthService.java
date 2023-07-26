@@ -40,7 +40,10 @@ public class OAuthService {
         }
 
         String jwt = jwtService.generateJwt(new CustomerUserDetails(email, accessToken));
-        response.addCookie(new Cookie("JWT", jwt));
+        Cookie cookie = new Cookie("jwt", jwt);
+        cookie.setHttpOnly(false);
+        cookie.setPath("/");
+        response.addCookie(cookie);
     }
 
     public String getAuthUrl() {

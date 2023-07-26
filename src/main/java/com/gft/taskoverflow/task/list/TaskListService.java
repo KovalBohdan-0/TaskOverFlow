@@ -1,6 +1,7 @@
 package com.gft.taskoverflow.task.list;
 
 import com.gft.taskoverflow.board.BoardService;
+import com.gft.taskoverflow.customer.CustomerService;
 import com.gft.taskoverflow.exception.TaskListNotFoundException;
 import com.gft.taskoverflow.task.list.dto.TaskListCreationDto;
 import com.gft.taskoverflow.task.list.dto.TaskListRenameDto;
@@ -18,6 +19,7 @@ public class TaskListService {
     private final SimpMessagingTemplate messagingTemplate;
     private final TaskListMapper taskListMapper;
     private final BoardService boardService;
+    private final CustomerService customerService;
 
     public List<TaskListResponseDto> getBoardTaskListsResponse(Long boardId) {
         return taskListRepository.findAllByBoardId(boardId).stream().map(taskListMapper::mapToResponseDto).toList();
@@ -44,5 +46,11 @@ public class TaskListService {
         taskList.setTitle(renamedTaskList.title());
         taskListRepository.save(taskList);
         return renamedTaskList;
+    }
+
+    public void checkCustomersBoard(Long boardId) {
+        if (!customerService.currentCustomerContainsBoard(boardId)) {
+            throw new TaskListNotFoundException(boardId);
+        }
     }
 }

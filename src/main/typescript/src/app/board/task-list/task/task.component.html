@@ -1,8 +1,8 @@
-<div class="card card-title">
+<div (click)="openTaskModal($event)" class="w-100">
   <div class="card-body task">
     <label class="fancy-checkbox">
-      <input type="checkbox"  [checked]="task.done" />
-      <span class="checkmark"></span>
+      <input type="checkbox" id="done-checkbox" [checked]="task.done" (click)="updateTaskDone()"/>
+      <span class="checkmark" id="done"></span>
     </label>
     <div class="ms-5">
       <div class="mb-2">{{task.title}}</div>

@@ -1,5 +1,8 @@
 package com.gft.taskoverflow.registration;
 
-public record RegistrationRequest(String email,
-                                  String password) {}
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
+public record RegistrationRequest(@NotEmpty @Size(max = 100) String email, @NotEmpty @Size(max = 100) String password) {
+}
 
