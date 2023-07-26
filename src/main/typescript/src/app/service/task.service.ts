@@ -5,6 +5,7 @@ import {environment} from "../../environments/environment";
 import {RxStompService} from "./rx-stomp.service";
 import {Observable} from "rxjs";
 import {Task} from "../board/task-list/task/Task";
+import {TaskMove} from "../board/task-list/task/TaskMove";
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +32,9 @@ export class TaskService {
 
   deleteTask(taskId: number, boardId: number): void {
     this.rxStompService.publish({destination: '/app/task-delete/' + boardId, body: JSON.stringify(taskId)});
+  }
+
+  moveTask(taskMove: TaskMove, boardId: number): void {
+    this.rxStompService.publish({destination: '/app/task-move/' + boardId, body: JSON.stringify(taskMove)});
   }
 }

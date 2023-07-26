@@ -1,9 +1,6 @@
 package com.gft.taskoverflow.task;
 
-import com.gft.taskoverflow.task.dto.TaskCreationDto;
-import com.gft.taskoverflow.task.dto.TaskDeleteDto;
-import com.gft.taskoverflow.task.dto.TaskDto;
-import com.gft.taskoverflow.task.dto.TaskPreviewDto;
+import com.gft.taskoverflow.task.dto.*;
 import jakarta.validation.Valid;
 import lombok.Data;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -36,7 +33,7 @@ public class TaskSocketController {
 
     @MessageMapping("/task-move/{boardId}")
     @SendTo("/topic/task-moved/{boardId}")
-    public TaskDto moveTask(@Valid @Payload TaskDto taskDto) {
-        return taskService.moveTask(taskDto);
+    public TaskDto moveTask(@Valid @Payload TaskMoveDto taskMoveDto) {
+        return taskService.moveTask(taskMoveDto);
     }
 }

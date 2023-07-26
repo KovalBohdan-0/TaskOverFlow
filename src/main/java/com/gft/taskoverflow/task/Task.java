@@ -49,4 +49,19 @@ public class Task {
     public int hashCode() {
         return id.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", position=" + position +
+                ", done=" + done +
+                ", priority=" + priority +
+                ", createdAt=" + createdAt +
+                ", deadline=" + deadline +
+                ", taskList=" + taskList.getId() +
+                '}';
+    }
 }

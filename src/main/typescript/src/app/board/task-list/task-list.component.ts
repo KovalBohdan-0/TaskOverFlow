@@ -29,6 +29,7 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit(): void {
     this.borderColor = this.stringToColor(this.taskList.title);
+    this.taskList.tasks.sort((a, b) => a.position - b.position);
   }
 
   stringToColor(str) {
@@ -80,5 +81,15 @@ export class TaskListComponent implements OnInit {
         event.currentIndex,
       );
     }
+
+    const taskBefore = event.container.data[event.currentIndex - 1];
+    const taskAfter = event.container.data[event.currentIndex + 1];
+
+    this.taskService.moveTask({
+      taskId: event.container.data[event.currentIndex].id,
+      taskListId: this.taskList.id,
+      taskBeforeId: taskBefore ? taskBefore.id : -1,
+      taskAfterId: taskAfter ? taskAfter.id : -1
+    }, this.taskList.boardId);
   }
 }

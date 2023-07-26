@@ -4,4 +4,5 @@ export interface ShortTask {
     done: boolean;
     priority: any;
     taskListId: number;
+    position: number;
 }
