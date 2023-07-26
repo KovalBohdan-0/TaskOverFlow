@@ -137,7 +137,14 @@ export class BoardComponent implements OnInit, OnDestroy {
       const message = JSON.parse(receivedMessage.body);
       const taskList = this.lists.find((list: TaskList) => list.id == message.taskListId);
       const task = taskList.tasks.find((task: any) => task.id == message.id);
-      Object.assign(task, message);
+
+      if (task == undefined) {
+        taskList.tasks.push(message);
+        this.lists.find((list: TaskList) => list.id == message.previousTaskListId).tasks = this.lists.find((list: TaskList) => list.id == message.previousTaskListId).tasks.filter((task: any) => task.id != message.id);
+      } else {
+        Object.assign(task, message);
+      }
+
       taskList.tasks.sort((a, b) => a.position - b.position);
     });
 

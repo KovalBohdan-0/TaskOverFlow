@@ -33,7 +33,7 @@ public class TaskSocketController {
 
     @MessageMapping("/task-move/{boardId}")
     @SendTo("/topic/task-moved/{boardId}")
-    public TaskDto moveTask(@Valid @Payload TaskMoveDto taskMoveDto) {
+    public TaskMovedDto moveTask(@Valid @Payload TaskMoveDto taskMoveDto) {
         return taskService.moveTask(taskMoveDto);
     }
 }

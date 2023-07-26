@@ -50,8 +50,9 @@ public class TaskService {
         return taskDeleteDto;
     }
 
-    public TaskDto moveTask(TaskMoveDto taskMoveDto) {
+    public TaskMovedDto moveTask(TaskMoveDto taskMoveDto) {
         Task task = getTaskById(taskMoveDto.taskId());
+        Long previousTaskListId = task.getTaskList().getId();
         Optional<Task> taskBefore = taskRepository.findById(taskMoveDto.taskBeforeId());
         Optional<Task> taskAfter = taskRepository.findById(taskMoveDto.taskAfterId());
 
@@ -63,7 +64,7 @@ public class TaskService {
 
         task.setTaskList(taskListService.getTaskListById(taskMoveDto.taskListId()));
         taskRepository.save(task);
-        return taskMapper.mapToDto(task);
+        return taskMapper.mapToMovedDto(task, previousTaskListId);
     }
 
     private Task getTaskById(Long taskId) {
