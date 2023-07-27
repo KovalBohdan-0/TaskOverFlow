@@ -62,7 +62,7 @@ public class TaskListService {
         if (taskListAfter.isPresent() && taskListBefore.isPresent()) {
             taskList.setPosition((taskListBefore.get().getPosition() + taskListAfter.get().getPosition()) / 2);
         } else if (taskListAfter.isPresent()) {
-            taskList.setPosition(taskListAfter.get().getPosition() + 1);
+            taskList.setPosition(taskListAfter.get().getPosition() - 1);
         } else taskListBefore.ifPresent(list -> taskList.setPosition(list.getPosition() + 1));
 
         return taskListMapper.mapToResponseDto(taskListRepository.save(taskList));

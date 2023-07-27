@@ -50,6 +50,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.taskListService.getTaskListsByBoardId(boardId).subscribe({
       next: (response: any) => {
         this.lists = response.body;
+        this.lists.sort((a, b) => a.position - b.position);
       }
     });
   }
