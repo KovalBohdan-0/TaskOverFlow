@@ -1,6 +1,7 @@
 package com.gft.taskoverflow.task.list;
 
 import com.gft.taskoverflow.task.list.dto.TaskListCreationDto;
+import com.gft.taskoverflow.task.list.dto.TaskListMoveDto;
 import com.gft.taskoverflow.task.list.dto.TaskListRenameDto;
 import com.gft.taskoverflow.task.list.dto.TaskListResponseDto;
 import jakarta.validation.Valid;
@@ -31,5 +32,11 @@ public class TaskListSocketController {
     @SendTo("/topic/task-list-renamed/{boardId}")
     public TaskListRenameDto renameTaskList(@Valid @Payload TaskListRenameDto taskList) {
         return taskListService.renameTaskList(taskList);
+    }
+
+    @MessageMapping("/task-list-move/{boardId}")
+    @SendTo("/topic/task-list-moved/{boardId}")
+    public TaskListResponseDto moveTaskList(@Valid @Payload TaskListMoveDto taskListMoveDto) {
+        return taskListService.moveTaskList(taskListMoveDto);
     }
 }

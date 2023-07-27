@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface TaskListMapper {
     @Mapping(source = "board.id", target = "boardId")
     TaskListResponseDto mapToResponseDto(TaskList taskList);
+    @Mapping(target = "position", ignore = true)
     @Mapping(target = "tasks", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "board", ignore = true)

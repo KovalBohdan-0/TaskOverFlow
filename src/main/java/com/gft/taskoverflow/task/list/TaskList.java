@@ -19,6 +19,7 @@ public class TaskList {
     private Long id;
     @Column(nullable = false,length = 100)
     private String title;
+    private Float position;
     @OneToMany(mappedBy = "taskList", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Task> tasks;
     @ManyToOne(fetch = FetchType.LAZY)

@@ -31,4 +31,11 @@ export class TaskListService {
   renameTaskList(taskList: TaskList): void {
     this.rxStompService.publish({destination: '/app/task-list-rename/' + taskList.boardId , body: JSON.stringify({title: taskList.title, taskListId: taskList.id})});
   }
+
+  moveTaskList(taskListBeforeId, taskListAfterId, taskListId, boardId): void {
+    this.rxStompService.publish({destination: '/app/task-list-move/' + boardId , body: JSON.stringify({
+        taskListBeforeId: taskListBeforeId,
+        taskListAfterId: taskListAfterId,
+        taskListId: taskListId})});
+  }
 }

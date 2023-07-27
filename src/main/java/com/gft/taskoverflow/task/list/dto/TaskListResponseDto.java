@@ -8,5 +8,5 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
-public record TaskListResponseDto(@NotNull Long id, @NotEmpty @Size(max = 100) String title, @NotNull Long boardId, @NotNull List<TaskPreviewDto> tasks, @NotNull List<Customer> assignedCustomers) {
+public record TaskListResponseDto(@NotNull Long id, @NotEmpty @Size(max = 100) String title, @NotNull Float position , @NotNull Long boardId, @NotNull List<TaskPreviewDto> tasks, @NotNull List<Customer> assignedCustomers) {
 }

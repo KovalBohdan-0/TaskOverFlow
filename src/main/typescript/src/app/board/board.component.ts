@@ -106,6 +106,11 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   drop(event: CdkDragDrop<TaskList[]>) {
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    const taskListBefore = event.container.data[event.currentIndex - 1];
+    const taskListAfter = event.container.data[event.currentIndex + 1];
+    this.taskListService.moveTaskList(taskListBefore ? taskListBefore.id : -1,
+      taskListAfter ? taskListAfter.id : -1,
+      event.container.data[event.currentIndex].id, this.selectedBoard.id);
   }
 
   makeSubscriptions() {
@@ -158,7 +163,14 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.lists = this.lists.filter((list: TaskList) => list.id != message);
     });
 
-    this.subscriptions.push(taskListAddSub, taskAddSub, taskListDeleteSub, taskListRenameSub, taskUpdateSub, taskDeleteSub, taskMoveSub);
+    const taskListMoveSub = this.rxStompService.watch('/topic/task-list-moved/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
+      const message = JSON.parse(receivedMessage.body);
+      const taskList = this.lists.find((list: TaskList) => list.id == message.id);
+      Object.assign(taskList, message);
+      this.lists.sort((a, b) => a.position - b.position);
+    });
+
+    this.subscriptions.push(taskListAddSub, taskAddSub, taskListDeleteSub, taskListRenameSub, taskUpdateSub, taskDeleteSub, taskMoveSub, taskListMoveSub);
   }
 
   ngOnDestroy(): void {
