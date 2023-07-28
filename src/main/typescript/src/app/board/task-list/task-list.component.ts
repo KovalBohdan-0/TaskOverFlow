@@ -6,6 +6,7 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag
 import {ShortTask} from "./task/ShortTask";
 import {TaskService} from "../../service/task.service";
 import {TaskListService} from "../../service/task-list.service";
+import {TaskListUpdateSort} from "./TaskListUpdateSort";
 
 @Component({
   selector: 'app-task-list',
@@ -68,6 +69,25 @@ export class TaskListComponent implements OnInit {
     this.taskList.title = this.newTitle;
     this.taskListService.renameTaskList(this.taskList);
     this.borderColor = this.stringToColor(this.taskList.title);
+  }
+
+  updateTaskListSort(sortOption: string) {
+    let sortDirection: string;
+
+    if (this.taskList.sortOption === sortOption) {
+      if (this.taskList.sortDirection === "ASC") {
+        sortDirection = "DESC";
+      } else {
+        sortDirection = "ASC";
+      }
+    }
+
+    const taskListUpdateSort: TaskListUpdateSort = {
+      id: this.taskList.id,
+      sortOption: sortOption,
+      sortDirection: sortDirection
+    }
+    this.taskListService.updateTaskListSort(taskListUpdateSort, this.taskList.boardId);
   }
 
   drop(event: CdkDragDrop<ShortTask[], any>) {

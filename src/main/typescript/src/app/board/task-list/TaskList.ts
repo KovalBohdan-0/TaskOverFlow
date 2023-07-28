@@ -6,4 +6,6 @@ export interface TaskList {
     tasks: ShortTask[];
     boardId: number;
     position: number;
+    sortOption: string;
+    sortDirection: string;
 }

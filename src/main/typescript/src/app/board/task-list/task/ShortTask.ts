@@ -5,4 +5,6 @@ export interface ShortTask {
     priority: any;
     taskListId: number;
     position: number;
+    createdAt: string;
+    deadline: string;
 }

@@ -172,6 +172,12 @@ export class BoardComponent implements OnInit, OnDestroy {
       taskList.tasks.sort((a, b) => a.position - b.position);
     });
 
+    const taskListUpdateSortSub = this.rxStompService.watch('/topic/task-list-updated-sort/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
+      const message = JSON.parse(receivedMessage.body);
+
+
+    });
+
     this.subscriptions.push(taskListAddSub, taskAddSub, taskListDeleteSub, taskListRenameSub, taskUpdateSub, taskDeleteSub, taskMoveSub, taskListMoveSub);
   }
 

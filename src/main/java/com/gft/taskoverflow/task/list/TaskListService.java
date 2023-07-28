@@ -3,10 +3,7 @@ package com.gft.taskoverflow.task.list;
 import com.gft.taskoverflow.board.BoardService;
 import com.gft.taskoverflow.customer.CustomerService;
 import com.gft.taskoverflow.exception.TaskListNotFoundException;
-import com.gft.taskoverflow.task.list.dto.TaskListCreationDto;
-import com.gft.taskoverflow.task.list.dto.TaskListMoveDto;
-import com.gft.taskoverflow.task.list.dto.TaskListRenameDto;
-import com.gft.taskoverflow.task.list.dto.TaskListResponseDto;
+import com.gft.taskoverflow.task.list.dto.*;
 import lombok.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -68,9 +65,10 @@ public class TaskListService {
         return taskListMapper.mapToResponseDto(taskListRepository.save(taskList));
     }
 
-    public void checkCustomersBoard(Long boardId) {
-        if (!customerService.currentCustomerContainsBoard(boardId)) {
-            throw new TaskListNotFoundException(boardId);
-        }
+    public TaskListResponseDto updateTaskListSort(TaskListUpdateSortDto taskListUpdateSortDto) {
+        TaskList taskList = getTaskListById(taskListUpdateSortDto.id());
+        taskList.setSortOption(taskListUpdateSortDto.sortOption());
+        taskList.setSortDirection(taskListUpdateSortDto.sortDirection());
+        return taskListMapper.mapToResponseDto(taskListRepository.save(taskList));
     }
 }
