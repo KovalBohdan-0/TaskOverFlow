@@ -39,8 +39,8 @@
   </div>
 </nav>
 <div class="board-main p-5 container">
-  <div cdkDropListGroup cdkDropListOrientation="horizontal" [cdkDropListData]="lists" class="row" cdkDropList (cdkDropListDropped)="drop($event)">
-    <app-task-list cdkDrag *ngFor="let taskList of lists" [taskList]="taskList" class="col-md-2"></app-task-list>
+  <div cdkDropListGroup cdkDropListOrientation="horizontal" [cdkDropListData]="lists" class="row flex-row overflow-x-scroll cards" cdkDropList (cdkDropListDropped)="drop($event)">
+    <app-task-list cdkDrag *ngFor="let taskList of lists" [taskList]="taskList" class="col-md-2 "></app-task-list>
     <div class="col-md-2">
       <div class="card border-left-blue rounded-4">
         <div class="card-body">
