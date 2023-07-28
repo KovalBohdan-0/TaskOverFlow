@@ -47,14 +47,18 @@ export class TaskListService {
   }
 
   sortTaskList(taskList: TaskList): TaskList {
+    if (taskList.tasks == null) {
+      return taskList;
+    }
+
     const multiplier = taskList.sortDirection === SortDirection.ASC ? 1 : -1;
 
     if (taskList.sortOption === SortOption.POSITION) {
       taskList.tasks.sort((a, b) => (a.position - b.position) * multiplier);
     } else if (taskList.sortOption === SortOption.CREATED_AT) {
-      taskList.tasks.sort((a, b) => (Date.parse(a.createdAt) - Date.parse(b.createdAt) * multiplier));
+      taskList.tasks.sort((a, b) => (Date.parse(a.createdAt) - Date.parse(b.createdAt)) * multiplier);
     } else if (taskList.sortOption === SortOption.DEADLINE) {
-      taskList.tasks.sort((a, b) => (Date.parse(a.deadline) - Date.parse(b.deadline) * multiplier));
+      taskList.tasks.sort((a, b) => (Date.parse(a.deadline) - Date.parse(b.deadline)) * multiplier);
     } else if (taskList.sortOption === SortOption.PRIORITY) {
       taskList.tasks.sort((a, b) => {
         const aPriority = a.priority == "LOW" ? 0 : a.priority == "MEDIUM" ? 1 : 2;
