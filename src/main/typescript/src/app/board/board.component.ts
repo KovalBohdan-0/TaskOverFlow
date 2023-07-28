@@ -169,6 +169,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       const taskList = this.lists.find((list: TaskList) => list.id == message.id);
       Object.assign(taskList, message);
       this.lists.sort((a, b) => a.position - b.position);
+      taskList.tasks.sort((a, b) => a.position - b.position);
     });
 
     this.subscriptions.push(taskListAddSub, taskAddSub, taskListDeleteSub, taskListRenameSub, taskUpdateSub, taskDeleteSub, taskMoveSub, taskListMoveSub);
