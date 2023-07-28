@@ -44,7 +44,8 @@ public class TaskListService {
     }
 
     public TaskListRenameDto renameTaskList(TaskListRenameDto renamedTaskList) {
-        TaskList taskList = taskListRepository.findById(renamedTaskList.taskListId()).orElseThrow(() -> new TaskListNotFoundException(renamedTaskList.taskListId()));
+        TaskList taskList = taskListRepository.findById(renamedTaskList.taskListId())
+                .orElseThrow(() -> new TaskListNotFoundException(renamedTaskList.taskListId()));
         taskList.setTitle(renamedTaskList.title());
         taskListRepository.save(taskList);
         return renamedTaskList;
