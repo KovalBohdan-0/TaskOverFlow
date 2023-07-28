@@ -11,7 +11,7 @@
 }
 
 .cards {
-  flex-wrap: nowrap !important;
+  flex-wrap: nowrap;
 }
 
 .profile-image {
