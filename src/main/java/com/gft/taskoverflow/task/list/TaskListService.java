@@ -65,6 +65,7 @@ public class TaskListService {
         return taskListMapper.mapToResponseDto(taskListRepository.save(taskList));
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public TaskListResponseDto updateTaskListSort(TaskListUpdateSortDto taskListUpdateSortDto) {
         TaskList taskList = getTaskListById(taskListUpdateSortDto.id());
         taskList.setSortOption(taskListUpdateSortDto.sortOption());

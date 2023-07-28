@@ -15,11 +15,11 @@
               <a (click)="deleteTaskList()" class="dropdown-item">Delete</a>
               <a (click)="replaceWithInput()" class="dropdown-item">Rename</a>
               <br>
-              <a (click)="updateTaskListSort()" class="dropdown-item">Sort by your order</a>
-              <a (click)="replaceWithInput()" class="dropdown-item">Sort by creation date</a>
-              <a (click)="replaceWithInput()" class="dropdown-item">Sort by deadline</a>
-              <a (click)="replaceWithInput()" class="dropdown-item">Sort by title</a>
-              <a (click)="replaceWithInput()" class="dropdown-item">Sort by priority</a>
+              <a (click)="updateTaskListSort(SortOption.POSITION)" class="dropdown-item">Sort by your order</a>
+              <a (click)="updateTaskListSort(SortOption.CREATED_AT)" class="dropdown-item">Sort by creation date</a>
+              <a (click)="updateTaskListSort(SortOption.DEADLINE)" class="dropdown-item">Sort by deadline</a>
+              <a (click)="updateTaskListSort(SortOption.TITLE)" class="dropdown-item">Sort by title</a>
+              <a (click)="updateTaskListSort(SortOption.PRIORITY)" class="dropdown-item">Sort by priority</a>
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ import {ShortTask} from "./task/ShortTask";
 import {TaskService} from "../../service/task.service";
 import {TaskListService} from "../../service/task-list.service";
 import {TaskListUpdateSort} from "./TaskListUpdateSort";
+import {SortOption} from "./task/SortOption";
 
 @Component({
   selector: 'app-task-list',
@@ -30,7 +31,7 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit(): void {
     this.borderColor = this.stringToColor(this.taskList.title);
-    this.taskList.tasks.sort((a, b) => a.position - b.position);
+    this.taskListService.sortTaskList(this.taskList);
   }
 
   stringToColor(str) {
@@ -72,7 +73,7 @@ export class TaskListComponent implements OnInit {
   }
 
   updateTaskListSort(sortOption: string) {
-    let sortDirection: string;
+    let sortDirection: string = "ASC";
 
     if (this.taskList.sortOption === sortOption) {
       if (this.taskList.sortDirection === "ASC") {
@@ -87,6 +88,7 @@ export class TaskListComponent implements OnInit {
       sortOption: sortOption,
       sortDirection: sortDirection
     }
+
     this.taskListService.updateTaskListSort(taskListUpdateSort, this.taskList.boardId);
   }
 
@@ -112,4 +114,6 @@ export class TaskListComponent implements OnInit {
       taskAfterId: taskAfter ? taskAfter.id : -1
     }, this.taskList.boardId);
   }
+
+  protected readonly SortOption = SortOption;
 }

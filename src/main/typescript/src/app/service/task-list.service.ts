@@ -56,7 +56,11 @@ export class TaskListService {
     } else if (taskList.sortOption === SortOption.DEADLINE) {
       taskList.tasks.sort((a, b) => (Date.parse(a.deadline) - Date.parse(b.deadline) * multiplier));
     } else if (taskList.sortOption === SortOption.PRIORITY) {
-      taskList.tasks.sort((a, b) => (a.priority - b.priority) * multiplier);
+      taskList.tasks.sort((a, b) => {
+        const aPriority = a.priority == "LOW" ? 0 : a.priority == "MEDIUM" ? 1 : 2;
+        const bPriority = b.priority == "LOW" ? 0 : b.priority == "MEDIUM" ? 1 : 2;
+        return (aPriority - bPriority) * multiplier;
+      });
     } else if (taskList.sortOption === SortOption.TITLE) {
       taskList.tasks.sort((a, b) => (a.title.localeCompare(b.title) * multiplier));
     }

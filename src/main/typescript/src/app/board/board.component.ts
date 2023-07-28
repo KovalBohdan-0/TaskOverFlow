@@ -174,11 +174,12 @@ export class BoardComponent implements OnInit, OnDestroy {
 
     const taskListUpdateSortSub = this.rxStompService.watch('/topic/task-list-updated-sort/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
       const message = JSON.parse(receivedMessage.body);
-
-
+      const taskList = this.lists.find((list: TaskList) => list.id == message.id);
+      Object.assign(taskList, message);
+      this.taskListService.sortTaskList(taskList);
     });
 
-    this.subscriptions.push(taskListAddSub, taskAddSub, taskListDeleteSub, taskListRenameSub, taskUpdateSub, taskDeleteSub, taskMoveSub, taskListMoveSub);
+    this.subscriptions.push(taskListAddSub, taskAddSub, taskListDeleteSub, taskListRenameSub, taskUpdateSub, taskDeleteSub, taskMoveSub, taskListMoveSub, taskListUpdateSortSub);
   }
 
   ngOnDestroy(): void {
