@@ -3,14 +3,15 @@ package com.gft.taskoverflow.task.list;
 import com.gft.taskoverflow.board.BoardService;
 import com.gft.taskoverflow.customer.CustomerService;
 import com.gft.taskoverflow.exception.TaskListNotFoundException;
-import com.gft.taskoverflow.task.list.dto.TaskListCreationDto;
-import com.gft.taskoverflow.task.list.dto.TaskListRenameDto;
-import com.gft.taskoverflow.task.list.dto.TaskListResponseDto;
+import com.gft.taskoverflow.task.list.dto.*;
 import lombok.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Data
@@ -32,6 +33,7 @@ public class TaskListService {
     public TaskListResponseDto addTaskList(TaskListCreationDto taskList) {
         TaskList newTaskList = taskListMapper.mapToTaskList(taskList);
         newTaskList.setBoard(boardService.getBoardById(taskList.boardId()));
+        newTaskList.setPosition(taskListRepository.findMaxPositionByBoardId(taskList.boardId()).orElse(0.0f) + 1);
         taskListRepository.save(newTaskList);
         return taskListMapper.mapToResponseDto(newTaskList);
     }
@@ -42,15 +44,33 @@ public class TaskListService {
     }
 
     public TaskListRenameDto renameTaskList(TaskListRenameDto renamedTaskList) {
-        TaskList taskList = taskListRepository.findById(renamedTaskList.taskListId()).orElseThrow(() -> new TaskListNotFoundException(renamedTaskList.taskListId()));
+        TaskList taskList = taskListRepository.findById(renamedTaskList.taskListId())
+                .orElseThrow(() -> new TaskListNotFoundException(renamedTaskList.taskListId()));
         taskList.setTitle(renamedTaskList.title());
         taskListRepository.save(taskList);
         return renamedTaskList;
     }
 
-    public void checkCustomersBoard(Long boardId) {
-        if (!customerService.currentCustomerContainsBoard(boardId)) {
-            throw new TaskListNotFoundException(boardId);
-        }
+    @Transactional(propagation = Propagation.REQUIRED)
+    public TaskListResponseDto moveTaskList(TaskListMoveDto taskListMoveDto) {
+        TaskList taskList = getTaskListById(taskListMoveDto.taskListId());
+        Optional<TaskList> taskListBefore = taskListRepository.findById(taskListMoveDto.taskListBeforeId());
+        Optional<TaskList> taskListAfter = taskListRepository.findById(taskListMoveDto.taskListAfterId());
+
+        if (taskListAfter.isPresent() && taskListBefore.isPresent()) {
+            taskList.setPosition((taskListBefore.get().getPosition() + taskListAfter.get().getPosition()) / 2);
+        } else if (taskListAfter.isPresent()) {
+            taskList.setPosition(taskListAfter.get().getPosition() - 1);
+        } else taskListBefore.ifPresent(list -> taskList.setPosition(list.getPosition() + 1));
+
+        return taskListMapper.mapToResponseDto(taskListRepository.save(taskList));
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public TaskListResponseDto updateTaskListSort(TaskListUpdateSortDto taskListUpdateSortDto) {
+        TaskList taskList = getTaskListById(taskListUpdateSortDto.id());
+        taskList.setSortOption(taskListUpdateSortDto.sortOption());
+        taskList.setSortDirection(taskListUpdateSortDto.sortDirection());
+        return taskListMapper.mapToResponseDto(taskListRepository.save(taskList));
     }
 }

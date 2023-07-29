@@ -19,6 +19,11 @@ public class TaskList {
     private Long id;
     @Column(nullable = false,length = 100)
     private String title;
+    private Float position;
+    @Enumerated(EnumType.STRING)
+    private SortOption sortOption = SortOption.POSITION;
+    @Enumerated(EnumType.STRING)
+    private SortDirection sortDirection = SortDirection.ASC;
     @OneToMany(mappedBy = "taskList", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Task> tasks;
     @ManyToOne(fetch = FetchType.LAZY)

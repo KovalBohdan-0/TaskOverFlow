@@ -5,4 +5,7 @@ export interface TaskList {
     title: string;
     tasks: ShortTask[];
     boardId: number;
+    position: number;
+    sortOption: string;
+    sortDirection: string;
 }

@@ -1,0 +1,26 @@
+.sidebar {
+  width: 13rem;
+  height: calc(100vh + 6rem);
+  min-height: calc(100% + 6rem);
+  background-color: #4e73df;
+}
+
+.logo {
+  width: fit-content;
+}
+
+.sidebar-divider {
+  margin: 0 auto;
+  width: 85%;
+  height: 1px;
+  background-color:   rgba(255,255,255,.15);
+}
+
+.sidebar-elements {
+  color: white;
+  text-decoration: none;
+}
+
+.sidebar-btn {
+  font-weight: 700;
+}

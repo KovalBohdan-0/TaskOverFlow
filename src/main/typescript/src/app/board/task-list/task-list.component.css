@@ -6,6 +6,10 @@
   content:initial
 }
 
+.priority-sel {
+  width: fit-content;
+}
+
 .list {
   border: solid 1px #ccc;
 }

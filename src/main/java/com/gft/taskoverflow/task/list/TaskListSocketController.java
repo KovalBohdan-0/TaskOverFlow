@@ -1,8 +1,6 @@
 package com.gft.taskoverflow.task.list;
 
-import com.gft.taskoverflow.task.list.dto.TaskListCreationDto;
-import com.gft.taskoverflow.task.list.dto.TaskListRenameDto;
-import com.gft.taskoverflow.task.list.dto.TaskListResponseDto;
+import com.gft.taskoverflow.task.list.dto.*;
 import jakarta.validation.Valid;
 import lombok.Data;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -31,5 +29,17 @@ public class TaskListSocketController {
     @SendTo("/topic/task-list-renamed/{boardId}")
     public TaskListRenameDto renameTaskList(@Valid @Payload TaskListRenameDto taskList) {
         return taskListService.renameTaskList(taskList);
+    }
+
+    @MessageMapping("/task-list-move/{boardId}")
+    @SendTo("/topic/task-list-moved/{boardId}")
+    public TaskListResponseDto moveTaskList(@Valid @Payload TaskListMoveDto taskListMoveDto) {
+        return taskListService.moveTaskList(taskListMoveDto);
+    }
+
+    @MessageMapping("/task-list-update-sort/{boardId}")
+    @SendTo("/topic/task-list-updated-sort/{boardId}")
+    public TaskListResponseDto updateTaskListSort(@Valid @Payload TaskListUpdateSortDto taskListUpdateSortDto) {
+        return taskListService.updateTaskListSort(taskListUpdateSortDto);
     }
 }

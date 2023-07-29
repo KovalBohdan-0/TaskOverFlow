@@ -1,16 +1,14 @@
 package com.gft.taskoverflow.board;
 
+import com.gft.taskoverflow.customer.Customer;
 import com.gft.taskoverflow.customer.CustomerUserDetailsService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -23,47 +21,66 @@ class BoardServiceTest {
     private CustomerUserDetailsService customerUserDetailsService;
 
     @Mock
-    private SecurityContext securityContext;
+    private BoardMapper boardMapper;
 
     @InjectMocks
     private BoardService boardService;
 
-    private AutoCloseable autoCloseable;
-
     @BeforeEach
-    void setUp() {
-        autoCloseable = MockitoAnnotations.openMocks(this);
-        SecurityContextHolder.setContext(securityContext);
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
-    @AfterEach
-    void tearDown() throws Exception {
-        autoCloseable.close();
+    @Test
+    public void testGetCustomersBoards() {
+        String customerEmail = "test@example.com";
+        List<Board> mockBoards = new ArrayList<>();
+        when(customerUserDetailsService.getCurrentCustomerEmail()).thenReturn(customerEmail);
+        when(boardRepository.findAllByCustomersEmail(customerEmail)).thenReturn(mockBoards);
+        when(boardMapper.mapToResponseDto(any())).thenReturn(new BoardResponseDto(1L, "title"));
+
+        List<BoardResponseDto> result = boardService.getCustomersBoards();
+
+        assertNotNull(result);
     }
 
-//    @Test
-//    public void testGetCustomersBoards() {
-//        String email = "test@example.com";
-//        List<Board> boards = List.of(new Board(), new Board());
-//
-//        when(customerUserDetailsService.getCurrentCustomerEmail()).thenReturn(email);
-//        when(boardRepository.findAllByCustomersEmail(email)).thenReturn(boards);
-//
-//        List<Board> result = boardService.getCustomersBoards();
-//
-//        assertEquals(2, result.size());
-//
-//        verify(customerUserDetailsService, times(1)).getCurrentCustomerEmail();
-//        verify(boardRepository, times(1)).findAllByCustomersEmail(email);
-//    }
+    @Test
+    public void testSaveBoardCustomers() {
+        Long boardId = 1L;
+        String email = "test@example.com";
+        Board board = new Board();
+        Customer customer = new Customer();
+        customer.setId(1L);
+        HashSet<Customer> customers = new HashSet<>();
+        customers.add(customer);
+        board.setCustomers(customers);
+        when(customerUserDetailsService.getCustomerByEmail(email)).thenReturn(customer);
+        when(boardRepository.findById(boardId)).thenReturn(Optional.of(board));
 
-//    @Test
-//    public void testSaveBoardCustomers() {
-//        Long boardId = 1L;
-//        String email = "test@example.com";
-//
-//        boardService.saveBoardCustomers(boardId, email);
-//
-//        verify(boardRepository, times(1)).findAllByCustomersEmail(email, boardId);
-//    }
+        boardService.saveBoardCustomers(boardId, email);
+
+        assertTrue(board.getCustomers().contains(customer));
+    }
+
+    @Test
+    public void testSaveBoard() {
+        Board board = new Board();
+        Customer customer = new Customer();
+        when(customerUserDetailsService.getCurrentCustomer()).thenReturn(customer);
+
+        boardService.saveBoard(board);
+
+        assertTrue(board.getCustomers().contains(customer));
+    }
+
+    @Test
+    public void testGetBoardById() {
+        Long boardId = 1L;
+        Board board = new Board();
+        when(boardRepository.findById(boardId)).thenReturn(Optional.of(board));
+
+        Board result = boardService.getBoardById(boardId);
+
+        assertNotNull(result);
+    }
 }

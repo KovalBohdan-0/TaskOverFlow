@@ -25,6 +25,7 @@ import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from "@angular-material-components/datetime-picker";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatSelectModule} from "@angular/material/select";
+import { SidebarComponent } from './board/sidebar/sidebar.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -43,6 +44,7 @@ const routes: Routes = [
     TaskListComponent,
     TaskComponent,
     TaskUpdateComponent,
+    SidebarComponent,
   ],
   imports: [
     BrowserModule,
