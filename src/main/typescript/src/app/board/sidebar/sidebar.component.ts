@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BoardService} from "../../service/board.service";
+import {SidebarAddMemberComponent} from "./sidebar-add-member/sidebar-add-member.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-sidebar',
@@ -7,16 +9,23 @@ import {BoardService} from "../../service/board.service";
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
-  private boards = [];
+  boards = [];
 
-  constructor(private boardService: BoardService) { }
+  constructor(private boardService: BoardService, public dialog: MatDialog) { }
 
   ngOnInit() {
-
+    this.getBoards();
   }
 
   getBoards() {
-    this.boardService.getAllBoards().subscribe(boards => {
+    this.boardService.getAllBoards().subscribe({
+      next: (response: any) => {
+        this.boards = response.body;
+      }
     });
+  }
+
+  openAddBoardModal() {
+    this.dialog.open(SidebarAddMemberComponent);
   }
 }

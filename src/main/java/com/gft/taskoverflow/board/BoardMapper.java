@@ -1,5 +1,6 @@
 package com.gft.taskoverflow.board;
 
+import com.gft.taskoverflow.board.dto.BoardResponseDto;
 import org.mapstruct.Mapper;
 
 

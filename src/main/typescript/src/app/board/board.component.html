@@ -2,17 +2,6 @@
   <app-sidebar class=""></app-sidebar>
   <div class="w-100">
     <nav class="navbar p-2 navbar-expand-lg shadow-sm board">
-      <div ngbDropdown class="d-inline-block ms-5">
-        <button type="button" class="btn btn-light" id="dropdownBasic1" ngbDropdownToggle>
-          Boards
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <div routerLink="/board/{{option.id}}" routerLinkActive="active" *ngFor="let option of boards">
-            <a class="dropdown-item">{{ option.title }}</a>
-          </div>
-        </div>
-      </div>
-      <div class="ms-5 divider"></div>
       <div class="ms-5">
         <input placeholder="Enter board title" class="form-input" [(ngModel)]="newBoardTitle"/>
         <button class="btn btn-light ms-2" (click)="addBoard()">Create board</button>

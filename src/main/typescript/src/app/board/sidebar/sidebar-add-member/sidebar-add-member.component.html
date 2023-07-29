@@ -1,0 +1,10 @@
+<div class="add-member-dialog">
+  <p class="add-member">Add member by email:</p>
+  <form (ngSubmit)="addBoardMember()" class="d-flex flex-column">
+    <mat-form-field>
+      <mat-label>Member email</mat-label>
+      <input matInput name="email" [(ngModel)]="email" required>
+    </mat-form-field>
+    <input class="btn btn-primary" type="submit" value="Add">
+  </form>
+</div>

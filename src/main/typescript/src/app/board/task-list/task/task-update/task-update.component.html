@@ -18,8 +18,8 @@
           <textarea [(ngModel)]="task.description" name="description" matInput placeholder="Your task description"></textarea>
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Deadline</mat-label>
-          <input [(ngModel)]="task.deadline" name="Deadline" matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date">
+          <mat-label>Due date</mat-label>
+          <input [(ngModel)]="task.deadline" name="Due date" matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date">
           <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
           <ngx-mat-datetime-picker #picker>
           </ngx-mat-datetime-picker>

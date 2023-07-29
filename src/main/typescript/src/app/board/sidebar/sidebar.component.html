@@ -11,13 +11,13 @@
   <div class="sidebar-elements d-flex flex-column" >
     <button ngbDropdown ngbDropdownToggle class="btn text-white p-3 sidebar-btn">Boards
     <div ngbDropdownMenu>
-      <a ngbDropdownItem>Board 1</a>
-      <a ngbDropdownItem>Board 2</a>
-      <a ngbDropdownItem>Board 3</a>
+      <div routerLink="/board/{{option.id}}" routerLinkActive="active" *ngFor="let option of boards">
+        <a class="dropdown-item">{{ option.title }}</a>
+      </div>
     </div>
     </button>
     <div class="sidebar-divider"></div>
-    <button class="btn text-white p-3 sidebar-btn"><i class="bi bi-person-fill-add"></i> Add members</button>
+    <button (click)="openAddBoardModal()" name="addMember" class="btn text-white p-3 sidebar-btn"><i class="bi bi-person-fill-add"></i> Add members</button>
     <div class="sidebar-divider"></div>
     <button class="btn text-white p-3 sidebar-btn"><i class="bi bi-sliders2"></i> Settings</button>
   </div>
