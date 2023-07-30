@@ -1,3 +1,4 @@
 export const environment = {
-  apiUrl: ''
+  apiUrl: 'https://taskoverlow.azurewebsites.net',
+  wsUrl: 'ws://taskoverlow.azurewebsites.net/ws'
 };

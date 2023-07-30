@@ -1,17 +1,13 @@
 import { RxStompConfig } from '@stomp/rx-stomp';
+import {environment} from "../environments/environment";
 
 export const myRxStompConfig: RxStompConfig = {
-  brokerURL: 'ws://localhost:8080/ws',
-
-  // connectHeaders: {
-  //   login: 'guest',
-  //   passcode: 'guest',
-  // },
+  brokerURL: environment.wsUrl,
 
   heartbeatIncoming: 0,
   heartbeatOutgoing: 20000,
 
-  reconnectDelay: 500,
+  reconnectDelay: 4000,
 
   // debug: (msg: string): void => {
   //   console.log(new Date(), msg);

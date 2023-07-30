@@ -7,6 +7,7 @@
       <env name="PGPASSWORD" value="" />
       <env name="PGUSERNAME" value="postgres" />
       <env name="JWT_SECRET" value="73357638792F423F4528482B4D6251655468576D5A7133743677397A24432646" />
+      <env name="APP_DOMAIN" value="http://localhost:8080" />
     </envs>
     <module name="TaskOverFlow" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.gft.taskoverflow.TaskOverFlowApplication" />
