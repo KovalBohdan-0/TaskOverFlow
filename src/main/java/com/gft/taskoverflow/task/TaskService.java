@@ -70,4 +70,8 @@ public class TaskService {
     public Task getTaskById(Long taskId) {
         return taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
     }
+
+    public void save(Task task) {
+        taskRepository.save(task);
+    }
 }

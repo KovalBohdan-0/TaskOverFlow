@@ -49,7 +49,6 @@ export class AuthService {
           if (!jwtFound) {
             for (let cookie of document.cookie.split(';')) {
               if (cookie.includes('jwt')) {
-                console.log(cookie + " found");
                 jwtFound = true;
                 resolve(cookie.split('=')[1]);
                 return;

@@ -24,6 +24,23 @@
           <ngx-mat-datetime-picker #picker>
           </ngx-mat-datetime-picker>
         </mat-form-field>
+        <div *ngIf="notification.id != 0" class="d-flex flex-column">
+          <mat-form-field>
+            <mat-label>Notification time</mat-label>
+            <input [(ngModel)]="notification.notificationTime" name="notif-time" matInput [ngxMatDatetimePicker]="notificationPicker" placeholder="Your notification time">
+            <mat-datepicker-toggle matSuffix [for]="$any(notificationPicker)"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #notificationPicker>
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Notification message</mat-label>
+            <input [(ngModel)]="notification.message" name="notif-message" matInput placeholder="Your notification message"/>
+          </mat-form-field>
+        </div>
+        <div class="w-100 mx-auto btn btn-secondary mb-4" (click)="makeNotification()" *ngIf="notification.id == 0">
+          Add notification
+          <i class="bi bi-plus-square"></i><i class="bi bi-bell-fill"></i>
+        </div>
         <mat-form-field>
           <mat-label>Priority</mat-label>
           <mat-select [(ngModel)]="task.priority" name="priority">

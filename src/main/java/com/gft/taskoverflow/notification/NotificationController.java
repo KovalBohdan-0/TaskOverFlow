@@ -7,17 +7,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Data
+@RequestMapping("/api/v1")
 public class NotificationController {
     private final NotificationService notificationService;
 
     @GetMapping("/notification/{taskId}")
     public NotificationResponseDto getNotification(@PathVariable Long taskId) {
         return notificationService.getNotification(taskId);
-    }
-
-    @PostMapping("/notification/{taskId}")
-    public void addNotification(@PathVariable Long taskId, @RequestBody Notification notification) {
-        notificationService.addNotification(taskId,notification);
     }
 
     @PutMapping("/notification/{taskId}")

@@ -4,6 +4,8 @@ import {TaskService} from "../../../../service/task.service";
 import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
 import {Task} from "../Task";
 import {SharedService} from "../../../../service/shared.service";
+import {NotificationService} from "../../../../service/notification.service";
+import {Notification} from "./Notification";
 
 @Component({
   selector: 'app-task-update',
@@ -13,6 +15,12 @@ import {SharedService} from "../../../../service/shared.service";
 export class TaskUpdateComponent implements OnInit {
   protected readonly Priority = Priority;
   private boardId: number = 0;
+  public notification: Notification = {
+    id: 0,
+    taskId: 0,
+    message: '',
+    notificationTime: ''
+  }
   public task: Task = {
     id: 0,
     title: '',
@@ -24,8 +32,8 @@ export class TaskUpdateComponent implements OnInit {
     done: false
   }
 
-  constructor(private taskService: TaskService,private dialog: MatDialog,
-  @Inject(MAT_DIALOG_DATA) public data, private sharedService: SharedService) {
+  constructor(private taskService: TaskService, private dialog: MatDialog,
+  @Inject(MAT_DIALOG_DATA) public data, private sharedService: SharedService, private notificationService: NotificationService) {
   }
 
   ngOnInit(): void {
@@ -37,12 +45,31 @@ export class TaskUpdateComponent implements OnInit {
     return this.taskService.getTask(this.data).subscribe({
       next: (response: any) => {
         this.task = response.body;
+        this.getNotification();
+      }
+    });
+  }
+
+  makeNotification() {
+    this.notification.id = 1;
+    this.notification.notificationTime = this.task.deadline;
+  }
+
+  getNotification() {
+    this.notificationService.getNotification(this.task.id).subscribe({
+      next: (response: any) => {
+        if (response.body.id != null) {
+          this.notification = response.body;
+        }
       }
     });
   }
 
   updateTask() {
     this.taskService.updateTask(this.task, this.boardId);
+    if (this.notification.id != 0) {
+      this.notificationService.updateNotification(this.notification, this.task.id).subscribe();
+    }
     this.close();
   }
 
