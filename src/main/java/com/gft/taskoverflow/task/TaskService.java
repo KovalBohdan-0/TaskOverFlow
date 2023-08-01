@@ -67,7 +67,7 @@ public class TaskService {
         return taskMapper.mapToMovedDto(task, previousTaskListId);
     }
 
-    private Task getTaskById(Long taskId) {
+    public Task getTaskById(Long taskId) {
         return taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
     }
 }

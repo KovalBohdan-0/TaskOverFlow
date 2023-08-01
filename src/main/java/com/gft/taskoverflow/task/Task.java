@@ -1,5 +1,6 @@
 package com.gft.taskoverflow.task;
 
+import com.gft.taskoverflow.notification.Notification;
 import com.gft.taskoverflow.task.list.TaskList;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,6 +27,8 @@ public class Task {
     private LocalDateTime deadline;
     @ManyToOne(fetch = FetchType.LAZY)
     private TaskList taskList;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Notification notification;
 
     public Task () {
     }
