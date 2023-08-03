@@ -45,6 +45,7 @@ export class TaskUpdateComponent implements OnInit {
     return this.taskService.getTask(this.data).subscribe({
       next: (response: any) => {
         this.task = response.body;
+        this.task.deadline = this.addUtcHours(this.task.deadline);
         this.getNotification();
       }
     });
@@ -60,6 +61,7 @@ export class TaskUpdateComponent implements OnInit {
       next: (response: any) => {
         if (response.body.id != null) {
           this.notification = response.body;
+          this.notification.notificationTime = this.addUtcHours(this.notification.notificationTime);
         }
       }
     });
@@ -76,6 +78,15 @@ export class TaskUpdateComponent implements OnInit {
   deleteTask() {
     this.taskService.deleteTask(this.task.id, this.boardId);
     this.close();
+  }
+
+  addUtcHours(dateString: string): string {
+    const date = new Date(dateString);
+    const utcHours = new Date().getTimezoneOffset() / 60 * -1;
+    date.setUTCHours(date.getUTCHours() + utcHours);
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${
+      String(date.getDate()).padStart(2, '0')}T${String(date.getHours()).padStart(2, '0')}:${
+      String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
   }
 
   close() {

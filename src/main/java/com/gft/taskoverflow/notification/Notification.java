@@ -24,6 +24,8 @@ public class Notification {
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime notificationTime;
+    private boolean isSent = false;
+    private boolean isRead = false;
     @OneToOne(mappedBy = "notification")
     private Task task;
 
