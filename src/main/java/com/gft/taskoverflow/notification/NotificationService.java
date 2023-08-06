@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.List;
+
 
 @Service
 @Data
@@ -30,8 +32,6 @@ public class NotificationService {
         Notification notification = notificationRepository.findByTaskId(taskId).orElse(new Notification());
         notification.setMessage(notificationUpdateDto.message());
         notification.setNotificationTime(notificationUpdateDto.notificationTime());
-        System.out.println(notificationUpdateDto.notificationTime());
-        System.out.println(LocalDateTime.now(Clock.systemUTC()));
         task.setNotification(notification);
         notificationRepository.save(notification);
         taskService.save(task);
@@ -39,11 +39,16 @@ public class NotificationService {
 
     @Scheduled(fixedDelay = 120000, initialDelay = 60000)
     public void sendNotification() {
-//        Notification notification = notificationRepository.findFirstByNotificationTimeBefore(LocalDateTime.now(Clock.systemDefaultZone()));
-//        if (notification != null) {
-            rabbitTemplate.convertAndSend("notification-exchange", "message.type.notification", "Notification sent");
-//            notificationRepository.delete(notification);
-//        }
+        List<Notification> notificationsBeforeNow = notificationRepository
+                .findAllByNotificationTimeBefore(LocalDateTime.now(Clock.systemUTC()).minusMinutes(1));
+
+        for (Notification notification : notificationsBeforeNow) {
+            rabbitTemplate.convertAndSend("notification-exchange", "message.type.notification",
+                    notification.getMessage() + " " + notification.getTask().getTitle());
+            Task task = notification.getTask();
+            task.setNotification(null);
+            taskService.save(task);
+        }
     }
 
     public void deleteNotification(Long taskId) {

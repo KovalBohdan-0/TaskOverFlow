@@ -27,7 +27,7 @@ public class Task {
     private LocalDateTime deadline;
     @ManyToOne(fetch = FetchType.LAZY)
     private TaskList taskList;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Notification notification;
 
     public Task () {

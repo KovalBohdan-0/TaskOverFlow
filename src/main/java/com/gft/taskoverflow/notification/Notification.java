@@ -2,10 +2,7 @@ package com.gft.taskoverflow.notification;
 
 import com.gft.taskoverflow.task.Task;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "task")
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
