@@ -27,6 +27,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatSelectModule} from "@angular/material/select";
 import { SidebarComponent } from './board/sidebar/sidebar.component';
 import { SidebarAddMemberComponent } from './board/sidebar/sidebar-add-member/sidebar-add-member.component';
+import {AngularSvgIconModule} from "angular-svg-icon";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -70,6 +71,7 @@ const routes: Routes = [
     MatCheckboxModule,
     MatSelectModule,
     ReactiveFormsModule,
+    AngularSvgIconModule.forRoot()
   ],
   providers: [
     HttpClient,

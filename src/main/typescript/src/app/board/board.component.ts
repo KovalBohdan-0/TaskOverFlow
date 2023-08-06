@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {CustomerService} from "../service/customer.service";
 import {BoardService} from "../service/board.service";
 import {TaskList} from "./task-list/TaskList";
@@ -24,6 +24,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   ];
   lists: TaskList[] = [];
   subscriptions = [];
+  isMobile: boolean = window.innerWidth < 576;
 
   constructor(private customerService: CustomerService,
               private boardService: BoardService,
@@ -31,6 +32,14 @@ export class BoardComponent implements OnInit, OnDestroy {
               private rxStompService: RxStompService,
               private route: ActivatedRoute,
               private sharedService: SharedService) {
+  }
+
+  @HostListener("window:resize", []) updateList() {
+    this.isMobile = window.innerWidth < 576;
+
+    if (!this.isMobile && this.sharedService.sidebarOpened) {
+      this.sharedService.sidebarOpened = false;
+    }
   }
 
   ngOnInit(): void {
@@ -89,12 +98,21 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.route.params
       .subscribe(params => {
           this.selectedBoard = this.boards.find(board => board.id == params['id']);
-          this.sharedService.boardId = this.selectedBoard.id;
-          this.getTaskListsByBoardId(this.selectedBoard.id);
-          this.updateTaskListSubscriptions();
+          if (this.selectedBoard != undefined) {
+            this.sharedService.boardId = this.selectedBoard.id;
+            this.getTaskListsByBoardId(this.selectedBoard.id);
+            this.updateTaskListSubscriptions();
+          }
         }
       );
+  }
 
+  openSidebar() {
+    this.sharedService.sidebarOpened = true;
+  }
+
+  concentrateOnCreateBoard() {
+    document.getElementById("add-board").focus();
   }
 
   updateTaskListSubscriptions() {
