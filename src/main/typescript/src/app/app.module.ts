@@ -28,6 +28,7 @@ import {MatSelectModule} from "@angular/material/select";
 import { SidebarComponent } from './board/sidebar/sidebar.component';
 import { SidebarAddMemberComponent } from './board/sidebar/sidebar-add-member/sidebar-add-member.component';
 import {AngularSvgIconModule} from "angular-svg-icon";
+import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -35,6 +36,7 @@ const routes: Routes = [
   {path: 'registration', component: RegistrationComponent},
   {path: 'board', component: BoardComponent},
   {path: 'board/:id', component: BoardComponent},
+  {path: 'settings', component: SettingsComponent}
 ];
 
 @NgModule({
@@ -48,6 +50,7 @@ const routes: Routes = [
     TaskUpdateComponent,
     SidebarComponent,
     SidebarAddMemberComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,
