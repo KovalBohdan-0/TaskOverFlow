@@ -1,5 +1,7 @@
 package com.gft.taskoverflow.board;
 
+import com.gft.taskoverflow.board.dto.BoardAddCustomerDto;
+import com.gft.taskoverflow.board.dto.BoardResponseDto;
 import jakarta.validation.Valid;
 import lombok.Data;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +19,9 @@ public class BoardController {
         boardService.saveBoard(board);
     }
 
-    @PostMapping("/addCustomer")
-    public void addCustomer(@Valid @RequestParam Long boardId, @RequestParam String email) {
-        boardService.saveBoardCustomers(boardId, email);
+    @PostMapping("/addCustomer/{boardId}")
+    public void addCustomer(@PathVariable Long boardId, @RequestBody BoardAddCustomerDto addCustomerDto) {
+        boardService.saveBoardCustomers(boardId, addCustomerDto.email());
     }
 
     @GetMapping

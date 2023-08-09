@@ -4,7 +4,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './login/login.component';
 import {NgbDropdown, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {AuthService} from "./service/auth.service";
 import {RegistrationComponent} from './registration/registration.component';
@@ -26,6 +26,9 @@ import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from "@angular-mater
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatSelectModule} from "@angular/material/select";
 import { SidebarComponent } from './board/sidebar/sidebar.component';
+import { SidebarAddMemberComponent } from './board/sidebar/sidebar-add-member/sidebar-add-member.component';
+import {AngularSvgIconModule} from "angular-svg-icon";
+import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -33,6 +36,7 @@ const routes: Routes = [
   {path: 'registration', component: RegistrationComponent},
   {path: 'board', component: BoardComponent},
   {path: 'board/:id', component: BoardComponent},
+  {path: 'settings', component: SettingsComponent}
 ];
 
 @NgModule({
@@ -45,6 +49,8 @@ const routes: Routes = [
     TaskComponent,
     TaskUpdateComponent,
     SidebarComponent,
+    SidebarAddMemberComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,6 +73,8 @@ const routes: Routes = [
     NgxMatNativeDateModule,
     MatCheckboxModule,
     MatSelectModule,
+    ReactiveFormsModule,
+    AngularSvgIconModule.forRoot()
   ],
   providers: [
     HttpClient,

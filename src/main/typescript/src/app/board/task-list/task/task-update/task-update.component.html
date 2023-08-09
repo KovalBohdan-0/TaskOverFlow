@@ -1,14 +1,14 @@
 <div class="task-update p-5" (submit)="updateTask()">
-  <form class="d-flex flex-column ">
-    <div class="d-flex">
-      <div class="d-flex flex-column">
+  <form class="d-flex flex-column">
+    <div class="d-flex task-update-form">
+      <div class="d-flex flex-column task-update-side">
         <mat-checkbox [(ngModel)]="task.done" name="done" color="primary"></mat-checkbox>
-        <div class="mt-auto">
-          <button class="btn btn-light mb-2"><i class="bi bi-clipboard"></i></button>
+        <div class="mt-auto task-update-help mb-2">
+          <button class="btn btn-light" ><i class="bi bi-clipboard"></i></button>
           <button (click)="deleteTask()" class="btn btn-light"><i class="bi bi-trash3"></i></button>
         </div>
       </div>
-      <div class="d-flex ms-4 flex-column w-100">
+      <div class="d-flex flex-column w-100">
         <mat-form-field class="">
           <mat-label>Title</mat-label>
           <input [(ngModel)]="task.title" name="title" matInput placeholder="Your task title"/>
@@ -18,12 +18,29 @@
           <textarea [(ngModel)]="task.description" name="description" matInput placeholder="Your task description"></textarea>
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Deadline</mat-label>
-          <input [(ngModel)]="task.deadline" name="Deadline" matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date">
+          <mat-label>Due date</mat-label>
+          <input [(ngModel)]="task.deadline" name="Due date" matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date">
           <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
           <ngx-mat-datetime-picker #picker>
           </ngx-mat-datetime-picker>
         </mat-form-field>
+        <div *ngIf="notification.id != 0" class="d-flex flex-column">
+          <mat-form-field>
+            <mat-label>Notification time</mat-label>
+            <input [(ngModel)]="notification.notificationTime" name="notif-time" matInput [ngxMatDatetimePicker]="notificationPicker" placeholder="Your notification time">
+            <mat-datepicker-toggle matSuffix [for]="$any(notificationPicker)"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #notificationPicker>
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Notification message</mat-label>
+            <input [(ngModel)]="notification.message" name="notif-message" matInput placeholder="Your notification message"/>
+          </mat-form-field>
+        </div>
+        <div class="w-100 mx-auto btn btn-secondary mb-4" (click)="makeNotification()" *ngIf="notification.id == 0">
+          Add notification
+          <i class="bi bi-plus-square"></i><i class="bi bi-bell-fill"></i>
+        </div>
         <mat-form-field>
           <mat-label>Priority</mat-label>
           <mat-select [(ngModel)]="task.priority" name="priority">

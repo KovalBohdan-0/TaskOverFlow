@@ -1,6 +1,6 @@
-<div class="bg-gradient-primary sidebar">
-  <div class="mx-auto logo">
-    <svg xmlns="http://www.w3.org/2000/svg" width="144" height="80" viewBox="0 -23.79 1080 600" xml:space="preserve"><rect width="100%" height="100%" fill="transparent"/>
+<div class="bg-gradient-primary sidebar" [class.sidebar-opened]="sharedService.sidebarOpened">
+  <div class="mx-auto logo" [class.full-screen-logo]="sharedService.sidebarOpened">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 600" xml:space="preserve"><rect width="100%" height="100%" fill="transparent"/>
       <g><path style="stroke:none;stroke-width:1;stroke-dasharray:none;stroke-linecap:butt;stroke-dashoffset:0;stroke-linejoin:miter;stroke-miterlimit:4;fill:#fff;fill-rule:nonzero;opacity:1" vector-effect="non-scaling-stroke" transform="matrix(3.26 0 0 3.26 376.667 78.977)" d="M77.5 64.2V15.5c0-3.4-2.8-6.2-6.2-6.2H8.5c-3.4 0-6.2 2.8-6.2 6.2v48.7c0 3.4 2.8 6.2 6.2 6.2h62.8c3.4 0 6.2-2.8 6.2-6.2zm-69-49.9h62.8c.7 0 1.2.6 1.2 1.2v7.8H7.2v-7.8c0-.7.6-1.2 1.3-1.2zM7.2 64.2V28.3h65.2v35.9c0 .7-.6 1.2-1.2 1.2H8.5c-.7 0-1.3-.5-1.3-1.2zm10.2-45.4c0-1.3 1.1-2.4 2.4-2.4 1.3 0 2.4 1.1 2.4 2.4 0 1.3-1.1 2.4-2.4 2.4-1.3 0-2.4-1.1-2.4-2.4zm8 0c0-1.3 1.1-2.4 2.4-2.4 1.3 0 2.4 1.1 2.4 2.4 0 1.3-1.1 2.4-2.4 2.4-1.3 0-2.4-1.1-2.4-2.4zm-16 0c0-1.3 1.1-2.4 2.4-2.4 1.3 0 2.4 1.1 2.4 2.4 0 1.3-1.1 2.4-2.4 2.4-1.3 0-2.4-1.1-2.4-2.4zm72.1 62H18.8c-1.4 0-2.5-1.1-2.5-2.5s1.1-2.5 2.5-2.5h62.8c.7 0 1.2-.6 1.2-1.2V25.8c0-1.4 1.1-2.5 2.5-2.5s2.5 1.1 2.5 2.5v48.7c0 3.5-2.8 6.3-6.3 6.3zm16.3-45v48.7c0 3.4-2.8 6.2-6.2 6.2H28.8c-1.4 0-2.5-1.1-2.5-2.5s1.1-2.5 2.5-2.5h62.8c.7 0 1.2-.6 1.2-1.2V35.8c0-1.4 1.1-2.5 2.5-2.5s2.5 1.1 2.5 2.5z"/>
         <path
           style="stroke:none;stroke-width:1;stroke-dasharray:none;stroke-linecap:butt;stroke-dashoffset:0;stroke-linejoin:miter;stroke-miterlimit:4;fill:#fff;fill-rule:nonzero;opacity:1"
@@ -9,16 +9,20 @@
   </div>
   <div class="sidebar-divider mt-4"></div>
   <div class="sidebar-elements d-flex flex-column" >
-    <button ngbDropdown ngbDropdownToggle class="btn text-white p-3 sidebar-btn">Boards
+    <button ngbDropdown ngbDropdownToggle class="btn text-white p-3 sidebar-btn sidebar-element caret-off"><i class="bi bi-clipboard-data-fill"></i><span> Boards</span>
     <div ngbDropdownMenu>
-      <a ngbDropdownItem>Board 1</a>
-      <a ngbDropdownItem>Board 2</a>
-      <a ngbDropdownItem>Board 3</a>
+      <div routerLink="/board/{{option.id}}" routerLinkActive="active" *ngFor="let option of boards">
+        <a class="dropdown-item">{{ option.title }}</a>
+      </div>
     </div>
     </button>
     <div class="sidebar-divider"></div>
-    <button class="btn text-white p-3 sidebar-btn"><i class="bi bi-person-fill-add"></i> Add members</button>
+    <button (click)="openAddBoardModal()" name="addMember" class="btn text-white p-3 sidebar-btn sidebar-element"><i class="bi bi-person-fill-add"></i><span> Add members</span></button>
     <div class="sidebar-divider"></div>
-    <button class="btn text-white p-3 sidebar-btn"><i class="bi bi-sliders2"></i> Settings</button>
+    <button class="btn text-white p-3 sidebar-btn sidebar-element"><i class="bi bi-sliders2"></i><span> Settings</span></button>
+    <div class="w-100" *ngIf="sharedService.sidebarOpened">
+      <div class="sidebar-divider"></div>
+      <button (click)="closeSidebar()" class="btn text-white bg-transparent d-block mx-auto mt-3"><i class="bi bi-x-lg"></i></button>
+    </div>
   </div>
 </div>

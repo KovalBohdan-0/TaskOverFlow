@@ -1,34 +1,26 @@
 <div class="d-flex">
-  <app-sidebar class=""></app-sidebar>
-  <div class="w-100">
+  <app-sidebar></app-sidebar>
+  <div class="w-100 overflow-hidden">
     <nav class="navbar p-2 navbar-expand-lg shadow-sm board">
-      <div ngbDropdown class="d-inline-block ms-5">
-        <button type="button" class="btn btn-light" id="dropdownBasic1" ngbDropdownToggle>
-          Boards
+      <div class="ms-md-5">
+        <button (click)="openSidebar()" class="btn btn-light open-btn me-2">
+          <i class="bi bi-list"></i>
         </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <div routerLink="/board/{{option.id}}" routerLinkActive="active" *ngFor="let option of boards">
-            <a class="dropdown-item">{{ option.title }}</a>
-          </div>
-        </div>
-      </div>
-      <div class="ms-5 divider"></div>
-      <div class="ms-5">
-        <input placeholder="Enter board title" class="form-input" [(ngModel)]="newBoardTitle"/>
-        <button class="btn btn-light ms-2" (click)="addBoard()">Create board</button>
+        <input placeholder="Enter board title" id="add-board" class="form-input" [(ngModel)]="newBoardTitle"/>
+        <button class="btn btn-light ms-2" (click)="addBoard()"><i class="bi bi-stickies"></i><span class="d-none d-sm-inline-block"> Create board</span></button>
       </div>
       <div class="ms-auto navbar">
         <div class="divider d-none d-sm-block"></div>
-        <div>{{email}}</div>
+        <div class="d-md-flex d-none">{{email}}</div>
         <div class="profile-image ms-2">{{email.charAt(0).toUpperCase()}}</div>
       </div>
     </nav>
     <div class="board-main p-5 container">
-      <div cdkDropListGroup cdkDropListOrientation="horizontal" [cdkDropListData]="lists"
+      <div *ngIf="selectedBoard != undefined" cdkDropListGroup [cdkDropListOrientation]="isMobile ? 'vertical' : 'horizontal'" [cdkDropListData]="lists"
            class="row flex-row overflow-x-scroll cards" cdkDropList (cdkDropListDropped)="drop($event)">
         <app-task-list cdkDrag *ngFor="let taskList of lists" [taskList]="taskList"
-                       class="col-md-4 col-sm-5 col-lg-3 col-xl-2"></app-task-list>
-        <div class="col-md-4 col-sm-5 col-lg-3 col-xl-2">
+                       class="col-sm-6 col-md-4 col-lg-3 col-xl-3"></app-task-list>
+        <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3">
           <div class="card border-left-blue rounded-4">
             <div class="card-body">
               <input placeholder="Enter list title" class="form-input w-100" [(ngModel)]="newTaskListTitle"/>
@@ -36,6 +28,9 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="mx-auto" *ngIf="selectedBoard == undefined">
+        <svg-icon (click)="concentrateOnCreateBoard()" src="/assets/images/add_board.svg" svgClass="board-add"></svg-icon>
       </div>
     </div>
   </div>

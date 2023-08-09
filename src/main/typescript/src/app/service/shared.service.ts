@@ -5,4 +5,5 @@ import { Injectable } from '@angular/core';
 })
 export class SharedService {
   boardId: number;
+  sidebarOpened: boolean = false;
 }

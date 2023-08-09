@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {CustomerService} from "../service/customer.service";
 import {BoardService} from "../service/board.service";
 import {TaskList} from "./task-list/TaskList";
@@ -8,6 +8,7 @@ import {ActivatedRoute} from "@angular/router";
 import {RxStompService} from "../service/rx-stomp.service";
 import {Message} from "@stomp/stompjs";
 import {SharedService} from "../service/shared.service";
+import {ShortTask} from "./task-list/task/ShortTask";
 
 @Component({
   selector: 'app-board',
@@ -24,6 +25,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   ];
   lists: TaskList[] = [];
   subscriptions = [];
+  isMobile: boolean = window.innerWidth < 576;
 
   constructor(private customerService: CustomerService,
               private boardService: BoardService,
@@ -31,6 +33,14 @@ export class BoardComponent implements OnInit, OnDestroy {
               private rxStompService: RxStompService,
               private route: ActivatedRoute,
               private sharedService: SharedService) {
+  }
+
+  @HostListener("window:resize", []) updateList() {
+    this.isMobile = window.innerWidth < 576;
+
+    if (!this.isMobile && this.sharedService.sidebarOpened) {
+      this.sharedService.sidebarOpened = false;
+    }
   }
 
   ngOnInit(): void {
@@ -89,12 +99,21 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.route.params
       .subscribe(params => {
           this.selectedBoard = this.boards.find(board => board.id == params['id']);
-          this.sharedService.boardId = this.selectedBoard.id;
-          this.getTaskListsByBoardId(this.selectedBoard.id);
-          this.updateTaskListSubscriptions();
+          if (this.selectedBoard != undefined) {
+            this.sharedService.boardId = this.selectedBoard.id;
+            this.getTaskListsByBoardId(this.selectedBoard.id);
+            this.updateTaskListSubscriptions();
+          }
         }
       );
+  }
 
+  openSidebar() {
+    this.sharedService.sidebarOpened = true;
+  }
+
+  concentrateOnCreateBoard() {
+    document.getElementById("add-board").focus();
   }
 
   updateTaskListSubscriptions() {
@@ -115,71 +134,92 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   makeSubscriptions() {
-    const taskListAddSub = this.rxStompService.watch('/topic/task-list-added/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
-      const message = JSON.parse(receivedMessage.body);
+    const subscriptions = [
+      { topic: '/topic/task-list-added/', handler: this.handleTaskListAdd.bind(this) },
+      { topic: '/topic/task-added/', handler: this.handleTaskAdd.bind(this) },
+      { topic: '/topic/task-updated/', handler: this.handleTaskUpdate.bind(this) },
+      { topic: '/topic/task-deleted/', handler: this.handleTaskDelete.bind(this) },
+      { topic: '/topic/task-moved/', handler: this.handleTaskMove.bind(this) },
+      { topic: '/topic/task-list-renamed/', handler: this.handleTaskListRename.bind(this) },
+      { topic: '/topic/task-list-deleted/', handler: this.handleTaskListDelete.bind(this) },
+      { topic: '/topic/task-list-moved/', handler: this.handleTaskListMove.bind(this) },
+      { topic: '/topic/task-list-updated-sort/', handler: this.handleTaskListUpdateSort.bind(this) }
+    ];
 
-      if (message.boardId == this.selectedBoard.id) {
-        message.tasks = [];
-        this.lists.push(message);
-      }
+    subscriptions.forEach(sub => {
+      const subscription = this.rxStompService.watch(sub.topic + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
+        sub.handler(receivedMessage);
+      });
+      this.subscriptions.push(subscription);
     });
-    const taskAddSub = this.rxStompService.watch('/topic/task-added/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
-      const message = JSON.parse(receivedMessage.body);
-      this.lists.find((list: TaskList) => list.id == message.taskListId).tasks.push(message);
-    });
+  }
 
-    const taskUpdateSub = this.rxStompService.watch('/topic/task-updated/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
-      const message = JSON.parse(receivedMessage.body);
-      const index = this.lists.find((list) => list.id == message.taskListId).tasks.findIndex((task) => task.id == message.id);
-      this.lists.find((list) => list.id == message.taskListId).tasks[index] = message;
-    });
+  handleTaskListAdd(receivedMessage: Message) {
+    const message = JSON.parse(receivedMessage.body);
+    if (message.boardId == this.selectedBoard.id) {
+      message.tasks = [];
+      this.lists.push(message);
+    }
+  }
 
-    const taskDeleteSub = this.rxStompService.watch('/topic/task-deleted/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
-      const message = JSON.parse(receivedMessage.body);
-      this.lists.find((list: TaskList) => list.id == message.taskListId).tasks = this.lists.find((list: TaskList) => list.id == message.taskListId).tasks.filter((task: any) => task.id != message.id);
-    });
+  handleTaskAdd(receivedMessage: Message) {
+    const message = JSON.parse(receivedMessage.body);
+    this.lists.find((list: TaskList) => list.id == message.taskListId).tasks.push(message);
+  }
 
-    const taskMoveSub = this.rxStompService.watch('/topic/task-moved/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
-      const message = JSON.parse(receivedMessage.body);
-      const taskList = this.lists.find((list: TaskList) => list.id == message.taskListId);
-      const task = taskList.tasks.find((task: any) => task.id == message.id);
+  handleTaskUpdate(receivedMessage: Message) {
+    const message = JSON.parse(receivedMessage.body);
+    const taskList = this.lists.find((list: TaskList) => list.id == message.taskListId);
+    const taskIndex = taskList.tasks.findIndex((task: any) => task.id == message.id);
+    if (taskIndex !== -1) {
+      taskList.tasks[taskIndex] = message;
+    }
+  }
 
-      if (task == undefined) {
-        taskList.tasks.push(message);
-        this.lists.find((list: TaskList) => list.id == message.previousTaskListId).tasks = this.lists.find((list: TaskList) => list.id == message.previousTaskListId).tasks.filter((task: any) => task.id != message.id);
-      } else {
-        Object.assign(task, message);
-      }
+  handleTaskDelete(receivedMessage: Message) {
+    const message = JSON.parse(receivedMessage.body);
+    const taskList = this.lists.find((list: TaskList) => list.id == message.taskListId);
+    taskList.tasks = taskList.tasks.filter((task: ShortTask) => task.id != message.id);
+  }
 
-      taskList.tasks.sort((a, b) => a.position - b.position);
-    });
+  handleTaskMove(receivedMessage: Message) {
+    const message = JSON.parse(receivedMessage.body);
+    const taskList = this.lists.find((list: TaskList) => list.id == message.taskListId);
+    const task = taskList.tasks.find((task: ShortTask) => task.id == message.id);
 
-    const taskListRenameSub = this.rxStompService.watch('/topic/task-list-renamed/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
-      const message = JSON.parse(receivedMessage.body);
-      this.lists.find((list: TaskList) => list.id == message.taskListId).title = message.title;
-    });
+    if (task == undefined) {
+      taskList.tasks.push(message);
+      const prevTaskList = this.lists.find((list: TaskList) => list.id == message.previousTaskListId);
+      prevTaskList.tasks = prevTaskList.tasks.filter((task: ShortTask) => task.id != message.id);
+    } else {
+      Object.assign(task, message);
+    }
 
-    const taskListDeleteSub = this.rxStompService.watch('/topic/task-list-deleted/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
-      const message = JSON.parse(receivedMessage.body);
-      this.lists = this.lists.filter((list: TaskList) => list.id != message);
-    });
+    taskList.tasks.sort((a, b) => a.position - b.position);
+  }
 
-    const taskListMoveSub = this.rxStompService.watch('/topic/task-list-moved/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
-      const message = JSON.parse(receivedMessage.body);
-      const taskList = this.lists.find((list: TaskList) => list.id == message.id);
-      Object.assign(taskList, message);
-      this.lists.sort((a, b) => a.position - b.position);
-      taskList.tasks.sort((a, b) => a.position - b.position);
-    });
+  handleTaskListRename(receivedMessage: Message) {
+    const message = JSON.parse(receivedMessage.body);
+    this.lists.find((list: TaskList) => list.id == message.taskListId).title = message.title;
+  }
 
-    const taskListUpdateSortSub = this.rxStompService.watch('/topic/task-list-updated-sort/' + this.selectedBoard.id).subscribe((receivedMessage: Message) => {
-      const message = JSON.parse(receivedMessage.body);
-      const taskList = this.lists.find((list: TaskList) => list.id == message.id);
-      Object.assign(taskList, message);
-      this.taskListService.sortTaskList(taskList);
-    });
+  handleTaskListDelete(receivedMessage: Message) {
+    this.lists = this.lists.filter((list: TaskList) => list.id != JSON.parse(receivedMessage.body));
+  }
 
-    this.subscriptions.push(taskListAddSub, taskAddSub, taskListDeleteSub, taskListRenameSub, taskUpdateSub, taskDeleteSub, taskMoveSub, taskListMoveSub, taskListUpdateSortSub);
+  handleTaskListMove(receivedMessage: Message) {
+    const message = JSON.parse(receivedMessage.body);
+    const taskList = this.lists.find((list: TaskList) => list.id == message.id);
+    Object.assign(taskList, message);
+    this.lists.sort((a, b) => a.position - b.position);
+    taskList.tasks.sort((a, b) => a.position - b.position);
+  }
+
+  handleTaskListUpdateSort(receivedMessage: Message) {
+    const message = JSON.parse(receivedMessage.body);
+    const taskList = this.lists.find((list: TaskList) => list.id == message.id);
+    Object.assign(taskList, message);
+    this.taskListService.sortTaskList(taskList);
   }
 
   ngOnDestroy(): void {

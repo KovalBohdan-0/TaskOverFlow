@@ -6,14 +6,25 @@
 }
 
 .logo {
-  width: fit-content;
+  width: inherit;
+}
+
+.full-screen-logo {
+  width: 10rem;
+}
+
+.caret-off::before {
+  display: none;
+}
+.caret-off::after {
+  display: none;
 }
 
 .sidebar-divider {
   margin: 0 auto;
   width: 85%;
   height: 1px;
-  background-color:   rgba(255,255,255,.15);
+  background-color: rgba(255, 255, 255, .15);
 }
 
 .sidebar-elements {
@@ -23,4 +34,29 @@
 
 .sidebar-btn {
   font-weight: 700;
+}
+
+.sidebar-opened {
+  display: inline-block !important;
+  position: absolute;
+  width: 100vw !important;
+  z-index: 5;
+}
+
+@media screen and (max-width: 576px) {
+  .sidebar {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 7rem;
+  }
+
+  .sidebar-element {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+  }
 }

@@ -1,5 +1,6 @@
 package com.gft.taskoverflow.board;
 
+import com.gft.taskoverflow.board.dto.BoardResponseDto;
 import com.gft.taskoverflow.customer.Customer;
 import com.gft.taskoverflow.customer.CustomerUserDetailsService;
 import com.gft.taskoverflow.exception.BoardNotFoundException;
