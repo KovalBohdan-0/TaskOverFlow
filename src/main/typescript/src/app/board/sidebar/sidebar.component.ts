@@ -3,6 +3,7 @@ import {BoardService} from "../../service/board.service";
 import {SidebarAddMemberComponent} from "./sidebar-add-member/sidebar-add-member.component";
 import {MatDialog} from "@angular/material/dialog";
 import {SharedService} from "../../service/shared.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-sidebar',
@@ -12,7 +13,8 @@ import {SharedService} from "../../service/shared.service";
 export class SidebarComponent implements OnInit {
   boards = [];
 
-  constructor(private boardService: BoardService, public dialog: MatDialog, public sharedService: SharedService) { }
+  constructor(private boardService: BoardService, public dialog: MatDialog, public sharedService: SharedService,
+              private router: Router) { }
 
   ngOnInit() {
     this.getBoards();
@@ -24,6 +26,10 @@ export class SidebarComponent implements OnInit {
         this.boards = response.body;
       }
     });
+  }
+
+  openSettings() {
+    this.router.navigate(['/settings']);
   }
 
   closeSidebar() {

@@ -19,7 +19,7 @@
     <div class="sidebar-divider"></div>
     <button (click)="openAddBoardModal()" name="addMember" class="btn text-white p-3 sidebar-btn sidebar-element"><i class="bi bi-person-fill-add"></i><span> Add members</span></button>
     <div class="sidebar-divider"></div>
-    <button class="btn text-white p-3 sidebar-btn sidebar-element"><i class="bi bi-sliders2"></i><span> Settings</span></button>
+    <button (click)="openSettings()" class="btn text-white p-3 sidebar-btn sidebar-element"><i class="bi bi-sliders2"></i><span> Settings</span></button>
     <div class="w-100" *ngIf="sharedService.sidebarOpened">
       <div class="sidebar-divider"></div>
       <button (click)="closeSidebar()" class="btn text-white bg-transparent d-block mx-auto mt-3"><i class="bi bi-x-lg"></i></button>
