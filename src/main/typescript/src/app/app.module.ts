@@ -29,6 +29,9 @@ import { SidebarComponent } from './board/sidebar/sidebar.component';
 import { SidebarAddMemberComponent } from './board/sidebar/sidebar-add-member/sidebar-add-member.component';
 import {AngularSvgIconModule} from "angular-svg-icon";
 import { SettingsComponent } from './settings/settings.component';
+import { PasswordSettingsComponent } from './settings/password-settings/password-settings.component';
+import { NotificationSettingsComponent } from './settings/notification-settings/notification-settings.component';
+import { AccountSettingsComponent } from './settings/account-settings/account-settings.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -36,7 +39,16 @@ const routes: Routes = [
   {path: 'registration', component: RegistrationComponent},
   {path: 'board', component: BoardComponent},
   {path: 'board/:id', component: BoardComponent},
-  {path: 'settings', component: SettingsComponent}
+  {
+    path: 'settings',
+    component: SettingsComponent,
+    children: [
+      {path: '', redirectTo: 'account', pathMatch: 'full'},
+      {path: 'account', component: AccountSettingsComponent},
+      {path: 'password', component: PasswordSettingsComponent},
+      {path: 'notifications', component: NotificationSettingsComponent},
+    ]
+  },
 ];
 
 @NgModule({
@@ -51,6 +63,9 @@ const routes: Routes = [
     SidebarComponent,
     SidebarAddMemberComponent,
     SettingsComponent,
+    PasswordSettingsComponent,
+    NotificationSettingsComponent,
+    AccountSettingsComponent,
   ],
   imports: [
     BrowserModule,
