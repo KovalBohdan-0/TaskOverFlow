@@ -28,7 +28,7 @@ export class NotificationSettingsComponent implements OnInit {
   }
 
   updateNotificationSettings() {
-    this.customerService.updateCustomerNotificationSettings({
+    this.customerService.updateNotificationSettings({
       onEmailNotifications: this.customerInfo.onEmailNotifications,
       onSiteNotifications: this.customerInfo.onSiteNotifications
     }).subscribe();
