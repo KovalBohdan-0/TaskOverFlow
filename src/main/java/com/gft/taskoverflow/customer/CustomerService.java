@@ -8,12 +8,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 @AllArgsConstructor
 public class CustomerService {
-
     private final CustomerRepository customerRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -35,7 +34,6 @@ public class CustomerService {
                 ));
     }
 
-    @Transactional
     public void signUpCustomer(RegistrationRequest request) {
         if (customerRepository.existsByEmail(request.email())) {
             throw new DuplicateResourceException(
@@ -56,7 +54,7 @@ public class CustomerService {
     public CustomerDto getCurrentCustomer() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Customer customer = getCustomerByEmail(authentication.getName());
-        return new CustomerDto(customer.getEmail());
+        return new CustomerDto(customer.getEmail(), customer.isEmailConfirmed());
     }
 
     public Customer getCurrentCustomerEntity() {
@@ -67,5 +65,11 @@ public class CustomerService {
     public boolean currentCustomerContainsBoard(Long boardId) {
         Customer customer = getCurrentCustomerEntity();
         return customerRepository.containsBoardByIdAndCustomerId(boardId, customer.getId());
+    }
+
+    public void confirmEmail(String email) {
+        Customer customer = getCustomerByEmail(email);
+        customer.setEmailConfirmed(true);
+        customerRepository.save(customer);
     }
 }
