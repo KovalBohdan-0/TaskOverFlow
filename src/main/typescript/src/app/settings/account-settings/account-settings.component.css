@@ -1,0 +1,10 @@
+.profile-image {
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+  background: #512DA8;
+  font-size: 3rem;
+  color: #fff;
+  text-align: center;
+  line-height: 8rem;
+}

@@ -1,8 +1,23 @@
 <div class="tab-pane">
   <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">Notifications</h5>
-
+    <div class="card-body d-flex align-items-start justify-content-between px-4">
+      <div>
+        <h5 class="card-title">Notifications</h5>
+        <p>Your email is{{customerInfo.emailConfirmed ? "" : " not"}} verified</p>
+        <button (click)="sendEmailConfirmation()" *ngIf="!customerInfo.emailConfirmed" class="btn btn-primary">Send
+          verification email
+        </button>
+        <br/>
+        <mat-checkbox color="primary" [(ngModel)]="customerInfo.onEmailNotifications"
+                      [disabled]="!customerInfo.emailConfirmed" class="mt-3">Notification on email
+        </mat-checkbox>
+        <br/>
+        <mat-checkbox color="primary" [(ngModel)]="customerInfo.onSiteNotifications" class="">Notification on website
+        </mat-checkbox>
+        <br/>
+        <button (click)="updateNotificationSettings()" class="btn btn-primary mt-4">Save changes</button>
+      </div>
+      <svg-icon class="d-none d-md-inline-block" [svgStyle]="{ 'width.rem':15, 'height.rem': 20}" src="assets/images/notifications.svg"></svg-icon>
     </div>
   </div>
 </div>

@@ -1,5 +1,7 @@
 package com.gft.taskoverflow.customer;
 
+import com.gft.taskoverflow.customer.dto.CustomerDto;
+import com.gft.taskoverflow.customer.dto.UpdateNotificationsDto;
 import com.gft.taskoverflow.exception.DuplicateResourceException;
 import com.gft.taskoverflow.exception.ResourceNotFoundException;
 import com.gft.taskoverflow.registration.RegistrationRequest;
@@ -54,7 +56,7 @@ public class CustomerService {
     public CustomerDto getCurrentCustomer() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Customer customer = getCustomerByEmail(authentication.getName());
-        return new CustomerDto(customer.getEmail(), customer.isEmailConfirmed());
+        return new CustomerDto(customer.getEmail(), customer.isEmailConfirmed(), customer.isOnEmailNotifications(), customer.isOnSiteNotifications());
     }
 
     public Customer getCurrentCustomerEntity() {
@@ -70,6 +72,13 @@ public class CustomerService {
     public void confirmEmail(String email) {
         Customer customer = getCustomerByEmail(email);
         customer.setEmailConfirmed(true);
+        customerRepository.save(customer);
+    }
+
+    public void updateNotifications(UpdateNotificationsDto updateNotificationsDto) {
+        Customer customer = getCurrentCustomerEntity();
+        customer.setOnEmailNotifications(updateNotificationsDto.onEmailNotifications());
+        customer.setOnSiteNotifications(updateNotificationsDto.onSiteNotifications());
         customerRepository.save(customer);
     }
 }

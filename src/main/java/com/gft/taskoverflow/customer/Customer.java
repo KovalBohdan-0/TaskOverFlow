@@ -39,6 +39,10 @@ public class Customer {
     private String password;
     @Column(nullable = false)
     private boolean emailConfirmed = false;
+    @Column(nullable = false)
+    private boolean onEmailNotifications = false;
+    @Column(nullable = false)
+    private boolean onSiteNotifications = true;
     @ManyToMany(mappedBy = "customers")
     private Set<Board> boards;
     @ManyToMany
