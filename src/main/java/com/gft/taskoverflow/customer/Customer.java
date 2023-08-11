@@ -37,6 +37,8 @@ public class Customer {
     @Size(max = 100)
     @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
+    private boolean emailConfirmed = false;
     @ManyToMany(mappedBy = "customers")
     private Set<Board> boards;
     @ManyToMany
