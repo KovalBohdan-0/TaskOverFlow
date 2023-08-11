@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {CustomerService} from "../../service/customer.service";
 
 @Component({
   selector: 'app-password-settings',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./password-settings.component.css']
 })
 export class PasswordSettingsComponent {
+  oldPassword: string;
+  newPassword: string;
+  newPasswordRepeat: string;
 
+  constructor(private customerService: CustomerService) { }
 }

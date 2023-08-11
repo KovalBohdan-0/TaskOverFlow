@@ -135,15 +135,15 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   makeSubscriptions() {
     const subscriptions = [
-      { topic: '/topic/task-list-added/', handler: this.handleTaskListAdd.bind(this) },
-      { topic: '/topic/task-added/', handler: this.handleTaskAdd.bind(this) },
-      { topic: '/topic/task-updated/', handler: this.handleTaskUpdate.bind(this) },
-      { topic: '/topic/task-deleted/', handler: this.handleTaskDelete.bind(this) },
-      { topic: '/topic/task-moved/', handler: this.handleTaskMove.bind(this) },
-      { topic: '/topic/task-list-renamed/', handler: this.handleTaskListRename.bind(this) },
-      { topic: '/topic/task-list-deleted/', handler: this.handleTaskListDelete.bind(this) },
-      { topic: '/topic/task-list-moved/', handler: this.handleTaskListMove.bind(this) },
-      { topic: '/topic/task-list-updated-sort/', handler: this.handleTaskListUpdateSort.bind(this) }
+      {topic: '/topic/task-list-added/', handler: this.handleTaskListAdd.bind(this)},
+      {topic: '/topic/task-added/', handler: this.handleTaskAdd.bind(this)},
+      {topic: '/topic/task-updated/', handler: this.handleTaskUpdate.bind(this)},
+      {topic: '/topic/task-deleted/', handler: this.handleTaskDelete.bind(this)},
+      {topic: '/topic/task-moved/', handler: this.handleTaskMove.bind(this)},
+      {topic: '/topic/task-list-renamed/', handler: this.handleTaskListRename.bind(this)},
+      {topic: '/topic/task-list-deleted/', handler: this.handleTaskListDelete.bind(this)},
+      {topic: '/topic/task-list-moved/', handler: this.handleTaskListMove.bind(this)},
+      {topic: '/topic/task-list-updated-sort/', handler: this.handleTaskListUpdateSort.bind(this)}
     ];
 
     subscriptions.forEach(sub => {
