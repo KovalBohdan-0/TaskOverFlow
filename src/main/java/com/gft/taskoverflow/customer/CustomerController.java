@@ -1,11 +1,10 @@
 package com.gft.taskoverflow.customer;
 
+import com.gft.taskoverflow.customer.dto.CustomerDto;
+import com.gft.taskoverflow.customer.dto.UpdateNotificationsDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @AllArgsConstructor
@@ -30,6 +29,11 @@ public class CustomerController {
     @GetMapping
     public CustomerDto getCurrentCustomer() {
         return customerService.getCurrentCustomer();
+    }
+
+    @PostMapping("/update-notifications")
+    public void updateNotifications(@RequestBody UpdateNotificationsDto updateNotificationsDto) {
+        customerService.updateNotifications(updateNotificationsDto);
     }
 }
 

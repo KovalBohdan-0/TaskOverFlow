@@ -1,5 +1,6 @@
 package com.gft.taskoverflow.customer;
 
+import com.gft.taskoverflow.customer.dto.CustomerDto;
 import com.gft.taskoverflow.registration.RegistrationRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
