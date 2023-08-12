@@ -5,9 +5,3 @@
   min-height: 100vh;
   background-color: #f7f8fb;
 }
-
-.settings {
-  position: relative;
-  top: 50%;
-  transform: translateY(-70%);
-}
