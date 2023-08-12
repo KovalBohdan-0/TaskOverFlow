@@ -31,9 +31,10 @@ export class AccountSettingsComponent implements OnInit {
     this.customerService.updateEmail({
       email: this.emailFormControl.getRawValue(),
       password: this.passwordFormControl.getRawValue()
-    }).subscribe((message) => {
-      console.log(message);
-      this.authService.storeToken(message.body);
+    }).subscribe({
+      next: (response) => {
+        this.authService.storeToken((response.body as any).jwt);
+      }
     });
     //TODO: show success message
   }

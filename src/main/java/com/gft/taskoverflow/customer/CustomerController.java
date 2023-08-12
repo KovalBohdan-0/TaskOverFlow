@@ -4,6 +4,7 @@ import com.gft.taskoverflow.customer.dto.CustomerDto;
 import com.gft.taskoverflow.customer.dto.UpdateEmailDto;
 import com.gft.taskoverflow.customer.dto.UpdateNotificationsDto;
 import com.gft.taskoverflow.customer.dto.UpdatePasswordDto;
+import com.gft.taskoverflow.login.AuthenticationResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -39,12 +40,12 @@ public class CustomerController {
     }
 
     @PostMapping("/update-password")
-    public String updatePassword(@RequestBody UpdatePasswordDto updatePasswordDto) {
+    public AuthenticationResponse updatePassword(@RequestBody UpdatePasswordDto updatePasswordDto) {
         return customerService.updatePassword(updatePasswordDto);
     }
 
     @PostMapping("/update-email")
-    public String updateEmail(@RequestBody UpdateEmailDto updateEmailDto) {
+    public AuthenticationResponse updateEmail(@RequestBody UpdateEmailDto updateEmailDto) {
         return customerService.updateEmail(updateEmailDto);
     }
 }

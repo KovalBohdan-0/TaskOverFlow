@@ -8,6 +8,7 @@ import com.gft.taskoverflow.exception.DuplicateResourceException;
 import com.gft.taskoverflow.exception.IncorrectPasswordException;
 import com.gft.taskoverflow.exception.ResourceNotFoundException;
 import com.gft.taskoverflow.jwt.JwtService;
+import com.gft.taskoverflow.login.AuthenticationResponse;
 import com.gft.taskoverflow.registration.RegistrationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -76,25 +77,22 @@ public class CustomerService {
         customerRepository.save(customer);
     }
 
-    public String updatePassword(UpdatePasswordDto updatePasswordDto) {
+    public AuthenticationResponse updatePassword(UpdatePasswordDto updatePasswordDto) {
         Customer customer = getCurrentCustomerEntity();
 
-        if (!bCryptPasswordEncoder.encode(updatePasswordDto.oldPassword()).equals(customer.getPassword())) {
+        if (!bCryptPasswordEncoder.matches(updatePasswordDto.oldPassword(), customer.getPassword())) {
             throw new IncorrectPasswordException("old password is incorrect");
         }
 
         customer.setPassword(bCryptPasswordEncoder.encode(updatePasswordDto.newPassword()));
         customerRepository.save(customer);
-        return jwtService.generateJwt(new CustomerUserDetails(customer.getEmail(), updatePasswordDto.newPassword()));
+        return new AuthenticationResponse(jwtService.generateJwt(new CustomerUserDetails(customer.getEmail(), updatePasswordDto.newPassword())));
     }
 
-    public String updateEmail(UpdateEmailDto updateEmailDto) {
+    public AuthenticationResponse updateEmail(UpdateEmailDto updateEmailDto) {
         Customer customer = getCurrentCustomerEntity();
 
-//        System.out.println(updateEmailDto.password());
-//        System.out.println(bCryptPasswordEncoder.encode(updateEmailDto.password()));
-//        System.out.println(customer.getPassword());
-        if (!bCryptPasswordEncoder.encode(updateEmailDto.password()).equals(customer.getPassword())) {
+        if (!bCryptPasswordEncoder.matches(updateEmailDto.password(), customer.getPassword())) {
             throw new IncorrectPasswordException("password is incorrect");
         } else if (customerRepository.existsByEmail(updateEmailDto.email())) {
             throw new DuplicateResourceException("email \"%s\" has been already taken".formatted(updateEmailDto.email()));
@@ -102,6 +100,6 @@ public class CustomerService {
 
         customer.setEmail(updateEmailDto.email());
         customerRepository.save(customer);
-        return jwtService.generateJwt(new CustomerUserDetails(updateEmailDto.email(), updateEmailDto.password()));
+        return new AuthenticationResponse(jwtService.generateJwt(new CustomerUserDetails(updateEmailDto.email(), updateEmailDto.password())));
     }
 }
