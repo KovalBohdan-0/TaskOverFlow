@@ -29,6 +29,11 @@ export class AuthService {
     return this.httpClient.post(this.apiUrl + '/api/v1/login', user, { observe: 'response' });
   }
 
+  logOut() {
+    localStorage.removeItem("jwt");
+    this.router.navigate(['/login']);
+  }
+
   register(user: UserInfo): Observable<HttpResponse<Object>> {
     return this.httpClient.post(this.apiUrl + '/api/v1/registration', user, { observe: 'response' });
   }

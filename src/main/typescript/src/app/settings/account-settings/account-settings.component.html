@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-4">Save changes</button>
+                        <button [disabled]="emailFormControl.invalid || passwordFormControl.invalid" type="submit" class="btn btn-primary mt-4">Save changes</button>
                     </form>
                 </div>
             </div>
