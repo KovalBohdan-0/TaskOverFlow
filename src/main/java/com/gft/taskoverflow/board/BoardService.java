@@ -31,9 +31,10 @@ public class BoardService {
         boardRepository.save(board);
     }
 
-    public void saveBoard(Board board) {
+    public Long saveBoard(Board board) {
         board.setCustomers(Set.of(customerUserDetailsService.getCurrentCustomer()));
         boardRepository.save(board);
+        return board.getId();
     }
 
     public Board getBoardById(Long boardId) {

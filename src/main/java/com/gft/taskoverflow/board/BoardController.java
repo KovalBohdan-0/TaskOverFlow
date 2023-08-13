@@ -15,8 +15,8 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public void addBoard(@Valid @RequestBody Board board) {
-        boardService.saveBoard(board);
+    public Long addBoard(@Valid @RequestBody Board board) {
+        return boardService.saveBoard(board);
     }
 
     @PostMapping("/addCustomer/{boardId}")

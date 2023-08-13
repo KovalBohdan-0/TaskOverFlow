@@ -3,6 +3,7 @@ import {CustomerService} from "../../service/customer.service";
 import {FormControl, Validators} from "@angular/forms";
 import {ErrorStateMatcher} from "@angular/material/core";
 import {AuthService} from "../../service/auth.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-account-settings',
@@ -14,7 +15,7 @@ export class AccountSettingsComponent implements OnInit {
   passwordFormControl = new FormControl('', [Validators.required]);
   matcher = new ErrorStateMatcher();
 
-  constructor(private customerService: CustomerService, private authService: AuthService) {
+  constructor(private customerService: CustomerService, private authService: AuthService, private snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
@@ -34,8 +35,15 @@ export class AccountSettingsComponent implements OnInit {
     }).subscribe({
       next: (response) => {
         this.authService.storeToken((response.body as any).jwt);
+        this.snackBar.open("Email updated successfully", "Close", {duration: 2000, panelClass: ["snackbar-success"]});
+      },
+      error: (error) => {
+        if (error.status === 409) {
+          this.snackBar.open("Email already exists", "Close", {duration: 5000, panelClass: ["snackbar-error"]});
+        } else {
+          this.snackBar.open("Password was not correct", "Close", {duration: 5000, panelClass: ["snackbar-error"]});
+        }
       }
     });
-    //TODO: show success message
   }
 }

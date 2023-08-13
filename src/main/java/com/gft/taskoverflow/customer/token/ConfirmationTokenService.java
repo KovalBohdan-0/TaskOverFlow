@@ -3,6 +3,7 @@ package com.gft.taskoverflow.customer.token;
 import com.gft.taskoverflow.customer.CustomerService;
 import com.gft.taskoverflow.email.EmailSender;
 import com.gft.taskoverflow.exception.EmailAlreadyConfirmedException;
+import com.gft.taskoverflow.exception.EmailAlreadySentException;
 import com.gft.taskoverflow.exception.ResourceNotFoundException;
 import com.gft.taskoverflow.exception.TokenExpiredException;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,10 @@ public class ConfirmationTokenService {
     }
 
     public void sendConfirmationEmail(String host) {
+        if (this.confirmationTokenRepository.findByCustomerId(customerService.getCurrentCustomerEntity().getId()).isPresent()) {
+            throw new EmailAlreadySentException();
+        }
+
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         String token = generateAndSaveTokenForCustomer(email);
         String link = "https://" + host + "/api/v1/confirmation?token=" + token;

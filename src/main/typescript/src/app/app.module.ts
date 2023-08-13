@@ -32,6 +32,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { PasswordSettingsComponent } from './settings/password-settings/password-settings.component';
 import { NotificationSettingsComponent } from './settings/notification-settings/notification-settings.component';
 import { AccountSettingsComponent } from './settings/account-settings/account-settings.component';
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -102,6 +103,7 @@ const routes: Routes = [
     MatDialog,
     MatDatepickerModule,
     NgxMatNativeDateModule,
+    MatSnackBar
   ],
   bootstrap: [AppComponent],
   exports: [RouterModule]
