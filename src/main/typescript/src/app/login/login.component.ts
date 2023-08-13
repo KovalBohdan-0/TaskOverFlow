@@ -3,6 +3,7 @@ import {AuthService} from "../service/auth.service";
 import {NgForm} from "@angular/forms";
 import {UserInfo} from "./UserInfo";
 import {Router} from "@angular/router";
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginComponent {
     password: "",
   };
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private matSnackBar: MatSnackBar) {
   }
 
   logIn(formUser: NgForm): void {
@@ -25,11 +26,8 @@ export class LoginComponent {
         this.authService.storeToken(response.body.jwt);
         this.router.navigate(['/board']);
       },
-      error: (error: any) => {
-        if (error.status == 404) {
-          //TODO add error message
-        } else {
-        }
+      error: () => {
+        this.matSnackBar.open("Invalid email or password", "Close", {duration: 5000});
       }
     });
   }

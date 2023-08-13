@@ -1,51 +1,51 @@
 <div class="tab-pane fade show active" id="account" role="tabpanel">
-    <div class="card">
-        <div class="card-header">
-            <div class="card-actions float-right">
-                <div class="card-body">
-                    <form (ngSubmit)="updateEmail()">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <h4>Change your email address here.</h4>
-                                    <form>
-                                        <mat-form-field class="w-100">
-                                            <mat-label>Email</mat-label>
-                                            <input type="email" matInput [formControl]="emailFormControl"
-                                                   [errorStateMatcher]="matcher"
-                                                   placeholder="Ex. pat@example.com">
-                                            <mat-error
-                                                    *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-                                                Please enter a valid email address
-                                            </mat-error>
-                                            <mat-error *ngIf="emailFormControl.hasError('required')">
-                                                Email is <strong>required</strong>
-                                            </mat-error>
-                                        </mat-form-field>
-                                        <br/>
-                                        <mat-form-field class="w-100">
-                                            <mat-label>Confirmation Password</mat-label>
-                                            <input type="password" matInput [formControl]="passwordFormControl"
-                                                   [errorStateMatcher]="matcher"
-                                                   placeholder="Ex. password">
-                                            <mat-error *ngIf="passwordFormControl.hasError('required')">
-                                                Password is <strong>required</strong>
-                                            </mat-error>
-                                        </mat-form-field>
-                                        <br/>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="text-center">
-                                    <div class="profile-image mx-auto">{{emailFormControl.getRawValue().charAt(0).toUpperCase()}}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <button [disabled]="emailFormControl.invalid || passwordFormControl.invalid" type="submit" class="btn btn-primary mt-4">Save changes</button>
-                    </form>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-actions float-right">
+        <div class="card-body">
+          <form (ngSubmit)="updateEmail()">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="form-group">
+                  <h4>Change your email address here.</h4>
+                  <mat-form-field class="w-100">
+                    <mat-label>Email</mat-label>
+                    <input type="email" matInput [formControl]="emailFormControl"
+                           [errorStateMatcher]="matcher"
+                           placeholder="Ex. pat@example.com">
+                    <mat-error
+                      *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+                      Please enter a valid email address
+                    </mat-error>
+                    <mat-error *ngIf="emailFormControl.hasError('required')">
+                      Email is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                  <br/>
+                  <mat-form-field class="w-100">
+                    <mat-label>Confirmation Password</mat-label>
+                    <input type="password" matInput [formControl]="passwordFormControl"
+                           [errorStateMatcher]="matcher"
+                           placeholder="Ex. password">
+                    <mat-error *ngIf="passwordFormControl.hasError('required')">
+                      Password is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                  <br/>
                 </div>
+              </div>
+              <div class="col-md-4">
+                <div class="text-center">
+                  <div class="profile-image mx-auto">{{emailFormControl.getRawValue().charAt(0).toUpperCase()}}</div>
+                </div>
+              </div>
             </div>
+            <button [disabled]="emailFormControl.invalid || passwordFormControl.invalid" type="submit"
+                    class="btn btn-primary mt-4">Save changes
+            </button>
+          </form>
         </div>
+      </div>
     </div>
+  </div>
 </div>
