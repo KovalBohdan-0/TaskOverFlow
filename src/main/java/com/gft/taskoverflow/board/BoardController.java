@@ -28,4 +28,9 @@ public class BoardController {
     public List<BoardResponseDto> getBoards() {
         return boardService.getCustomersBoards();
     }
+
+    @DeleteMapping("/{boardId}")
+    public void deleteBoard(@PathVariable Long boardId) {
+        boardService.deleteBoard(boardId);
+    }
 }

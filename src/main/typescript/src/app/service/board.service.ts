@@ -25,4 +25,8 @@ export class BoardService {
   addBoardMember(boardId: number, email: string) {
     return this.httpClient.post(this.apiUrl + '/api/v1/board/addCustomer/' + boardId, {email: email}, {headers: this.headers, observe: 'response'});
   }
+
+  deleteBoard(boardId: number) {
+    return this.httpClient.delete(this.apiUrl + '/api/v1/board/' + boardId, {headers: this.headers, observe: 'response'});
+  }
 }
