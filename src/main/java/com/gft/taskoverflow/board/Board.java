@@ -24,7 +24,7 @@ public class Board {
     @Size(max = 100)
     @Column(nullable = false, length = 100)
     private String title;
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TaskList> taskLists;
     @ManyToMany
     private Set<Customer> customers;

@@ -33,6 +33,7 @@ import { PasswordSettingsComponent } from './settings/password-settings/password
 import { NotificationSettingsComponent } from './settings/notification-settings/notification-settings.component';
 import { AccountSettingsComponent } from './settings/account-settings/account-settings.component';
 import {MatSnackBar} from "@angular/material/snack-bar";
+import { DeleteBoardModalComponent } from './board/sidebar/delete-board-modal/delete-board-modal.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -67,6 +68,7 @@ const routes: Routes = [
     PasswordSettingsComponent,
     NotificationSettingsComponent,
     AccountSettingsComponent,
+    DeleteBoardModalComponent,
   ],
   imports: [
     BrowserModule,

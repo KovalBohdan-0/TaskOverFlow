@@ -40,4 +40,8 @@ public class BoardService {
     public Board getBoardById(Long boardId) {
         return boardRepository.findById(boardId).orElseThrow(() -> new BoardNotFoundException(boardId));
     }
+
+    public void deleteBoard(Long boardId) {
+        boardRepository.deleteById(boardId);
+    }
 }

@@ -4,6 +4,7 @@ import {SidebarAddMemberComponent} from "./sidebar-add-member/sidebar-add-member
 import {MatDialog} from "@angular/material/dialog";
 import {SharedService} from "../../service/shared.service";
 import {Router} from "@angular/router";
+import {DeleteBoardModalComponent} from "./delete-board-modal/delete-board-modal.component";
 
 @Component({
   selector: 'app-sidebar',
@@ -38,5 +39,9 @@ export class SidebarComponent implements OnInit {
 
   openAddBoardModal() {
     this.dialog.open(SidebarAddMemberComponent);
+  }
+
+  openDeleteBoardModal() {
+    this.dialog.open(DeleteBoardModalComponent);
   }
 }
