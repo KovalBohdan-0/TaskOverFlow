@@ -4,7 +4,7 @@ import com.gft.taskoverflow.notification.dto.NotificationResponseDto;
 import com.gft.taskoverflow.notification.dto.NotificationUpdateDto;
 import com.gft.taskoverflow.task.Task;
 import com.gft.taskoverflow.task.TaskService;
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @Service
-@Data
+@AllArgsConstructor
 public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final TaskService taskService;
@@ -25,6 +25,10 @@ public class NotificationService {
     public NotificationResponseDto getNotification(Long taskId) {
         Notification notification = notificationRepository.findByTaskId(taskId).orElse(new Notification());
         return notificationMapper.mapToNotificationResponseDto(notification);
+    }
+
+    public List<NotificationResponseDto> getCurrentNotifications() {
+        return notificationMapper.mapToNotificationResponseDtoList(notificationRepository.findAllByNotificationTimeBefore(LocalDateTime.now(Clock.systemUTC())));
     }
 
     public void updateNotification(Long taskId, NotificationUpdateDto notificationUpdateDto) {
@@ -45,9 +49,7 @@ public class NotificationService {
         for (Notification notification : notificationsBeforeNow) {
             rabbitTemplate.convertAndSend("notification-exchange", "message.type.notification",
                     notification.getMessage() + " " + notification.getTask().getTitle());
-            Task task = notification.getTask();
-            task.setNotification(null);
-            taskService.save(task);
+            notification.setSent(true);
         }
     }
 
