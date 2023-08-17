@@ -10,9 +10,16 @@
         <button class="btn btn-light ms-2" (click)="addBoard()"><i class="bi bi-stickies"></i><span class="d-none d-sm-inline-block"> Create board</span></button>
       </div>
       <div class="ms-auto navbar">
-        <div class="divider d-none d-sm-block"></div>
+        <div class="me-4 position-relative">
+          <div *ngIf="currentNotifications.length > 0" class="position-absolute notif-count">{{currentNotifications.length}}</div>
+          <div ngbDropdown ngbDropdownToggle class="btn btn-primary">
+            <i class="bi bi-bell"></i>
+            <app-notifications ngbDropdownMenu></app-notifications>
+          </div>
+        </div>
+        <div class="divider d-md-inline-block d-none"></div>
         <div class="d-md-flex d-none">{{email}}</div>
-        <div class="profile-image ms-2">{{email.charAt(0).toUpperCase()}}</div>
+        <div class="d-md-inline-block d-none profile-image ms-2">{{email.charAt(0).toUpperCase()}}</div>
       </div>
     </nav>
     <div class="board-main p-5 container">

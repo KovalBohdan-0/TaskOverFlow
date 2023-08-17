@@ -70,3 +70,23 @@
     justify-content: space-between;
   }
 }
+
+.notif-count {
+  right: 0.5rem;
+  font-size: 0.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  transform-style: preserve-3d;
+}
+
+.notif-count::after {
+  content: '';
+  position: absolute;
+  bottom: 0.25rem;
+  right: -0.25rem;
+  width: 0.9rem;
+  height: 0.9rem;
+  background-color: #ff0000;
+  border-radius: 50%;
+  transform: translateZ(-1px);
+}

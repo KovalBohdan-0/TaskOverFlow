@@ -2,11 +2,13 @@ package com.gft.taskoverflow.notification;
 
 import com.gft.taskoverflow.notification.dto.NotificationResponseDto;
 import com.gft.taskoverflow.notification.dto.NotificationUpdateDto;
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@Data
+@AllArgsConstructor
 @RequestMapping("/api/v1")
 public class NotificationController {
     private final NotificationService notificationService;
@@ -14,6 +16,11 @@ public class NotificationController {
     @GetMapping("/notification/{taskId}")
     public NotificationResponseDto getNotification(@PathVariable Long taskId) {
         return notificationService.getNotification(taskId);
+    }
+
+    @GetMapping("/notification")
+    public List<NotificationResponseDto> getNotifications() {
+        return notificationService.getCurrentNotifications();
     }
 
     @PutMapping("/notification/{taskId}")
