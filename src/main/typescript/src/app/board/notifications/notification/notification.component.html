@@ -1,1 +1,8 @@
-<p>notification works!</p>
+<div class="notification p-3 m-2" (click)="openTaskModal()">
+  <div>
+    {{notification.message ? notification.message : "You have planned a task by time:"}}
+  </div>
+  <div>
+    {{notification.notificationTime | date: 'dd/MM/yyyy HH:mm'}}
+  </div>
+</div>
