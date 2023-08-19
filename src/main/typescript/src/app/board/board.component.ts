@@ -11,6 +11,7 @@ import {SharedService} from "../service/shared.service";
 import {ShortTask} from "./task-list/task/ShortTask";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {NotificationService} from "../service/notification.service";
+import {Notification} from "./notifications/notification/Notification";
 
 @Component({
   selector: 'app-board',
