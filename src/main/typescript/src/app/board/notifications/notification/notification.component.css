@@ -1,3 +1,7 @@
 .notification {
   border: #aecbd0 solid 1px;
 }
+
+.notification:hover {
+  background-color: #a8d3da;
+}

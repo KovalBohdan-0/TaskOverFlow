@@ -95,6 +95,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.notificationService.getCurrentNotifications().subscribe({
       next: (response: any) => {
         this.currentNotifications = response.body;
+        this.notificationService.readCurrentNotifications().subscribe();
       }
     });
   }

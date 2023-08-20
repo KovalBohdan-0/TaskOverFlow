@@ -14,7 +14,7 @@
           <div *ngIf="currentNotifications.length > 0" class="position-absolute notif-count">{{currentNotifications.length}}</div>
           <div ngbDropdown ngbDropdownToggle class="btn btn-primary caret-off">
             <i class="bi bi-bell"></i>
-            <app-notifications class="dropdown-menu-end" [notifications]="currentNotifications" ngbDropdownMenu></app-notifications>
+            <app-notifications class="notifications dropdown-menu-end" [notifications]="currentNotifications" ngbDropdownMenu></app-notifications>
           </div>
         </div>
         <div class="divider d-md-inline-block d-none"></div>

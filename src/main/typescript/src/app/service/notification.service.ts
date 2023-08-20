@@ -23,4 +23,8 @@ export class NotificationService {
   updateNotification(notification: UpdateNotification, taskId: number): Observable<HttpResponse<Object>> {
     return this.httpClient.put(this.apiURL + '/api/v1/notification/' + taskId, notification, {observe: 'response'});
   }
+
+  readCurrentNotifications(): Observable<HttpResponse<Object>> {
+    return this.httpClient.put(this.apiURL + '/api/v1/notification/read', null, {observe: 'response'});
+  }
 }

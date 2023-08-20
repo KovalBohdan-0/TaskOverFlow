@@ -28,6 +28,11 @@ public class NotificationController {
         notificationService.updateNotification(taskId, notification);
     }
 
+    @PutMapping("/notification/read")
+    public void readNotifications() {
+        notificationService.readCurrentNotifications();
+    }
+
     @DeleteMapping("/notification/{taskId}")
     public void deleteNotification(@PathVariable Long taskId) {
         notificationService.deleteNotification(taskId);
