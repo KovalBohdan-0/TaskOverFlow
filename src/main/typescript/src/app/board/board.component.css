@@ -98,3 +98,8 @@
 .caret-off::after {
   display: none;
 }
+
+.notifications {
+  max-height: 20rem;
+  overflow-y: auto;
+}

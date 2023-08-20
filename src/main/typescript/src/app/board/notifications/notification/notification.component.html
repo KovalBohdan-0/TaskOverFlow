@@ -1,8 +1,8 @@
 <div class="notification p-3 m-2" (click)="openTaskModal()">
   <div>
-    {{notification.message ? notification.message : "You have planned a task by time:"}}
+    {{notification.message ? notification.message : "You have planned a task by :"}}
   </div>
   <div>
-    {{notification.notificationTime | date: 'dd/MM/yyyy HH:mm'}}
+    {{notification.notificationTime | date: 'medium'}}
   </div>
 </div>

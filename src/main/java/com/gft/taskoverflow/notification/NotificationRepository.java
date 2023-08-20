@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
+    //TODO add check for current user
     @Query("SELECT n FROM Notification n WHERE n.notificationTime < ?1 AND n.isSent = false")
     List<Notification> findAllByNotificationTimeBefore(LocalDateTime notificationTime);
     Optional<Notification> findByTaskId(Long taskId);

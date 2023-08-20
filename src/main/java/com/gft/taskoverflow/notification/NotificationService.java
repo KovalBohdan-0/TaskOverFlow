@@ -31,6 +31,16 @@ public class NotificationService {
         return notificationMapper.mapToNotificationResponseDtoList(notificationRepository.findAllByNotificationTimeBefore(LocalDateTime.now(Clock.systemUTC())));
     }
 
+    public void readCurrentNotifications() {
+        List<Notification> notificationsBeforeNow = notificationRepository
+                .findAllByNotificationTimeBefore(LocalDateTime.now(Clock.systemUTC()));
+
+        for (Notification notification : notificationsBeforeNow) {
+            notification.setRead(true);
+            notificationRepository.save(notification);
+        }
+    }
+
     public void updateNotification(Long taskId, NotificationUpdateDto notificationUpdateDto) {
         Task task = taskService.getTaskById(taskId);
         Notification notification = notificationRepository.findByTaskId(taskId).orElse(new Notification());
