@@ -95,7 +95,6 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.notificationService.getCurrentNotifications().subscribe({
       next: (response: any) => {
         this.currentNotifications = response.body;
-        this.notificationService.readCurrentNotifications().subscribe();
       }
     });
   }
@@ -136,6 +135,10 @@ export class BoardComponent implements OnInit, OnDestroy {
     }
 
     this.makeSubscriptions();
+  }
+
+  countUnreadNotifications() {
+    return this.currentNotifications.filter(notification => !notification.isRead).length;
   }
 
   drop(event: CdkDragDrop<TaskList[]>) {
