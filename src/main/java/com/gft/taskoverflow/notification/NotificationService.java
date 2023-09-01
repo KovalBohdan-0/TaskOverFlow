@@ -1,5 +1,6 @@
 package com.gft.taskoverflow.notification;
 
+import com.gft.taskoverflow.customer.CustomerService;
 import com.gft.taskoverflow.notification.dto.NotificationResponseDto;
 import com.gft.taskoverflow.notification.dto.NotificationUpdateDto;
 import com.gft.taskoverflow.task.Task;
@@ -21,6 +22,7 @@ public class NotificationService {
     private final TaskService taskService;
     private final NotificationMapper notificationMapper;
     private final RabbitTemplate rabbitTemplate;
+    private final CustomerService customerService;
 
     public NotificationResponseDto getNotification(Long taskId) {
         Notification notification = notificationRepository.findByTaskId(taskId).orElse(new Notification());
@@ -28,17 +30,15 @@ public class NotificationService {
     }
 
     public List<NotificationResponseDto> getCurrentNotifications() {
-        return notificationMapper.mapToNotificationResponseDtoList(notificationRepository.findAllByNotificationTimeBefore(LocalDateTime.now(Clock.systemUTC())));
+        return notificationMapper.mapToNotificationResponseDtoList(
+                notificationRepository.findAllByNotificationTimeBeforeForCustomer(LocalDateTime.now(Clock.systemUTC()),
+                        customerService.getCurrentCustomerEntity().getId()));
     }
 
-    public void readCurrentNotifications() {
-        List<Notification> notificationsBeforeNow = notificationRepository
-                .findAllByNotificationTimeBefore(LocalDateTime.now(Clock.systemUTC()));
-
-        for (Notification notification : notificationsBeforeNow) {
-            notification.setRead(true);
-            notificationRepository.save(notification);
-        }
+    public void readCurrentNotifications(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId).orElseThrow();
+        notification.setRead(true);
+        notificationRepository.save(notification);
     }
 
     public void updateNotification(Long taskId, NotificationUpdateDto notificationUpdateDto) {
@@ -53,8 +53,8 @@ public class NotificationService {
 
     @Scheduled(fixedDelay = 120000, initialDelay = 60000)
     public void sendNotification() {
-        List<Notification> notificationsBeforeNow = notificationRepository
-                .findAllByNotificationTimeBefore(LocalDateTime.now(Clock.systemUTC()).minusMinutes(1));
+        List<Notification> notificationsBeforeNow = notificationRepository.findAllByNotificationTimeBefore(
+                LocalDateTime.now(Clock.systemUTC()).minusMinutes(1));
 
         for (Notification notification : notificationsBeforeNow) {
             rabbitTemplate.convertAndSend("notification-exchange", "message.type.notification",
