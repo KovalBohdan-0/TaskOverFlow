@@ -6,7 +6,6 @@ import com.gft.taskoverflow.notification.dto.NotificationUpdateDto;
 import com.gft.taskoverflow.task.Task;
 import com.gft.taskoverflow.task.TaskService;
 import lombok.AllArgsConstructor;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,6 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final TaskService taskService;
     private final NotificationMapper notificationMapper;
-    private final RabbitTemplate rabbitTemplate;
     private final CustomerService customerService;
 
     public NotificationResponseDto getNotification(Long taskId) {
@@ -57,9 +55,7 @@ public class NotificationService {
                 LocalDateTime.now(Clock.systemUTC()).minusMinutes(1));
 
         for (Notification notification : notificationsBeforeNow) {
-            rabbitTemplate.convertAndSend("notification-exchange", "message.type.notification",
-                    notification.getMessage() + " " + notification.getTask().getTitle());
-            notification.setSent(true);
+
         }
     }
 

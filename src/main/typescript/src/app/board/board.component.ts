@@ -110,15 +110,15 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   setSelectedBoard() {
     this.route.params
-      .subscribe(params => {
-          this.selectedBoard = this.boards.find(board => board.id == params['id']);
-          if (this.selectedBoard != undefined) {
-            this.sharedService.boardId = this.selectedBoard.id;
-            this.getTaskListsByBoardId(this.selectedBoard.id);
-            this.updateTaskListSubscriptions();
-          }
-        }
-      );
+        .subscribe(params => {
+              this.selectedBoard = this.boards.find(board => board.id == params['id']);
+              if (this.selectedBoard != undefined) {
+                this.sharedService.boardId = this.selectedBoard.id;
+                this.getTaskListsByBoardId(this.selectedBoard.id);
+                this.updateTaskListSubscriptions();
+              }
+            }
+        );
   }
 
   openSidebar() {
@@ -146,8 +146,8 @@ export class BoardComponent implements OnInit, OnDestroy {
     const taskListBefore = event.container.data[event.currentIndex - 1];
     const taskListAfter = event.container.data[event.currentIndex + 1];
     this.taskListService.moveTaskList(taskListBefore ? taskListBefore.id : -1,
-      taskListAfter ? taskListAfter.id : -1,
-      event.container.data[event.currentIndex].id, this.selectedBoard.id);
+        taskListAfter ? taskListAfter.id : -1,
+        event.container.data[event.currentIndex].id, this.selectedBoard.id);
   }
 
   makeSubscriptions() {
