@@ -48,7 +48,7 @@ public class ConfirmationTokenService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         String token = generateAndSaveTokenForCustomer(email);
         String link = "https://" + host + "/api/v1/confirmation?token=" + token;
-        emailSender.send(email, emailSender.buildEmail(email, link));
+        emailSender.send(email, emailSender.buildEmail(email, link), "Confirm your email");
     }
 
     public String confirmToken(String token) {
