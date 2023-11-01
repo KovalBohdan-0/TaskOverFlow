@@ -44,4 +44,8 @@ export class SidebarComponent implements OnInit {
   openDeleteBoardModal() {
     this.dialog.open(DeleteBoardModalComponent);
   }
+
+  concentrateOnCreateBoard() {
+    document.getElementById("add-board").focus();
+  }
 }
