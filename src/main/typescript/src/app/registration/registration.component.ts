@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserInfo} from "../login/UserInfo";
 import {RegistrationInfo} from "./RegistrationInfo";
 import {AuthService} from "../service/auth.service";
@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css']
 })
-export class RegistrationComponent {
+export class RegistrationComponent implements OnInit {
   registrationInfo: RegistrationInfo = {
     email: '',
     password: '',
@@ -19,6 +19,10 @@ export class RegistrationComponent {
   }
 
   constructor(private authService: AuthService, private router: Router, private  matSnackBar: MatSnackBar) {
+  }
+
+  ngOnInit(): void {
+    this.authService.healthCheck().subscribe();
   }
 
   register(registrationInfo: NgForm) {
