@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../service/auth.service";
 import {NgForm} from "@angular/forms";
 import {UserInfo} from "./UserInfo";
@@ -10,13 +10,17 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   userInfo: UserInfo = {
     email: "",
     password: "",
   };
 
   constructor(private authService: AuthService, private router: Router, private matSnackBar: MatSnackBar) {
+  }
+
+  ngOnInit(): void {
+    this.authService.healthCheck().subscribe();
   }
 
   logIn(formUser: NgForm): void {

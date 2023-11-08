@@ -12,13 +12,14 @@
     <button ngbDropdown ngbDropdownToggle class="btn text-white p-3 sidebar-btn sidebar-element caret-off"><i
       class="bi bi-clipboard-data-fill"></i><span> Boards</span>
       <div ngbDropdownMenu>
+        <div (click)="concentrateOnCreateBoard()" class="p-2" *ngIf="boards.length == 0">Add new board</div>
         <div routerLink="/board/{{option.id}}" routerLinkActive="active" *ngFor="let option of boards">
           <a class="dropdown-item">{{ option.title }}</a>
         </div>
       </div>
     </button>
     <div class="sidebar-divider"></div>
-    <button (click)="openAddBoardModal()" name="addMember" class="btn text-white p-3 sidebar-btn sidebar-element"><i
+    <button *ngIf="sharedService.boardId" (click)="openAddBoardModal()" name="addMember" class="btn text-white p-3 sidebar-btn sidebar-element"><i
       class="bi bi-person-fill-add"></i><span> Add members</span></button>
     <div class="sidebar-divider"></div>
     <button (click)="openSettings()" class="btn text-white p-3 sidebar-btn sidebar-element"><i

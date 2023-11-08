@@ -1,3 +1,4 @@
+<div class="p-4" *ngIf="notifications.length == 0">No new notification</div>
 <div *ngFor="let notification of notifications">
   <app-notification [notification]="notification"></app-notification>
 </div>

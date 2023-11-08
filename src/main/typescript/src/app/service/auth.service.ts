@@ -14,6 +14,10 @@ export class AuthService {
 
   constructor(private httpClient: HttpClient, private router: Router) { }
 
+  healthCheck(): Observable<Object> {
+    return this.httpClient.get(this.apiUrl + "/api/v1/health-check");
+  }
+
   googleLogin() {
     window.open(this.apiUrl + "/oauth2/google", "_blank");
     this.getJwtFromCookies().then(jwt => {
