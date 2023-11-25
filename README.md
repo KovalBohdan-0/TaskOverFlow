@@ -69,9 +69,6 @@ Access the application at http://localhost:4200 by default.
 
 [Project Homepage]: https://taskoverflow.pp.ua/
 [Project Homepage-2]: https://task-over-flow.vercel.app/
-[main-screenshot]: images/app1.png
-[myurls-screenshot]: src/main/frontend/src/images/screenshot-urls.png
-[shortener-screenshot]: src/main/frontend/src/images/screenshot-shortener.png
 [Spring.io]: https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white
 [Spring-url]: https://spring.io/
 [SpringDataJPA.io]: https://img.shields.io/badge/Spring%20Data%20JPA-6DB33F?style=for-the-badge&logo=spring&logoColor=white
@@ -84,8 +81,6 @@ Access the application at http://localhost:4200 by default.
 [Postgresql-url]: https://postgresql.org
 [Jwt.io]: https://img.shields.io/badge/Json%20Web%20Tokens-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white
 [Jwt-url]: https://jwt.io
-[Aws.com]: https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white
-[Aws-url]: https://aws.amazon.com/
 [TypeScript.org]: https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white
 [TypeScript-url]: https://www.typescriptlang.org/
 [Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
