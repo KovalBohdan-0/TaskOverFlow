@@ -69,6 +69,7 @@ Access the application at http://localhost:4200 by default.
 
 [Project Homepage]: https://taskoverflow.pp.ua/
 [Project Homepage-2]: https://task-over-flow.vercel.app/
+[main-screenshot]: images/app1.png
 [Spring.io]: https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white
 [Spring-url]: https://spring.io/
 [SpringDataJPA.io]: https://img.shields.io/badge/Spring%20Data%20JPA-6DB33F?style=for-the-badge&logo=spring&logoColor=white
