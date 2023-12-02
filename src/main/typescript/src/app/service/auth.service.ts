@@ -66,6 +66,7 @@ export class AuthService {
       this.findJwtFromCookie();
     })
 
+    //for the case when the cookie is already set and the event is not triggered
     this.findJwtFromCookie();
   }
 
