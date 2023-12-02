@@ -13,7 +13,7 @@ func main() {
 	router.GET("/oauth2/callback", callback)
 	router.GET("/oauth2/google", googleOAuth)
 
-	err := router.Run("localhost:8780")
+	err := router.Run(":8080")
 	if err != nil {
 		return
 	}
