@@ -48,7 +48,7 @@ func callback(c *gin.Context) {
 	}
 
 	http.SetCookie(c.Writer, cookie)
-	c.Redirect(http.StatusMovedPermanently, os.Getenv("FRONTEND_API"))
+	c.Redirect(http.StatusMovedPermanently, os.Getenv("FRONTEND_URL"))
 }
 
 func googleOAuth(c *gin.Context) {
