@@ -19,6 +19,8 @@ target/
 *.iml
 *.ipr
 *.run.xml
+.run
+.run/TaskOverFlowApplication.run.xml
 
 ### NetBeans ###
 /nbproject/private/
