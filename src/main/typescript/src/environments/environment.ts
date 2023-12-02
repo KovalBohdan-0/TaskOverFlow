@@ -1,5 +1,5 @@
 export const environment = {
   apiUrl: 'https://taskoverlow.azurewebsites.net',
-  redirectUrl: 'http://localhost:8780',
+  redirectUrl: 'https://api.taskoverflow.pp.ua',
   wsUrl: 'wss://taskoverlow.azurewebsites.net/ws'
 };
