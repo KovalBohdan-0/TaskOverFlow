@@ -5,6 +5,7 @@ import {AuthService} from "../service/auth.service";
 import {Router} from "@angular/router";
 import {NgForm} from "@angular/forms";
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {fromEvent, Observable} from "rxjs";
 
 @Component({
   selector: 'app-registration',
@@ -16,13 +17,15 @@ export class RegistrationComponent implements OnInit {
     email: '',
     password: '',
     confirmPassword: '',
-  }
+  };
 
   constructor(private authService: AuthService, private router: Router, private  matSnackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
     this.authService.healthCheck().subscribe();
+    this.authService.loginWithOAuthJwt();
+    this.authService.ifLoggedIn();
   }
 
   register(registrationInfo: NgForm) {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {environment} from "../../environments/environment";
-import {Observable} from "rxjs";
+import {fromEvent, Observable} from "rxjs";
 import {UserInfo} from "../login/UserInfo";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
@@ -9,7 +9,8 @@ import {Router} from "@angular/router";
   providedIn: 'root'
 })
 export class AuthService {
-  apiUrl = environment.apiUrl;
+  apiUrl: string = environment.apiUrl;
+  redirectUrl: string = environment.redirectUrl;
 
 
   constructor(private httpClient: HttpClient, private router: Router) { }
@@ -19,14 +20,8 @@ export class AuthService {
   }
 
   googleLogin() {
-    window.open(this.apiUrl + "/oauth2/google", "_blank");
-    this.getJwtFromCookies().then(jwt => {
-      if (jwt) {
-        this.storeToken(jwt);
-        this.removeCookie("jwt");
-        this.router.navigate(['/board']);
-      }
-    } );
+    window.open(this.redirectUrl + "/oauth2/google", "_blank");
+    this.loginWithOAuthJwt();
   }
 
   logIn(user: UserInfo): Observable<HttpResponse<Object>> {
@@ -50,27 +45,39 @@ export class AuthService {
     return localStorage.getItem("jwt") || "";
   }
 
-  getJwtFromCookies() {
-    return new Promise((resolve) => {
-      let jwtFound = false;
-      for (let i = 0; i < 5; i++) {
-        setTimeout(function () {
-          if (!jwtFound) {
-            for (let cookie of document.cookie.split(';')) {
-              if (cookie.includes('jwt')) {
-                jwtFound = true;
-                resolve(cookie.split('=')[1]);
-                return;
-              }
-            }
-          }
+  isLoggedIn() : boolean {
+    return this.getToken() !== "";
+  }
 
-          if (!jwtFound && i === 4) {
-            resolve("");
-          }
-        }, 3000 * i);
+  ifLoggedIn() : void {
+    fromEvent(window, 'storage').subscribe((storageEvent: Event): void => {
+      if (this.isLoggedIn()) {
+        this.router.navigate(['/board']);
       }
-    });
+    })
+
+    if (this.isLoggedIn()) {
+      this.router.navigate(['/board']);
+    }
+  }
+
+  loginWithOAuthJwt(): void {
+    fromEvent(window, 'cookie').subscribe((cookieEvent: Event): void => {
+      this.findJwtFromCookie();
+    })
+
+    this.findJwtFromCookie();
+  }
+
+  findJwtFromCookie() : void {
+    for (let cookie of document.cookie.split(';')) {
+      if (cookie.startsWith("jwt") && cookie.split('=').length > 1) {
+        const jwt : string = cookie.split('=')[1];
+        this.storeToken(jwt);
+        this.removeCookie("jwt");
+        this.router.navigate(['/board']);
+      }
+    }
   }
 
   removeCookie(name) {

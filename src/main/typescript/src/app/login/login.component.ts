@@ -4,6 +4,7 @@ import {NgForm} from "@angular/forms";
 import {UserInfo} from "./UserInfo";
 import {Router} from "@angular/router";
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {fromEvent} from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.healthCheck().subscribe();
+    this.authService.loginWithOAuthJwt();
+    this.authService.ifLoggedIn();
   }
 
   logIn(formUser: NgForm): void {

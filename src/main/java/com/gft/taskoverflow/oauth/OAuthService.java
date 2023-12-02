@@ -20,7 +20,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 @Data
 public class OAuthService {
-    private static final String REDIRECT_URI = System.getenv("APP_DOMAIN") + "/oauth2/callback";
+    private static final String REDIRECT_URI = System.getenv("REDIRECT_DOMAIN") + "/oauth2/callback";
     private static final String USER_INFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
     private final CustomerService customerService;
     private final JwtService jwtService;
