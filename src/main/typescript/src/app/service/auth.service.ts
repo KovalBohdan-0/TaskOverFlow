@@ -50,7 +50,7 @@ export class AuthService {
   }
 
   ifLoggedIn() : void {
-    fromEvent(window, 'storage').subscribe((storageEvent: Event): void => {
+    fromEvent(window, 'storage').subscribe((): void => {
       if (this.isLoggedIn()) {
         this.router.navigate(['/board']);
       }
@@ -62,7 +62,7 @@ export class AuthService {
   }
 
   loginWithOAuthJwt(): void {
-    fromEvent(window, 'cookie').subscribe((cookieEvent: Event): void => {
+    fromEvent(window, 'cookie').subscribe((): void => {
       this.findJwtFromCookie();
     })
 
@@ -82,6 +82,6 @@ export class AuthService {
   }
 
   removeCookie(name) {
-    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;' + 'domain=.' + environment.domain + ';';
   }
 }

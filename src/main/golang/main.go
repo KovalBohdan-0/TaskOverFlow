@@ -21,7 +21,7 @@ func main() {
 
 func callback(c *gin.Context) {
 	authCode := c.Query("code")
-	apiUrl := os.Getenv("API_DOMAIN") + "/oauth2/callback?code=" + authCode
+	apiUrl := os.Getenv("API_URL") + "/oauth2/callback?code=" + authCode
 
 	res, err := http.Get(apiUrl)
 
@@ -41,13 +41,14 @@ func callback(c *gin.Context) {
 	}
 
 	cookie := &http.Cookie{
-		Name:  "jwt",
-		Value: cookieValue,
-		Path:  "/",
+		Name:   "jwt",
+		Value:  cookieValue,
+		Path:   "/",
+		Domain: "." + os.Getenv("FRONTEND_DOMAIN"),
 	}
 
 	http.SetCookie(c.Writer, cookie)
-	c.Redirect(http.StatusMovedPermanently, os.Getenv("FRONTEND_DOMAIN"))
+	c.Redirect(http.StatusMovedPermanently, os.Getenv("FRONTEND_API"))
 }
 
 func googleOAuth(c *gin.Context) {
@@ -58,7 +59,7 @@ func getAuthUrl() string {
 	endpoint := "https://accounts.google.com/o/oauth2/v2/auth"
 	scope := "email profile"
 	clientId := os.Getenv("GOOGLE_CLIENT_ID")
-	redirectUri := os.Getenv("REDIRECT_DOMAIN") + "/oauth2/callback"
+	redirectUri := os.Getenv("REDIRECT_URL") + "/oauth2/callback"
 
 	return fmt.Sprintf("%s?scope=%s&client_id=%s&redirect_uri=%s&response_type=code", endpoint, scope, clientId, redirectUri)
 }
