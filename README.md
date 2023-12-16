@@ -17,6 +17,7 @@
 * [![Jwt][Jwt.io]][Jwt-url]
 * [![TypeScript][TypeScript.org]][TypeScript-url]
 * [![Angular][Angular.io]][Angular-url]
+* [![Docker][Docker.com]][Docker-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -38,6 +39,8 @@ Features
 #### Preview
 
 ![Main Page][main-screenshot]
+
+![Task edit][task-edit-screenshot]
 
 ### Installation and Setup
 Prerequisites
@@ -61,6 +64,24 @@ Frontend Setup
     Update API endpoints if necessary in the Angular service files.
     Run ng serve to start the frontend server.
 
+Docker Compose Setup
+
+    Navigate to the root directory.
+    Configure the .web.env (create in root) and docker-compose.yml files as necessary.
+        APP_DOMAIN=...
+        DATASOURCE=...
+        GOOGLE_CLIENT_ID=...
+        GOOGLE_CLIENT_SECRET=...
+        JWT_SECRET=...
+        MAILPASS=...
+        PGPASSWORD=...
+        PGUSERNAME=...
+        SENDER_MAIL=...
+        REDIRECT_DOMAIN=...
+
+    Run docker-compose up to start the application.
+    Access the application at http://localhost:4200 by default.
+
 Access the application at http://localhost:4200 by default.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -70,6 +91,7 @@ Access the application at http://localhost:4200 by default.
 [Project Homepage]: https://taskoverflow.pp.ua/
 [Project Homepage-2]: https://task-over-flow.vercel.app/
 [main-screenshot]: images/app1.png
+[task-edit-screenshot]: images/app2.png
 [Spring.io]: https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white
 [Spring-url]: https://spring.io/
 [SpringDataJPA.io]: https://img.shields.io/badge/Spring%20Data%20JPA-6DB33F?style=for-the-badge&logo=spring&logoColor=white
@@ -88,4 +110,6 @@ Access the application at http://localhost:4200 by default.
 [Angular-url]: https://angular.io/
 [Azure.com]: https://img.shields.io/badge/Azure-0089D6?style=for-the-badge&logo=microsoftazure&logoColor=white
 [Azure-url]: https://azure.microsoft.com/en-us/
+[Docker.com]: https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white
+[Docker-url]: https://www.docker.com/
 
