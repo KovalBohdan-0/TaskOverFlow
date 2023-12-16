@@ -23,6 +23,6 @@ services:
   frontend:
     build: ./src/main/typescript
     ports:
-      - "4200:4200"
+      - "4200:80"
     volumes:
         - ./src/main/typescript:/app
