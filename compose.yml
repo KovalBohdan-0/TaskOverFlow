@@ -20,20 +20,9 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
       - ~/apps/postgres:/var/lib/postgresql/data
-
-#    golang:
-#        build: ./golang
-#        ports:
-#        - "8081:8081"
-#        volumes:
-#        - ./golang:/app
-#        depends_on:
-#        - db
-#    frontend:
-#        build: ./frontend
-#        ports:
-#        - "3000:3000"
-#        volumes:
-#        - ./frontend:/app
-#        depends_on:
-#        - web
+  frontend:
+    build: ./src/main/typescript
+    ports:
+      - "4200:4200"
+    volumes:
+        - ./src/main/typescript:/app
