@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - .web.env
+    depends_on:
+      - db
+  db:
+    image: postgres
+    ports:
+      - "9432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DB=task_over_flow
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+
+#    golang:
+#        build: ./golang
+#        ports:
+#        - "8081:8081"
+#        volumes:
+#        - ./golang:/app
+#        depends_on:
+#        - db
+#    frontend:
+#        build: ./frontend
+#        ports:
+#        - "3000:3000"
+#        volumes:
+#        - ./frontend:/app
+#        depends_on:
+#        - web

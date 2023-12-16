@@ -55,3 +55,6 @@ build/
 # Go workspace file
 go.work
 src/main/golang/golang
+
+# Docker
+.web.env
