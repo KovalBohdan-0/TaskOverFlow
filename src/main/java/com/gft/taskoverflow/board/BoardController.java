@@ -41,7 +41,7 @@ public class BoardController {
         return boardService.getCustomersBoards();
     }
 
-    @Operation(summary = "Get board by id")
+    @Operation(summary = "Delete board by id")
     @ApiResponse(responseCode = "200", description = "Board")
     @DeleteMapping("/{boardId}")
     public void deleteBoard(@PathVariable Long boardId) {
