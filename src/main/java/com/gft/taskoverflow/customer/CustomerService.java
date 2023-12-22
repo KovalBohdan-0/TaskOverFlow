@@ -59,6 +59,10 @@ public class CustomerService {
         return getCustomerByEmail(authentication.getName());
     }
 
+    public Long getCurrentCustomerId() {
+        return getCurrentCustomerEntity().getId();
+    }
+
     public boolean currentCustomerContainsBoard(Long boardId) {
         Customer customer = getCurrentCustomerEntity();
         return customerRepository.containsBoardByIdAndCustomerId(boardId, customer.getId());

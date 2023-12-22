@@ -1,5 +1,7 @@
 package com.gft.taskoverflow.customer;
 
+import com.gft.taskoverflow.attachment.Attachment;
+import com.gft.taskoverflow.attachment.UserAttachmentStats;
 import com.gft.taskoverflow.board.Board;
 import com.gft.taskoverflow.task.list.TaskList;
 import jakarta.persistence.*;
@@ -47,6 +49,10 @@ public class Customer {
     private Set<Board> boards;
     @ManyToMany
     private List<TaskList> taskLists;
+    @OneToOne(mappedBy = "customer")
+    private UserAttachmentStats userAttachmentStats;
+    @OneToOne(mappedBy = "customer")
+    private Attachment attachment;
 
     @Override
     public boolean equals(Object o) {
