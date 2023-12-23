@@ -36,6 +36,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import { DeleteBoardModalComponent } from './board/sidebar/delete-board-modal/delete-board-modal.component';
 import { NotificationsComponent } from './board/notifications/notifications.component';
 import { NotificationComponent } from './board/notifications/notification/notification.component';
+import { AddAttachmentComponent } from './board/task-list/task/task-update/add-attachment/add-attachment.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -73,6 +74,7 @@ const routes: Routes = [
     DeleteBoardModalComponent,
     NotificationsComponent,
     NotificationComponent,
+    AddAttachmentComponent,
   ],
   imports: [
     BrowserModule,

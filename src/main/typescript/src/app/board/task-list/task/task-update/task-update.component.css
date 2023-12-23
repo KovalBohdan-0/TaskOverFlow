@@ -3,6 +3,12 @@
   min-width: 10rem;
 }
 
+@media screen and (min-width: 576px) {
+  .priority-select {
+    height: 120%;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .task-update {
     width: 100%;

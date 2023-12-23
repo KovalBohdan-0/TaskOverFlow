@@ -4,6 +4,7 @@ import com.gft.taskoverflow.customer.Customer;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,9 +19,9 @@ public class UserAttachmentStats {
     private Long id;
     private int attachmentCount;
     private int uploadCountByDay;
-    private LocalDateTime lastUploadDate;
+    private LocalDate lastUploadDate;
     private int downloadCountByDay;
-    private LocalDateTime lastDownloadDate;
+    private LocalDate lastDownloadDate;
     @OneToOne
     @MapsId
     @JoinColumn(name = "customer_id")

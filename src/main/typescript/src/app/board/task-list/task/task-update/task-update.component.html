@@ -1,4 +1,4 @@
-<div class="task-update p-5" (submit)="updateTask()">
+<div class="task-update p-3 p-sm-5" (submit)="updateTask()">
   <form class="d-flex flex-column">
     <div class="d-flex task-update-form">
       <div class="d-flex flex-column task-update-side">
@@ -41,14 +41,18 @@
           Add notification
           <i class="bi bi-plus-square"></i><i class="bi bi-bell-fill"></i>
         </div>
-        <mat-form-field>
-          <mat-label>Priority</mat-label>
-          <mat-select [(ngModel)]="task.priority" name="priority">
-            <mat-option [value]="Priority.LOW">Low</mat-option>
-            <mat-option [value]="Priority.MEDIUM">Medium</mat-option>
-            <mat-option [value]="Priority.HIGH" >High</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <div class="row">
+          <mat-form-field class="col-sm-6 priority-select">
+            <mat-label>Priority</mat-label>
+            <mat-select [(ngModel)]="task.priority" name="priority">
+              <mat-option [value]="Priority.LOW">Low</mat-option>
+              <mat-option [value]="Priority.MEDIUM">Medium</mat-option>
+              <mat-option [value]="Priority.HIGH" >High</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <app-add-attachment class="col-sm-6 add-attachment "></app-add-attachment>
+        </div>
+
         <p>Creation Date: {{task.createdAt | date: 'dd/MM/yyyy hh:mm'}}</p>
         <button type="submit" mat-raised-button color="primary">Save</button>
       </div>

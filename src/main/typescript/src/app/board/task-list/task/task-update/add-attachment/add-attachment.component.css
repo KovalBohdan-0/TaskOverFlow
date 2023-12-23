@@ -1,0 +1,16 @@
+.add-attachment {
+  width: 100%;
+}
+
+.file-input {
+  display: none;
+}
+
+.select-file {
+  padding: -0.3rem 0.9rem;
+  height: 2rem;
+}
+
+.no-selected-files {
+  text-align: center;
+}
