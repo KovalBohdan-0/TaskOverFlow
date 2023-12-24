@@ -1,26 +1,25 @@
 package com.gft.taskoverflow.attachment;
 
-import com.gft.taskoverflow.customer.Customer;
+import com.gft.taskoverflow.task.Task;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Attachment {
     @Id
-    @Column(name = "customer_id")
+    @Column(name = "task_id")
     private Long id;
     private String name;
+    private Long size;
     @OneToOne
     @MapsId
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @JoinColumn(name = "task_id")
+    private Task task;
 
     @Override
     public boolean equals(Object o) {

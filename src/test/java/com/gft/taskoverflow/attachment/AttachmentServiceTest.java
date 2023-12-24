@@ -1,5 +1,7 @@
 package com.gft.taskoverflow.attachment;
 
+import com.gft.taskoverflow.task.Task;
+import com.gft.taskoverflow.task.TaskService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,6 +16,9 @@ public class AttachmentServiceTest {
     @Mock
     private UserAttachmentStatsRepository userStatsRepository;
 
+    @Mock
+    private TaskService taskService;
+
     @InjectMocks
     private AttachmentService attachmentService;
 
@@ -25,8 +30,9 @@ public class AttachmentServiceTest {
     @Test
     public void isUploadNotAllowedWhenSizeIsBigger() {
         when(userStatsRepository.findById(1L)).thenReturn(java.util.Optional.of(new UserAttachmentStats()));
+        when(taskService.getTaskById(1L)).thenReturn(new Task());
 
-        boolean result = attachmentService.isUploadAllowed(1L, 1048577L);
+        boolean result = attachmentService.isUploadAllowed(1L, 1048577L, 1L);
 
         assert !result;
     }
@@ -39,8 +45,9 @@ public class AttachmentServiceTest {
                 .lastDownloadDate(LocalDate.MIN)
                 .build();
         when(userStatsRepository.findById(1L)).thenReturn(java.util.Optional.of(userStats));
+        when(taskService.getTaskById(1L)).thenReturn(new Task());
 
-        boolean result = attachmentService.isUploadAllowed(1L, 10L);
+        boolean result = attachmentService.isUploadAllowed(1L, 10L, 1L);
 
         assert !result;
     }
@@ -53,8 +60,9 @@ public class AttachmentServiceTest {
                 .lastDownloadDate(LocalDate.MIN)
                 .build();
         when(userStatsRepository.findById(1L)).thenReturn(java.util.Optional.of(userStats));
+        when(taskService.getTaskById(1L)).thenReturn(new Task());
 
-        boolean result = attachmentService.isUploadAllowed(1L, 1048577L);
+        boolean result = attachmentService.isUploadAllowed(1L, 1048577L, 1L);
 
         assert !result;
     }
@@ -67,8 +75,9 @@ public class AttachmentServiceTest {
                 .lastDownloadDate(LocalDate.MIN)
                 .build();
         when(userStatsRepository.findById(1L)).thenReturn(java.util.Optional.of(userStats));
+        when(taskService.getTaskById(1L)).thenReturn(new Task());
 
-        boolean result = attachmentService.isUploadAllowed(1L, 10L);
+        boolean result = attachmentService.isUploadAllowed(1L, 10L, 1L);
 
         assert !result;
     }
@@ -81,8 +90,9 @@ public class AttachmentServiceTest {
                 .lastDownloadDate(LocalDate.MIN)
                 .build();
         when(userStatsRepository.findById(1L)).thenReturn(java.util.Optional.of(userStats));
+        when(taskService.getTaskById(1L)).thenReturn(new Task());
 
-        boolean result = attachmentService.isUploadAllowed(1L, 10L);
+        boolean result = attachmentService.isUploadAllowed(1L, 10L, 1L);
 
         assert result;
     }
@@ -95,8 +105,9 @@ public class AttachmentServiceTest {
                 .lastDownloadDate(LocalDate.MIN)
                 .build();
         when(userStatsRepository.findById(1L)).thenReturn(java.util.Optional.of(userStats));
+        when(taskService.getTaskById(1L)).thenReturn(new Task());
 
-        boolean result = attachmentService.isUploadAllowed(1L, 1048577L);
+        boolean result = attachmentService.isUploadAllowed(1L, 1048577L, 1L);
 
         assert !result;
     }
@@ -109,8 +120,9 @@ public class AttachmentServiceTest {
                 .lastDownloadDate(LocalDate.MIN)
                 .build();
         when(userStatsRepository.findById(1L)).thenReturn(java.util.Optional.of(userStats));
+        when(taskService.getTaskById(1L)).thenReturn(new Task());
 
-        boolean result = attachmentService.isUploadAllowed(1L, 1048575L);
+        boolean result = attachmentService.isUploadAllowed(1L, 1048575L, 1L);
 
         assert result;
     }
@@ -123,8 +135,9 @@ public class AttachmentServiceTest {
                 .lastDownloadDate(LocalDate.now())
                 .build();
         when(userStatsRepository.findById(1L)).thenReturn(java.util.Optional.of(userStats));
+        when(taskService.getTaskById(1L)).thenReturn(new Task());
 
-        boolean result = attachmentService.isUploadAllowed(1L, 1048575L);
+        boolean result = attachmentService.isUploadAllowed(1L, 1048575L, 1L);
 
         assert result;
     }
@@ -132,10 +145,28 @@ public class AttachmentServiceTest {
     @Test
     public void isUploadAllowedWhenNoStats() {
         when(userStatsRepository.findById(1L)).thenReturn(java.util.Optional.empty());
+        when(taskService.getTaskById(1L)).thenReturn(new Task());
 
-        boolean result = attachmentService.isUploadAllowed(1L, 1048575L);
+        boolean result = attachmentService.isUploadAllowed(1L, 1048575L, 1L);
 
         assert result;
+    }
+
+    @Test
+    public void isUploadNotAllowedWhenAttachmentPresent() {
+        UserAttachmentStats userStats = UserAttachmentStats.builder()
+                .attachmentCount(5)
+                .lastUploadDate(LocalDate.MIN)
+                .lastDownloadDate(LocalDate.now())
+                .build();
+        when(userStatsRepository.findById(1L)).thenReturn(java.util.Optional.of(userStats));
+        Task task = new Task();
+        task.setAttachment(new Attachment());
+        when(taskService.getTaskById(1L)).thenReturn(task);
+
+        boolean result = attachmentService.isUploadAllowed(1L, 1048575L, 1L);
+
+        assert !result;
     }
 
     @Test

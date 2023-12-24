@@ -50,7 +50,7 @@
               <mat-option [value]="Priority.HIGH" >High</mat-option>
             </mat-select>
           </mat-form-field>
-          <app-add-attachment class="col-sm-6 add-attachment "></app-add-attachment>
+          <app-add-attachment [taskId]="getTaskId()" class="col-sm-6 add-attachment "></app-add-attachment>
         </div>
 
         <p>Creation Date: {{task.createdAt | date: 'dd/MM/yyyy hh:mm'}}</p>

@@ -56,6 +56,10 @@ export class TaskUpdateComponent implements OnInit {
     this.notification.notificationTime = this.task.deadline;
   }
 
+  getTaskId(): number {
+    return  this.data;
+  }
+
   getNotification() {
     this.notificationService.getNotification(this.task.id).subscribe({
       next: (response: any) => {

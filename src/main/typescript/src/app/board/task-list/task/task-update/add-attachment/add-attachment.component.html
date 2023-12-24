@@ -1,6 +1,29 @@
-<input type="file" id="file" class="file-input">
+@if (attachment == null) {
+  <input type="file" id="file" class="file-input" (change)="onFileSelected($event)">
+  @if (selectedFile != null) {
+    <div>{{ selectedFile.name | slice:0:10 }} {{ selectedFile.name.length > 10 ? "..." : "" }}, <span
+      class="ms-auto"> {{ formatBytes(selectedFile.size) }}</span>
+      <button (click)="removeFile()" class="btn btn-light remove-file p-1"><i class="bi bi-x"></i></button>
+    </div>
 
-<div class="no-selected-files">
-  No file selected <i (click)="selectFile()" class="bi bi-folder-plus btn btn-outline-secondary select-file"></i>
-</div>
-<button (click)="selectFile()" class="btn btn-light add-attachment mt-1"><i class="bi bi-file-earmark-arrow-up"></i> Add attachment</button>
+  } @else {
+    <div class="no-selected-files">
+      No files selected <i (click)="selectFile()" class="bi bi-folder-plus btn btn-outline-secondary select-file"></i>
+    </div>
+  }
+  <button (click)="attachFile()" class="btn btn-light add-attachment mt-1"><i class="bi bi-file-earmark-arrow-up"></i>
+    Add attachment
+  </button>
+} @else {
+  <div class="attachment p-3">
+    <div class="d-flex justify-content-between">
+      <div>
+        <div class="attachment-name">{{ attachment.name | slice:0:10 }} {{ attachment.name.length > 10 ? "..." : "" }}</div>
+        <div class="attachment-size">{{ formatBytes(attachment.size) }}</div>
+      </div>
+      <button (click)="downloadAttachment()" class="btn btn-light download-attachment"><i class="bi bi-download"></i>
+      </button>
+      <button (click)="removeAttachment()" class="btn btn-light remove-attachment"><i class="bi bi-x"></i></button>
+    </div>
+  </div>
+}

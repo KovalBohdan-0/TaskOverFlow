@@ -106,4 +106,8 @@ public class CustomerService {
         customerRepository.save(customer);
         return new AuthenticationResponse(jwtService.generateJwt(new CustomerUserDetails(updateEmailDto.email(), updateEmailDto.password())));
     }
+
+    public void save(Customer customer) {
+        customerRepository.save(customer);
+    }
 }

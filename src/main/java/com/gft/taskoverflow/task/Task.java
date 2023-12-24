@@ -1,5 +1,6 @@
 package com.gft.taskoverflow.task;
 
+import com.gft.taskoverflow.attachment.Attachment;
 import com.gft.taskoverflow.notification.Notification;
 import com.gft.taskoverflow.task.list.TaskList;
 import jakarta.persistence.*;
@@ -29,6 +30,9 @@ public class Task {
     private TaskList taskList;
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Notification notification;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    private Attachment attachment;
 
     public Task () {
     }

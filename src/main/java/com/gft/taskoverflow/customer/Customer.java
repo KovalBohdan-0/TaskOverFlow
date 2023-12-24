@@ -1,6 +1,5 @@
 package com.gft.taskoverflow.customer;
 
-import com.gft.taskoverflow.attachment.Attachment;
 import com.gft.taskoverflow.attachment.UserAttachmentStats;
 import com.gft.taskoverflow.board.Board;
 import com.gft.taskoverflow.task.list.TaskList;
@@ -50,9 +49,8 @@ public class Customer {
     @ManyToMany
     private List<TaskList> taskLists;
     @OneToOne(mappedBy = "customer")
+    @PrimaryKeyJoinColumn
     private UserAttachmentStats userAttachmentStats;
-    @OneToOne(mappedBy = "customer")
-    private Attachment attachment;
 
     @Override
     public boolean equals(Object o) {

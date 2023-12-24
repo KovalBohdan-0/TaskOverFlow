@@ -14,3 +14,7 @@
 .no-selected-files {
   text-align: center;
 }
+
+.remove-file {
+  margin-left: 0.5rem;
+}

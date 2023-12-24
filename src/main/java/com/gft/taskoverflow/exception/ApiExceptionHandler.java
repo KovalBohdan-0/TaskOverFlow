@@ -1,6 +1,5 @@
 package com.gft.taskoverflow.exception;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -46,5 +45,29 @@ public class ApiExceptionHandler {
         );
 
         return new ResponseEntity<>(apiException, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = DownloadLimitExceededException.class)
+    public ResponseEntity<Object> handleApiRequestException(DownloadLimitExceededException exception){
+
+        ApiException apiException = new ApiException(
+                exception.getMessage(),
+                HttpStatus.FORBIDDEN,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        return new ResponseEntity<>(apiException, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(value = UploadLimitExceededException.class)
+    public ResponseEntity<Object> handleApiRequestException(UploadLimitExceededException exception){
+
+        ApiException apiException = new ApiException(
+                exception.getMessage(),
+                HttpStatus.FORBIDDEN,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        return new ResponseEntity<>(apiException, HttpStatus.FORBIDDEN);
     }
 }

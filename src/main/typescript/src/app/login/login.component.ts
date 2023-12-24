@@ -4,7 +4,6 @@ import {NgForm} from "@angular/forms";
 import {UserInfo} from "./UserInfo";
 import {Router} from "@angular/router";
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {fromEvent} from "rxjs";
 
 @Component({
   selector: 'app-login',
