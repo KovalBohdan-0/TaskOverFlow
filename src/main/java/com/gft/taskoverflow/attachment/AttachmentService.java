@@ -6,6 +6,7 @@ import com.gft.taskoverflow.exception.DownloadLimitExceededException;
 import com.gft.taskoverflow.exception.UploadLimitExceededException;
 import com.gft.taskoverflow.task.Task;
 import com.gft.taskoverflow.task.TaskService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 @Service
+@Slf4j
 public class AttachmentService {
     private final UserAttachmentStatsRepository userStatsRepository;
     private final AttachmentRepository attachmentRepository;
@@ -135,7 +137,11 @@ public class AttachmentService {
             PresignedGetObjectRequest presignedRequest = presigner.presignGetObject(presignRequest);
 
             return presignedRequest.url().toString();
+        } catch (Exception e) {
+            log.error("Error while generating download URL: " + e.getMessage());
         }
+
+        return "";
     }
 
     public boolean isUploadAllowed(Long userId, Long fileSize, Long taskId) {
