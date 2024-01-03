@@ -40,7 +40,13 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://api.taskoverflow.pp.ua", "http://localhost:4200", "https://taskoverlow.azurewebsites.net", "https://taskoverflow.pp.ua"));
+        configuration.setAllowedOrigins(List.of(
+            "https://api.taskoverflow.pp.ua",
+            "http://localhost:4200",
+            "https://taskoverlow.azurewebsites.net",
+            "https://taskoverflow.pp.ua",
+            "https://www.taskoverflow.pp.ua"
+        ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of("*"));
