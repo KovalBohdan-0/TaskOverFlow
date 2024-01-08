@@ -37,9 +37,10 @@ import { DeleteBoardModalComponent } from './board/sidebar/delete-board-modal/de
 import { NotificationsComponent } from './board/notifications/notifications.component';
 import { NotificationComponent } from './board/notifications/notification/notification.component';
 import { AddAttachmentComponent } from './board/task-list/task/task-update/add-attachment/add-attachment.component';
+import {HomeComponent} from "./home/home.component";
 
 const routes: Routes = [
-  {path: '', component: LoginComponent},
+  {path: '', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'board', component: BoardComponent},
@@ -54,6 +55,8 @@ const routes: Routes = [
       {path: 'notifications', component: NotificationSettingsComponent},
     ]
   },
+  {path: 'home', component: HomeComponent},
+  {path: '**', redirectTo: 'home'}
 ];
 
 @NgModule({
