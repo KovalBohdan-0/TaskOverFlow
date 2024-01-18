@@ -40,7 +40,7 @@ import { AddAttachmentComponent } from './board/task-list/task/task-update/add-a
 import {HomeComponent} from "./home/home.component";
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
+  {path: '', component: LoginComponent},
   {path: 'login', component: LoginComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'board', component: BoardComponent},
