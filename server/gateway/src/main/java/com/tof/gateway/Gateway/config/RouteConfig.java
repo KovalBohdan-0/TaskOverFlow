@@ -11,8 +11,8 @@ public class RouteConfig {
     public RouteLocator myRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route(p -> p
-                        .path("/user/**")
-                        .uri("lb://user"))
+                        .path("/api/v1/customer/**", "/api/v1/registration", "/api/v1/login")
+                        .uri("http://localhost:8081"))
                 .route(p -> p
                         .path("/board/**")
                         .uri("lb://board"))

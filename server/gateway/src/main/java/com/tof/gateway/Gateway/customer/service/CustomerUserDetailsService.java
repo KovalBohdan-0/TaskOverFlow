@@ -1,9 +1,10 @@
 package com.tof.gateway.Gateway.customer.service;
 
-import com.tof.user.User.microservice.customer.entity.Customer;
-import com.tof.user.User.microservice.customer.entity.CustomerUserDetails;
+import com.tof.gateway.Gateway.customer.dto.CustomerUserDetailsDto;
+import com.tof.gateway.Gateway.customer.entity.CustomerUserDetails;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,23 +13,17 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class CustomerUserDetailsService implements UserDetailsService {
-
-    private final CustomerService customerService;
+    private final AmqpTemplate amqpTemplate;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new CustomerUserDetails(username, customerService.getCustomerByEmail(username).getPassword());
-    }
+        CustomerUserDetailsDto customer = amqpTemplate.convertSendAndReceiveAsType("customer-exchange",
+                "customer", username, new ParameterizedTypeReference<>() {});
 
-    public Customer getCustomerByEmail(String email) {
-        return customerService.getCustomerByEmail(email);
-    }
+        if (customer == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
 
-    public Customer getCurrentCustomer() {
-        return customerService.getCustomerByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-    }
-
-    public String getCurrentCustomerEmail() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+        return new CustomerUserDetails(customer.email(), customer.password());
     }
 }
